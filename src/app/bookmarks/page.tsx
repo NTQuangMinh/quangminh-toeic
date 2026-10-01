@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { AudioButton } from "@/components/AudioButton";
 import { Flashcard, FlashcardWord } from "@/components/Flashcard";
-import { WordIllustration } from "@/components/WordIllustration";
 import { Bookmark, BookOpen, Trash2, ArrowRight } from "lucide-react";
+
 
 
 interface BookmarkItem extends FlashcardWord {
@@ -161,12 +161,8 @@ export default function BookmarksPage() {
                   </div>
                 </div>
 
-                {/* Contextual Illustration */}
-                <div className="w-full">
-                  <WordIllustration word={item.word} topic={item.topic} size="sm" className="h-20 sm:h-24 rounded-xl" />
-                </div>
-
                 <p className="text-sm font-bold text-slate-800 leading-snug">{item.meaningVi}</p>
+
 
 
                 <p className="text-xs text-slate-600 italic bg-slate-50 p-2.5 rounded-xl border border-slate-100">

@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { AudioButton } from "./AudioButton";
 import { AITutorModal } from "./AITutorModal";
-import { WordIllustration } from "./WordIllustration";
 import { Bookmark, Sparkles, RotateCw, Check, ArrowRight, Tag, HelpCircle, Lightbulb } from "lucide-react";
 import { SM2Rating } from "@/lib/sm2";
 
@@ -15,7 +14,6 @@ export interface FlashcardWord {
   meaningEn?: string | null;
   pronunciation: string;
   audioUrl?: string | null;
-  imageUrl?: string | null;
   exampleSentence: string;
   exampleTranslation: string;
   difficulty: string;
@@ -107,19 +105,19 @@ export function Flashcard({
     <div className="w-full max-w-xl mx-auto flex flex-col items-center select-none px-2 sm:px-0">
       {/* 3D Flashcard Container with Ambient Glow */}
       <div
-        className="w-full min-h-[360px] sm:min-h-[480px] cursor-pointer perspective-1000 group relative"
+        className="w-full min-h-[300px] sm:min-h-[440px] cursor-pointer perspective-1000 group relative"
         onClick={() => setIsFlipped(!isFlipped)}
       >
         {/* Soft Ambient Radial Halo behind card */}
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-indigo-500/15 to-purple-500/10 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity pointer-events-none -z-10" />
 
         <div
-          className={`relative w-full h-full min-h-[360px] sm:min-h-[480px] duration-500 rounded-3xl transition-transform preserve-3d shadow-xl shadow-slate-200/50 border border-slate-200/80 bg-white ${
+          className={`relative w-full h-full min-h-[300px] sm:min-h-[440px] duration-500 rounded-3xl transition-transform preserve-3d shadow-xl shadow-slate-200/50 border border-slate-200/80 bg-white ${
             isFlipped ? "rotate-y-180" : ""
           }`}
         >
           {/* ================= FRONT SIDE ================= */}
-          <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-white via-white to-slate-50/60 rounded-3xl p-4 sm:p-6 flex flex-col justify-between">
+          <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-white via-white to-slate-50/60 rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
             {/* Top Bar: Topic, TOEIC Parts & Bookmark */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 sm:gap-2">
@@ -142,45 +140,36 @@ export function Flashcard({
               </button>
             </div>
 
-            {/* Contextual Illustration Image */}
-            <div className="my-2 w-full">
-              <WordIllustration
-                word={word.word}
-                topic={word.topic}
-                customImageUrl={word.imageUrl}
-                size="md"
-              />
-            </div>
-
             {/* Center Content: Word, Part of Speech, Phonetics & Audio */}
-            <div className="flex flex-col items-center justify-center my-auto text-center space-y-2 sm:space-y-3 px-2">
-              <div className="inline-block px-3 py-0.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200/60 shadow-xs">
+            <div className="flex flex-col items-center justify-center my-auto text-center space-y-3 sm:space-y-4 px-2 py-4">
+              <div className="inline-block px-3 py-0.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200/60 shadow-xs">
                 {word.partOfSpeech}
               </div>
 
-              <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors break-words max-w-full">
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors break-words max-w-full">
                 {word.word}
               </h2>
 
-              <p className="text-xs sm:text-base text-slate-500 font-mono tracking-wide bg-slate-50/90 px-3 py-0.5 rounded-full border border-slate-200/60 shadow-xs">
+              <p className="text-sm sm:text-lg text-slate-500 font-mono tracking-wide bg-slate-50/90 px-3.5 py-1 rounded-full border border-slate-200/60 shadow-xs">
                 {word.pronunciation}
               </p>
 
               {/* Audio US & UK buttons */}
-              <div className="flex items-center gap-2 sm:gap-3 pt-1">
-                <AudioButton text={word.word} audioUrl={word.audioUrl} accent="US" size="sm" showLabel />
-                <AudioButton text={word.word} accent="UK" size="sm" showLabel />
+              <div className="flex items-center gap-2 sm:gap-3 pt-1 sm:pt-2">
+                <AudioButton text={word.word} audioUrl={word.audioUrl} accent="US" size="md" showLabel />
+                <AudioButton text={word.word} accent="UK" size="md" showLabel />
               </div>
             </div>
 
             {/* Bottom: Click to reveal indicator */}
             <div className="flex items-center justify-center pt-1">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100/80 text-slate-500 group-hover:text-blue-600 group-hover:bg-blue-50 text-[10px] sm:text-xs font-medium border border-slate-200/60 transition-all shadow-xs">
-                <RotateCw className="w-3 h-3 animate-spin-slow" />
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-slate-100/80 text-slate-500 group-hover:text-blue-600 group-hover:bg-blue-50 text-[11px] sm:text-xs font-medium border border-slate-200/60 transition-all shadow-xs">
+                <RotateCw className="w-3.5 h-3.5 animate-spin-slow" />
                 <span>Chạm thẻ để xem nghĩa & ví dụ (Space)</span>
               </div>
             </div>
           </div>
+
 
 
           {/* ================= BACK SIDE ================= */}

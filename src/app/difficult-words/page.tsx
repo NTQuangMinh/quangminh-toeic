@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { AudioButton } from "@/components/AudioButton";
 import { Flashcard, FlashcardWord } from "@/components/Flashcard";
-import { WordIllustration } from "@/components/WordIllustration";
 import {
   AlertTriangle,
   RotateCcw,
@@ -14,6 +13,7 @@ import {
   HelpCircle,
   X,
 } from "lucide-react";
+
 
 
 interface DifficultWordItem {
@@ -141,12 +141,8 @@ export default function DifficultWordsPage() {
                   <AudioButton text={item.word} audioUrl={item.audioUrl} size="sm" />
                 </div>
 
-                {/* Contextual Illustration */}
-                <div className="w-full">
-                  <WordIllustration word={item.word} topic={item.topic} size="sm" className="h-20 sm:h-24 rounded-xl" />
-                </div>
-
                 <p className="text-sm font-bold text-slate-800">{item.meaningVi}</p>
+
 
 
                 {item.collocations && (

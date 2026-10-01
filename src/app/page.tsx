@@ -1,6 +1,5 @@
 import React from "react";
 import { TOEIC_TOPICS, TOEIC_PARTS } from "@/data/toeic-vocab-seed";
-import { WordIllustration } from "@/components/WordIllustration";
 import {
   BookOpen,
   RotateCcw,
@@ -15,6 +14,7 @@ import {
   Clock,
   Award,
 } from "lucide-react";
+
 
 
 export default function LandingPage() {
@@ -288,19 +288,15 @@ export default function LandingPage() {
                 </span>
               </div>
 
-              <div className="bg-white rounded-2xl p-5 text-slate-900 shadow-xl space-y-3.5">
-                {/* Visual Context Illustration */}
-                <div className="w-full">
-                  <WordIllustration word="accommodate" topic="Hotels" size="sm" className="h-28 sm:h-32" />
-                </div>
-
+              <div className="bg-white rounded-2xl p-6 text-slate-900 shadow-xl space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl sm:text-2xl font-black text-slate-900">accommodate</span>
+                    <span className="text-2xl font-black text-slate-900">accommodate</span>
                     <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700">verb</span>
                   </div>
                   <span className="text-xs font-mono text-slate-400">/əˈkɒmədeɪt/</span>
                 </div>
+
 
                 <div className="p-3 rounded-xl bg-blue-50/80 border border-blue-100">
                   <p className="text-sm sm:text-base font-bold text-blue-950">Đáp ứng; cung cấp chỗ ở cho</p>

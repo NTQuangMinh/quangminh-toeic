@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { ProgressBar } from "@/components/ProgressBar";
 import { AudioButton } from "@/components/AudioButton";
 import { Confetti } from "@/components/Confetti";
-import { WordIllustration } from "@/components/WordIllustration";
 import { TOEIC_TOPICS, TOEIC_PARTS } from "@/data/toeic-vocab-seed";
 import { QuizQuestionItem } from "@/app/api/quiz/route";
 import {
@@ -22,6 +21,7 @@ import {
   Clock,
   Award,
 } from "lucide-react";
+
 
 
 export default function PracticePage() {
@@ -344,15 +344,9 @@ export default function PracticePage() {
                 )}
               </div>
 
-              {/* Contextual Illustration Image for visual reinforcement */}
-              {q.word && (
-                <div className="w-full">
-                  <WordIllustration word={q.word} size="sm" className="h-24 sm:h-28 shadow-xs" />
-                </div>
-              )}
-
               {/* In-depth explanation & collocations */}
               <div className="pt-2 border-t border-slate-200/50 text-xs sm:text-sm space-y-1.5 text-slate-800">
+
                 <p className="leading-relaxed">{q.explanation}</p>
 
                 {q.collocations && (
