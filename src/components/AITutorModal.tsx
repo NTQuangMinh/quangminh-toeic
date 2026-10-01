@@ -88,23 +88,23 @@ export function AITutorModal({ isOpen, onClose, word }: AITutorModalProps) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[85vh] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-100">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-2 sm:p-4 bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-2xl max-h-[90vh] sm:max-h-[85vh] bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-slate-100">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/60">
+        <div className="flex items-center justify-between px-4 py-3.5 sm:px-6 sm:py-4 border-b border-slate-100 bg-slate-50/60">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-sm">
-              <Bot className="w-5 h-5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-sm shrink-0">
+              <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-1.5">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-1.5">
                 Gia sư AI TOEIC
-                <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
+                <span className="text-[9px] sm:text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">
                   {isBuiltIn === false ? "Gemini AI" : "Smart Tutor"}
                 </span>
               </h3>
-              <p className="text-xs text-slate-500">
-                Hỏi đáp về từ vựng: <span className="font-semibold text-slate-800">{word.word}</span> ({word.partOfSpeech} - {word.meaningVi})
+              <p className="text-[11px] sm:text-xs text-slate-500 line-clamp-1">
+                Từ vựng: <span className="font-semibold text-slate-800">{word.word}</span> ({word.partOfSpeech} - {word.meaningVi})
               </p>
             </div>
           </div>
@@ -117,23 +117,23 @@ export function AITutorModal({ isOpen, onClose, word }: AITutorModalProps) {
         </div>
 
         {/* Word Context Card */}
-        <div className="px-6 py-3 bg-blue-50/60 border-b border-blue-100/60 text-xs">
-          <div className="flex items-baseline gap-2 mb-1">
-            <span className="font-bold text-sm text-blue-900">{word.word}</span>
-            <span className="text-blue-600">{word.pronunciation}</span>
-            <span className="text-slate-500 italic">({word.partOfSpeech})</span>
+        <div className="px-4 py-2.5 sm:px-6 sm:py-3 bg-blue-50/60 border-b border-blue-100/60 text-xs">
+          <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2 mb-0.5">
+            <span className="font-bold text-xs sm:text-sm text-blue-900">{word.word}</span>
+            <span className="text-blue-600 font-mono text-[11px] sm:text-xs">{word.pronunciation}</span>
+            <span className="text-slate-500 italic text-[11px]">({word.partOfSpeech})</span>
             <span className="font-medium text-slate-700">: {word.meaningVi}</span>
           </div>
-          <p className="text-slate-600 italic">
+          <p className="text-slate-600 italic text-[11px] sm:text-xs line-clamp-2">
             "{word.exampleSentence}"
           </p>
         </div>
 
         {/* Content Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
           {/* Quick Action Chips */}
           <div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+            <p className="text-[11px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
               Câu hỏi nhanh cho Gia sư:
             </p>
             <div className="grid grid-cols-2 gap-2">

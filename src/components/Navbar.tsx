@@ -63,14 +63,14 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur border-b border-slate-100 shadow-sm transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
         {/* Brand Logo */}
-        <a href="/" className="flex items-center gap-2.5 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-lg shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform tracking-tight">
+        <a href="/" className="flex items-center gap-2 group shrink-0">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-black text-sm sm:text-lg shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform tracking-tight">
             QM
           </div>
           <div>
-            <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
+            <span className="font-extrabold text-base sm:text-xl tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">
               Quang Minh <span className="text-blue-600">TOEIC</span>
             </span>
             <span className="hidden sm:inline-block ml-1.5 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-blue-700 bg-blue-50 rounded-full border border-blue-200/50">
@@ -116,20 +116,20 @@ export function Navbar() {
         </nav>
 
         {/* Right Section: Streak & User profile */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {/* Flame Streak Badge */}
           <a
             href="/progress"
             title={`${streak} ngày học liên tiếp`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200/70 text-xs sm:text-sm font-bold shadow-sm hover:bg-amber-100 transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200/70 text-xs sm:text-sm font-bold shadow-sm hover:bg-amber-100 transition-colors"
           >
-            <Flame className="w-4 h-4 text-orange-500 fill-orange-500 animate-bounce" />
-            <span>{streak} ngày</span>
+            <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 fill-orange-500 animate-bounce" />
+            <span>{streak} <span className="hidden sm:inline">ngày</span></span>
           </a>
 
           {/* User Profile / Auth State */}
           {session?.authenticated && session.user ? (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <div className="hidden lg:flex flex-col text-right">
                 <span className="text-xs font-semibold text-slate-800 leading-tight">
                   {session.user.name}
@@ -142,24 +142,24 @@ export function Navbar() {
                 type="button"
                 onClick={handleLogout}
                 title="Đăng xuất"
-                className="p-2 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors"
+                className="p-1.5 sm:p-2 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors"
               >
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 sm:gap-2">
               <a
                 href="/login"
-                className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-600 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
+                className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-600 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg hover:bg-slate-50 transition-colors"
               >
                 Đăng nhập
               </a>
               <a
                 href="/register"
-                className="text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-1.5 rounded-lg shadow-sm shadow-blue-500/20 transition-all hover:scale-[1.02]"
+                className="text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 rounded-lg shadow-sm shadow-blue-500/20 transition-all active:scale-95"
               >
-                Bắt đầu học
+                Học ngay
               </a>
             </div>
           )}
