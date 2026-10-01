@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { ProgressBar } from "@/components/ProgressBar";
 import { AudioButton } from "@/components/AudioButton";
 import { Confetti } from "@/components/Confetti";
+import { WordIllustration } from "@/components/WordIllustration";
 import { TOEIC_TOPICS, TOEIC_PARTS } from "@/data/toeic-vocab-seed";
 import { QuizQuestionItem } from "@/app/api/quiz/route";
 import {
@@ -18,7 +19,10 @@ import {
   Volume2,
   Tag,
   AlertTriangle,
+  Clock,
+  Award,
 } from "lucide-react";
+
 
 export default function PracticePage() {
   // States: 'setup' | 'quiz' | 'result'
@@ -318,30 +322,37 @@ export default function PracticePage() {
           {/* Immediate Feedback Box after answering */}
           {hasAnsweredCurrent && (
             <div
-              className={`p-4 rounded-2xl border space-y-2 animate-in fade-in duration-300 ${
+              className={`p-4 sm:p-5 rounded-2xl border space-y-3 animate-in fade-in duration-300 ${
                 isCorrect
-                  ? "bg-emerald-50/80 border-emerald-200 text-emerald-950"
-                  : "bg-red-50/80 border-red-200 text-red-950"
+                  ? "bg-emerald-50/90 border-emerald-200 text-emerald-950 shadow-xs"
+                  : "bg-red-50/90 border-red-200 text-red-950 shadow-xs"
               }`}
             >
               <div className="flex items-center gap-2">
                 {isCorrect ? (
                   <>
                     <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-                    <span className="font-extrabold text-sm text-emerald-800">✓ Chính xác!</span>
+                    <span className="font-extrabold text-sm sm:text-base text-emerald-800">✓ Chính xác!</span>
                   </>
                 ) : (
                   <>
                     <XCircle className="w-5 h-5 text-red-600 shrink-0" />
-                    <span className="font-extrabold text-sm text-red-800">
+                    <span className="font-extrabold text-sm sm:text-base text-red-800">
                       ✗ Chưa chính xác. Đáp án đúng là: {["A", "B", "C", "D"][q.correctIndex]}. {q.options[q.correctIndex]}
                     </span>
                   </>
                 )}
               </div>
 
+              {/* Contextual Illustration Image for visual reinforcement */}
+              {q.word && (
+                <div className="w-full">
+                  <WordIllustration word={q.word} size="sm" className="h-24 sm:h-28 shadow-xs" />
+                </div>
+              )}
+
               {/* In-depth explanation & collocations */}
-              <div className="pt-2 border-t border-slate-200/40 text-xs sm:text-sm space-y-1 text-slate-800">
+              <div className="pt-2 border-t border-slate-200/50 text-xs sm:text-sm space-y-1.5 text-slate-800">
                 <p className="leading-relaxed">{q.explanation}</p>
 
                 {q.collocations && (
@@ -355,6 +366,7 @@ export default function PracticePage() {
               </div>
             </div>
           )}
+
 
           {/* Next / Submit Button */}
           {hasAnsweredCurrent && (

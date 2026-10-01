@@ -17,6 +17,9 @@ import {
   CheckCircle2,
   Clock,
   ChevronRight,
+  Sun,
+  Moon,
+  TrendingUp,
 } from "lucide-react";
 
 interface ProgressData {
@@ -70,21 +73,24 @@ export default function DashboardPage() {
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return "Good morning 👋";
-    if (hour < 18) return "Good afternoon 👋";
-    return "Good evening 👋";
+    if (hour < 12) return { text: "Good morning", icon: Sun, color: "text-amber-500" };
+    if (hour < 18) return { text: "Good afternoon", icon: Sun, color: "text-orange-500" };
+    return { text: "Good evening", icon: Moon, color: "text-indigo-400" };
   };
+
+  const greeting = getGreeting();
+  const GreetingIcon = greeting.icon;
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
         <div className="animate-pulse space-y-6">
-          <div className="h-10 bg-slate-200 rounded-xl w-1/3" />
-          <div className="h-44 bg-slate-200 rounded-3xl" />
+          <div className="h-10 bg-slate-200 rounded-2xl w-1/3" />
+          <div className="h-56 bg-slate-200 rounded-3xl" />
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="h-40 bg-slate-200 rounded-2xl" />
-            <div className="h-40 bg-slate-200 rounded-2xl" />
-            <div className="h-40 bg-slate-200 rounded-2xl" />
+            <div className="h-48 bg-slate-200 rounded-2xl" />
+            <div className="h-48 bg-slate-200 rounded-2xl" />
+            <div className="h-48 bg-slate-200 rounded-2xl" />
           </div>
         </div>
       </div>
@@ -107,53 +113,63 @@ export default function DashboardPage() {
       {/* ================= GREETING & STREAK BANNER ================= */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            {getGreeting()}
-          </h1>
-          <p className="text-sm text-slate-500 mt-0.5">
-            Chào mừng <span className="font-semibold text-slate-800">{user.name}</span>. Bạn đã sẵn sàng học hôm nay chưa?
+          <div className="flex items-center gap-2">
+            <GreetingIcon className={`w-5 h-5 ${greeting.color}`} />
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {greeting.text}, <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">{user.name}</span>
+            </h1>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+            Hôm nay bạn muốn học bao nhiêu từ vựng để bứt phá mục tiêu TOEIC?
           </p>
         </div>
 
         {/* Streak Pill */}
-        <div className="flex items-center gap-2 self-start sm:self-auto px-4 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 shadow-sm">
-          <Flame className="w-5 h-5 text-orange-500 fill-orange-500 animate-bounce" />
+        <div className="flex items-center gap-2.5 self-start sm:self-auto px-4 py-2 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 text-amber-900 shadow-xs">
+          <div className="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center shadow-md shadow-orange-500/30">
+            <Flame className="w-5 h-5 fill-white animate-bounce" />
+          </div>
           <div className="text-left">
-            <span className="text-xs text-amber-700/80 font-medium block leading-none">Chuỗi học tập</span>
-            <span className="text-base font-extrabold text-amber-900 leading-tight">
-              🔥 {streak} ngày streak
+            <span className="text-[10px] uppercase font-bold tracking-wider text-amber-700/80 block leading-tight">Chuỗi học tập</span>
+            <span className="text-sm sm:text-base font-black text-amber-900 leading-tight">
+              {streak} ngày streak
             </span>
           </div>
         </div>
       </div>
 
-      {/* ================= TODAY'S GOAL & LEARNING CARD ================= */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white shadow-xl relative overflow-hidden">
+      {/* ================= TODAY'S GOAL HERO CARD ================= */}
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-700 to-slate-900 text-white shadow-xl shadow-blue-900/10 relative overflow-hidden border border-blue-500/20">
+        {/* Ambient Decorative Blurs */}
+        <div className="absolute -top-16 -right-16 w-72 h-72 bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 -left-16 w-72 h-72 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: Goal Progress */}
           <div className="lg:col-span-7 space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-blue-200">
-                Today's Goal (Mục tiêu hôm nay)
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/15 text-blue-100 backdrop-blur-md border border-white/20">
+                <Sparkles className="w-3.5 h-3.5 text-blue-200" />
+                Mục tiêu hôm nay (Today's Goal)
               </span>
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-white/20">
+              <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 backdrop-blur-md">
                 {todayGoal.completed ? "🎉 Hoàn thành xuất sắc!" : `${todayGoal.remainingWords} từ còn lại`}
               </span>
             </div>
 
             {/* Custom Progress Bar */}
-            <div className="space-y-1.5">
-              <div className="w-full bg-blue-900/60 rounded-full h-4 p-0.5 overflow-hidden">
+            <div className="space-y-2 pt-1">
+              <div className="w-full bg-slate-900/60 rounded-full h-4 p-0.5 overflow-hidden border border-white/10">
                 <div
-                  className="bg-gradient-to-r from-emerald-400 to-teal-300 h-full rounded-full transition-all duration-700"
-                  style={{ width: `${todayGoal.percentage}%` }}
+                  className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-300 h-full rounded-full transition-all duration-700 shadow-[0_0_12px_rgba(52,211,153,0.5)]"
+                  style={{ width: `${Math.min(100, Math.max(0, todayGoal.percentage))}%` }}
                 />
               </div>
-              <div className="flex items-center justify-between text-xs text-blue-100 font-medium">
+              <div className="flex items-center justify-between text-xs text-blue-100/90 font-semibold">
                 <span>
-                  {todayGoal.learnedWords} / {todayGoal.targetWords} words ({todayGoal.percentage}%)
+                  {todayGoal.learnedWords} / {todayGoal.targetWords} từ ({todayGoal.percentage}%)
                 </span>
-                <span>Mục tiêu: {todayGoal.targetWords} từ/ngày</span>
+                <span className="text-blue-200/80">Chỉ tiêu: {todayGoal.targetWords} từ/ngày</span>
               </div>
             </div>
 
@@ -166,7 +182,7 @@ export default function DashboardPage() {
             <div className="pt-2">
               <a
                 href={counts.dueForReview > 0 ? "/review" : "/learn"}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-blue-700 hover:bg-blue-50 font-bold text-sm shadow-md transition-all hover:scale-105 active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white text-blue-700 hover:bg-blue-50 font-bold text-sm shadow-lg shadow-blue-900/20 transition-all hover:scale-105 active:scale-95"
               >
                 <span>Continue Learning (Tiếp tục học)</span>
                 <ArrowRight className="w-4 h-4" />
@@ -175,23 +191,29 @@ export default function DashboardPage() {
           </div>
 
           {/* Right Column: Today's Learning Counts */}
-          <div className="lg:col-span-5 bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/15 space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-200 block border-b border-white/15 pb-2">
-              Today's Learning (Nhiệm vụ hôm nay)
+          <div className="lg:col-span-5 bg-white/10 backdrop-blur-xl rounded-2xl p-5 border border-white/20 shadow-2xl space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-blue-200 block border-b border-white/15 pb-2.5">
+              Nhiệm vụ trong ngày (Daily Tasks)
             </span>
 
-            <div className="space-y-2.5 text-sm">
+            <div className="space-y-3 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-blue-100">Từ mới hôm nay</span>
-                <span className="font-extrabold text-white text-base">{counts.newWordsToday}</span>
+                <span className="text-blue-100 font-medium">Từ mới hôm nay</span>
+                <span className="font-black text-white text-base px-2.5 py-0.5 rounded-lg bg-white/10">
+                  {counts.newWordsToday}
+                </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-blue-100">Đến hạn ôn tập (SM-2)</span>
-                <span className="font-extrabold text-amber-300 text-base">{counts.dueForReview}</span>
+                <span className="text-blue-100 font-medium">Đến hạn ôn tập (SM-2)</span>
+                <span className="font-black text-amber-300 text-base px-2.5 py-0.5 rounded-lg bg-amber-400/20 border border-amber-300/30">
+                  {counts.dueForReview}
+                </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-blue-100">Câu hỏi luyện tập</span>
-                <span className="font-extrabold text-white text-base">{counts.practiceQuestions}</span>
+                <span className="text-blue-100 font-medium">Câu hỏi luyện tập</span>
+                <span className="font-black text-white text-base px-2.5 py-0.5 rounded-lg bg-white/10">
+                  {counts.practiceQuestions}
+                </span>
               </div>
             </div>
           </div>
@@ -199,27 +221,27 @@ export default function DashboardPage() {
       </div>
 
       {/* ================= 3 CORE LEARNING MODES ================= */}
-      <div className="space-y-3">
-        <h2 className="text-base font-bold text-slate-800 uppercase tracking-wider">
-          Chế độ học tập chính
+      <div className="space-y-4">
+        <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <span>Chế độ học tập chính</span>
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Card 1: Learn New Words */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-400 hover:shadow-lg transition-all group flex flex-col justify-between">
+          <div className="p-6 rounded-3xl bg-white border border-slate-200/80 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between shadow-xs">
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+              <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold shadow-xs group-hover:scale-110 transition-transform">
                 <BookOpen className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-lg font-black text-slate-900 group-hover:text-blue-600 transition-colors">
                   📚 Learn New Words
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Học từ mới qua Flashcard 3D thông minh, phát âm US/UK và ví dụ thực tế.
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Học từ mới qua Flashcard 3D thông minh, phát âm US/UK và ví dụ thực tế trong đề thi.
                 </p>
               </div>
-              <div className="text-xs font-semibold text-blue-600 bg-blue-50/70 p-2 rounded-lg">
+              <div className="text-xs font-semibold text-blue-700 bg-blue-50/80 p-2.5 rounded-xl border border-blue-100">
                 Hôm nay: {counts.newWordsToday} từ mới đang chờ bạn
               </div>
             </div>
@@ -227,29 +249,29 @@ export default function DashboardPage() {
             <div className="pt-6">
               <a
                 href="/learn"
-                className="w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/20 transition-all active:scale-95"
               >
-                <span>Start (Bắt đầu học)</span>
+                <span>Start Learning (Bắt đầu học)</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>
           </div>
 
           {/* Card 2: Review Due Words */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-amber-400 hover:shadow-lg transition-all group flex flex-col justify-between">
+          <div className="p-6 rounded-3xl bg-white border border-slate-200/80 hover:border-amber-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between shadow-xs">
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+              <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold shadow-xs group-hover:scale-110 transition-transform">
                 <RotateCcw className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-amber-600 transition-colors">
+                <h3 className="text-lg font-black text-slate-900 group-hover:text-amber-600 transition-colors">
                   🔄 Review Due
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Lặp lại ngắt quãng SM-2: Again, Hard, Good, Easy để không bao giờ quên từ.
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Lặp lại ngắt quãng SM-2: Again, Hard, Good, Easy để không bao giờ quên từ vựng đã học.
                 </p>
               </div>
-              <div className="text-xs font-semibold text-amber-700 bg-amber-50/70 p-2 rounded-lg">
+              <div className="text-xs font-semibold text-amber-800 bg-amber-50/80 p-2.5 rounded-xl border border-amber-100">
                 {counts.dueForReview > 0
                   ? `Có ${counts.dueForReview} từ đến hạn ôn tập ngay`
                   : "Đã hoàn thành ôn tập hôm nay!"}
@@ -259,29 +281,29 @@ export default function DashboardPage() {
             <div className="pt-6">
               <a
                 href="/review"
-                className="w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/20 transition-all active:scale-95"
               >
-                <span>Review (Ôn tập ngay)</span>
+                <span>Review Due (Ôn tập ngay)</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>
           </div>
 
           {/* Card 3: Practice Quiz */}
-          <div className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-emerald-400 hover:shadow-lg transition-all group flex flex-col justify-between">
+          <div className="p-6 rounded-3xl bg-white border border-slate-200/80 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 group flex flex-col justify-between shadow-xs">
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shadow-xs group-hover:scale-110 transition-transform">
                 <GraduationCap className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                <h3 className="text-lg font-black text-slate-900 group-hover:text-emerald-600 transition-colors">
                   📝 Practice Quiz
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Luyện đề trắc nghiệm chuẩn TOEIC: điền câu, nghĩa, nghe và dịch.
+                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                  Luyện đề trắc nghiệm chuẩn TOEIC: điền câu, nghĩa từ, nghe phát âm và dịch câu.
                 </p>
               </div>
-              <div className="text-xs font-semibold text-emerald-700 bg-emerald-50/70 p-2 rounded-lg">
+              <div className="text-xs font-semibold text-emerald-800 bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-100">
                 Độ chính xác hiện tại: {stats.quizAccuracy}%
               </div>
             </div>
@@ -289,7 +311,7 @@ export default function DashboardPage() {
             <div className="pt-6">
               <a
                 href="/practice"
-                className="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-500/20 transition-all active:scale-95"
               >
                 <span>Start Quiz (Luyện thi)</span>
                 <ArrowRight className="w-4 h-4" />
@@ -300,37 +322,37 @@ export default function DashboardPage() {
       </div>
 
       {/* ================= REAL STATISTICS OVERVIEW ================= */}
-      <div className="space-y-3">
-        <h2 className="text-base font-bold text-slate-800 uppercase tracking-wider">
-          Thống kê học tập thực tế (Real Database Stats)
+      <div className="space-y-4">
+        <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+          <span>Thống kê học tập thực tế (Real Database Stats)</span>
         </h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm text-center">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs text-center border-t-2 border-t-blue-500">
             <span className="text-xs text-slate-500 font-medium">Tổng từ đã học</span>
-            <p className="text-2xl font-black text-slate-900 mt-1">{counts.totalLearned}</p>
+            <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{counts.totalLearned}</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm text-center">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs text-center border-t-2 border-t-emerald-500">
             <span className="text-xs text-slate-500 font-medium">Đã thuần thục (Mastered)</span>
-            <p className="text-2xl font-black text-emerald-600 mt-1">{counts.mastered}</p>
+            <p className="text-2xl sm:text-3xl font-black text-emerald-600 mt-1">{counts.mastered}</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm text-center">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs text-center border-t-2 border-t-indigo-500">
             <span className="text-xs text-slate-500 font-medium">Độ chính xác bài test</span>
-            <p className="text-2xl font-black text-blue-600 mt-1">{stats.quizAccuracy}%</p>
+            <p className="text-2xl sm:text-3xl font-black text-blue-600 mt-1">{stats.quizAccuracy}%</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm text-center">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs text-center border-t-2 border-t-purple-500">
             <span className="text-xs text-slate-500 font-medium">Số lượt ôn tập</span>
-            <p className="text-2xl font-black text-slate-900 mt-1">{stats.totalReviewSessions}</p>
+            <p className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">{stats.totalReviewSessions}</p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm text-center col-span-2 sm:col-span-1">
+          <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 shadow-xs text-center col-span-2 sm:col-span-1 border-t-2 border-t-rose-500">
             <span className="text-xs text-slate-500 font-medium">Từ hay làm sai</span>
             <a
               href="/difficult-words"
-              className="text-2xl font-black text-red-500 hover:text-red-700 mt-1 block"
+              className="text-2xl sm:text-3xl font-black text-rose-500 hover:text-rose-700 mt-1 block transition-colors"
             >
               {counts.difficultWordsCount}
             </a>
@@ -341,14 +363,14 @@ export default function DashboardPage() {
       {/* ================= QUICK SHORTCUTS & DIFFICULT WORDS ================= */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Difficult Words Teaser */}
-        <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm flex flex-col justify-between">
+        <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-sm font-bold text-red-700">
-                <AlertTriangle className="w-4 h-4 text-red-500" />
+              <span className="flex items-center gap-1.5 text-sm font-bold text-rose-700">
+                <AlertTriangle className="w-4 h-4 text-rose-500" />
                 <span>Từ vựng hay sai (My Difficult Words)</span>
               </span>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-700">
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800">
                 {counts.difficultWordsCount} từ
               </span>
             </div>
@@ -360,23 +382,23 @@ export default function DashboardPage() {
           <div className="pt-4">
             <a
               href="/difficult-words"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-red-600 hover:text-red-700"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 hover:text-rose-700 group"
             >
               <span>Xem danh sách & Luyện ngay</span>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </div>
 
         {/* Bookmarked Words Teaser */}
-        <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm flex flex-col justify-between">
+        <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="flex items-center gap-1.5 text-sm font-bold text-amber-800">
                 <Bookmark className="w-4 h-4 text-amber-500 fill-amber-500" />
                 <span>Từ vựng đã lưu (My Vocabulary)</span>
               </span>
-              <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">
                 Đã đánh dấu
               </span>
             </div>
@@ -388,10 +410,10 @@ export default function DashboardPage() {
           <div className="pt-4">
             <a
               href="/bookmarks"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 hover:text-amber-800"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 hover:text-amber-800 group"
             >
               <span>Xem các từ đã lưu</span>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </div>
@@ -399,3 +421,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

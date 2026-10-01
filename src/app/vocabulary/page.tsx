@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { AudioButton } from "@/components/AudioButton";
 import { AITutorModal } from "@/components/AITutorModal";
+import { WordIllustration } from "@/components/WordIllustration";
 import { TOEIC_TOPICS, TOEIC_PARTS } from "@/data/toeic-vocab-seed";
 import {
   Search,
@@ -15,6 +16,7 @@ import {
   ArrowRight,
   HelpCircle,
 } from "lucide-react";
+
 
 interface VocabItem {
   id: string;
@@ -272,11 +274,17 @@ export default function VocabularyPage() {
                     </div>
                   </div>
 
+                  {/* Contextual Illustration Banner */}
+                  <div className="w-full">
+                    <WordIllustration word={vocab.word} topic={vocab.topic} size="sm" className="h-24 sm:h-28 rounded-xl" />
+                  </div>
+
                   {/* Meaning */}
                   <div>
                     <p className="text-sm font-bold text-slate-800 leading-snug">
                       {vocab.meaningVi}
                     </p>
+
                     {vocab.meaningEn && (
                       <p className="text-xs text-slate-500 mt-0.5 line-clamp-1">
                         {vocab.meaningEn}

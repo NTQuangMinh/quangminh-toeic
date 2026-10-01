@@ -71,10 +71,12 @@ export function AudioButton({
     window.speechSynthesis.speak(utterance);
   };
 
+  const isUS = accent === "US";
+
   const sizeClasses = {
-    sm: "p-1.5 text-xs gap-1",
-    md: "p-2.5 text-sm gap-1.5",
-    lg: "p-3.5 text-base gap-2",
+    sm: "px-2.5 py-1 text-xs gap-1.5",
+    md: "px-3 py-1.5 text-xs sm:text-sm gap-2",
+    lg: "px-4 py-2 text-sm sm:text-base gap-2.5",
   };
 
   const iconSizes = {
@@ -87,17 +89,35 @@ export function AudioButton({
     <button
       type="button"
       onClick={playAudio}
-      title={`Nghe phát âm (${accent})`}
-      className={`inline-flex items-center justify-center font-medium rounded-full transition-all duration-200 active:scale-95 ${
+      title={`Nghe phát âm ${isUS ? "Anh - Mỹ (US)" : "Anh - Anh (UK)"}`}
+      className={`inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 active:scale-95 shadow-xs ${
         sizeClasses[size]
       } ${
         isPlaying
-          ? "bg-blue-600 text-white shadow-md ring-2 ring-blue-300"
-          : "bg-blue-50 text-blue-700 hover:bg-blue-100 hover:text-blue-800 border border-blue-200/60"
+          ? isUS
+            ? "bg-blue-600 text-white shadow-md shadow-blue-500/30 ring-2 ring-blue-300"
+            : "bg-indigo-600 text-white shadow-md shadow-indigo-500/30 ring-2 ring-indigo-300"
+          : isUS
+          ? "bg-blue-50/90 text-blue-700 hover:bg-blue-100 hover:text-blue-800 border border-blue-200/70"
+          : "bg-indigo-50/90 text-indigo-700 hover:bg-indigo-100 hover:text-indigo-800 border border-indigo-200/70"
       }`}
     >
-      <Volume2 className={`${iconSizes[size]} ${isPlaying ? "animate-pulse" : ""}`} />
-      {showLabel && <span className="text-xs font-semibold">{accent}</span>}
+      {isPlaying ? (
+        <span className="flex items-center gap-0.5 h-4">
+          <span className="w-0.5 h-2.5 bg-current rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+          <span className="w-0.5 h-4 bg-current rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+          <span className="w-0.5 h-2 bg-current rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+        </span>
+      ) : (
+        <Volume2 className={`${iconSizes[size]} shrink-0`} />
+      )}
+
+      {showLabel && (
+        <span className="tracking-wide flex items-center gap-1">
+          <span className="text-[10px] sm:text-xs font-bold">{accent}</span>
+        </span>
+      )}
     </button>
   );
 }
+

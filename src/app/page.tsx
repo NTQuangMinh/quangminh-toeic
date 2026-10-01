@@ -1,5 +1,6 @@
 import React from "react";
 import { TOEIC_TOPICS, TOEIC_PARTS } from "@/data/toeic-vocab-seed";
+import { WordIllustration } from "@/components/WordIllustration";
 import {
   BookOpen,
   RotateCcw,
@@ -14,6 +15,7 @@ import {
   Clock,
   Award,
 } from "lucide-react";
+
 
 export default function LandingPage() {
   const faqs = [
@@ -276,28 +278,37 @@ export default function LandingPage() {
             </div>
 
             {/* Right: Interactive UI Mock Preview */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-tr from-blue-600 to-indigo-700 text-white shadow-2xl relative overflow-hidden">
-              <div className="flex items-center justify-between text-xs text-blue-100 mb-6">
-                <span className="font-semibold uppercase tracking-wider">Mô phỏng Thẻ Flashcard</span>
-                <span className="px-2 py-0.5 rounded-full bg-white/20">Hotels</span>
+            <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-tr from-blue-600 via-indigo-700 to-slate-900 text-white shadow-2xl relative overflow-hidden border border-white/10">
+              <div className="flex items-center justify-between text-xs text-blue-100 mb-4">
+                <span className="font-bold uppercase tracking-wider text-[11px] bg-white/15 px-3 py-1 rounded-full backdrop-blur-md">
+                  Mô phỏng Thẻ Flashcard 3D
+                </span>
+                <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-xs font-semibold">
+                  Hotels
+                </span>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 text-slate-900 shadow-lg space-y-4">
+              <div className="bg-white rounded-2xl p-5 text-slate-900 shadow-xl space-y-3.5">
+                {/* Visual Context Illustration */}
+                <div className="w-full">
+                  <WordIllustration word="accommodate" topic="Hotels" size="sm" className="h-28 sm:h-32" />
+                </div>
+
                 <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl font-black text-slate-900">accommodate</span>
-                    <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700">verb</span>
+                    <span className="text-xl sm:text-2xl font-black text-slate-900">accommodate</span>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700">verb</span>
                   </div>
                   <span className="text-xs font-mono text-slate-400">/əˈkɒmədeɪt/</span>
                 </div>
 
                 <div className="p-3 rounded-xl bg-blue-50/80 border border-blue-100">
-                  <p className="text-base font-bold text-blue-950">Đáp ứng; cung cấp chỗ ở cho</p>
+                  <p className="text-sm sm:text-base font-bold text-blue-950">Đáp ứng; cung cấp chỗ ở cho</p>
                 </div>
 
-                <div className="text-xs text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-100">
-                  <p className="font-semibold text-slate-400 uppercase text-[10px]">Ví dụ TOEIC:</p>
-                  <p className="italic font-medium mt-0.5">
+                <div className="text-xs text-slate-700 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <p className="font-bold text-slate-400 uppercase text-[10px]">Ví dụ đề thi TOEIC:</p>
+                  <p className="italic font-medium mt-0.5 text-slate-800">
                     "The conference hotel can comfortably accommodate up to 500 guests."
                   </p>
                   <p className="text-slate-500 mt-0.5">
@@ -305,19 +316,20 @@ export default function LandingPage() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-4 gap-2 pt-2">
-                  <div className="text-center p-2 rounded-lg bg-red-50 text-red-700 text-xs font-bold">Again</div>
-                  <div className="text-center p-2 rounded-lg bg-amber-50 text-amber-800 text-xs font-bold">Hard</div>
-                  <div className="text-center p-2 rounded-lg bg-blue-50 text-blue-700 text-xs font-bold">Good</div>
-                  <div className="text-center p-2 rounded-lg bg-emerald-50 text-emerald-800 text-xs font-bold">Easy</div>
+                <div className="grid grid-cols-4 gap-2 pt-1">
+                  <div className="text-center p-2 rounded-xl bg-rose-50 text-rose-700 text-xs font-bold border border-rose-200/60">Again</div>
+                  <div className="text-center p-2 rounded-xl bg-amber-50 text-amber-800 text-xs font-bold border border-amber-200/60">Hard</div>
+                  <div className="text-center p-2 rounded-xl bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200/60">Good</div>
+                  <div className="text-center p-2 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-bold border border-emerald-200/60">Easy</div>
                 </div>
               </div>
 
-              <div className="mt-6 flex items-center justify-between text-xs text-blue-100">
+              <div className="mt-5 flex items-center justify-between text-xs text-blue-100/90 font-medium">
                 <span>🔥 Học mỗi ngày, duy trì streak</span>
-                <span className="font-bold">Đã thuần thục: 842 từ</span>
+                <span className="font-bold text-emerald-300">Đã thuần thục: 842 từ</span>
               </div>
             </div>
+
           </div>
         </div>
       </section>

@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { AudioButton } from "./AudioButton";
 import { AITutorModal } from "./AITutorModal";
-import { Bookmark, Sparkles, RotateCw, Check, ArrowRight, Tag, HelpCircle } from "lucide-react";
+import { WordIllustration } from "./WordIllustration";
+import { Bookmark, Sparkles, RotateCw, Check, ArrowRight, Tag, HelpCircle, Lightbulb } from "lucide-react";
 import { SM2Rating } from "@/lib/sm2";
 
 export interface FlashcardWord {
@@ -14,6 +15,7 @@ export interface FlashcardWord {
   meaningEn?: string | null;
   pronunciation: string;
   audioUrl?: string | null;
+  imageUrl?: string | null;
   exampleSentence: string;
   exampleTranslation: string;
   difficulty: string;
@@ -103,25 +105,29 @@ export function Flashcard({
 
   return (
     <div className="w-full max-w-xl mx-auto flex flex-col items-center select-none px-2 sm:px-0">
-      {/* 3D Flashcard Container */}
+      {/* 3D Flashcard Container with Ambient Glow */}
       <div
-        className="w-full min-h-[300px] sm:min-h-[440px] cursor-pointer perspective-1000 group"
+        className="w-full min-h-[360px] sm:min-h-[480px] cursor-pointer perspective-1000 group relative"
         onClick={() => setIsFlipped(!isFlipped)}
       >
+        {/* Soft Ambient Radial Halo behind card */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-indigo-500/15 to-purple-500/10 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity pointer-events-none -z-10" />
+
         <div
-          className={`relative w-full h-full min-h-[300px] sm:min-h-[440px] duration-500 rounded-3xl transition-transform preserve-3d shadow-xl border border-slate-100 ${
+          className={`relative w-full h-full min-h-[360px] sm:min-h-[480px] duration-500 rounded-3xl transition-transform preserve-3d shadow-xl shadow-slate-200/50 border border-slate-200/80 bg-white ${
             isFlipped ? "rotate-y-180" : ""
           }`}
         >
           {/* ================= FRONT SIDE ================= */}
-          <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-white to-slate-50/50 rounded-3xl p-4 sm:p-8 flex flex-col justify-between">
+          <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-white via-white to-slate-50/60 rounded-3xl p-4 sm:p-6 flex flex-col justify-between">
             {/* Top Bar: Topic, TOEIC Parts & Bookmark */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] sm:text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/60">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] sm:text-xs font-bold bg-blue-50/90 text-blue-700 border border-blue-200/70 shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
                   {word.topic}
                 </span>
-                <span className="px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-medium bg-slate-100 text-slate-600">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200/60">
                   {word.toeicParts.split(",")[0]}
                 </span>
               </div>
@@ -129,51 +135,64 @@ export function Flashcard({
               <button
                 type="button"
                 onClick={handleBookmarkClick}
-                className="p-1.5 sm:p-2 rounded-full text-slate-400 hover:text-amber-500 hover:bg-amber-50 transition-colors"
+                className="p-1.5 sm:p-2 rounded-full text-slate-400 hover:text-amber-500 hover:bg-amber-50/80 transition-all active:scale-90"
                 title={bookmarked ? "Bỏ lưu từ này" : "Lưu từ vựng"}
               >
-                <Bookmark className={`w-5 h-5 ${bookmarked ? "text-amber-500 fill-amber-500" : ""}`} />
+                <Bookmark className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${bookmarked ? "text-amber-500 fill-amber-500 scale-110" : ""}`} />
               </button>
             </div>
 
+            {/* Contextual Illustration Image */}
+            <div className="my-2 w-full">
+              <WordIllustration
+                word={word.word}
+                topic={word.topic}
+                customImageUrl={word.imageUrl}
+                size="md"
+              />
+            </div>
+
             {/* Center Content: Word, Part of Speech, Phonetics & Audio */}
-            <div className="flex flex-col items-center justify-center my-auto text-center space-y-3 sm:space-y-4 px-2">
-              <div className="inline-block px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-lg text-[11px] sm:text-xs font-semibold uppercase tracking-wider bg-slate-100 text-slate-700">
+            <div className="flex flex-col items-center justify-center my-auto text-center space-y-2 sm:space-y-3 px-2">
+              <div className="inline-block px-3 py-0.5 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-700 border border-blue-200/60 shadow-xs">
                 {word.partOfSpeech}
               </div>
 
-              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors break-words max-w-full">
+              <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors break-words max-w-full">
                 {word.word}
               </h2>
 
-              <p className="text-sm sm:text-lg text-slate-500 font-mono tracking-wide">
+              <p className="text-xs sm:text-base text-slate-500 font-mono tracking-wide bg-slate-50/90 px-3 py-0.5 rounded-full border border-slate-200/60 shadow-xs">
                 {word.pronunciation}
               </p>
 
               {/* Audio US & UK buttons */}
-              <div className="flex items-center gap-2 sm:gap-3 pt-1 sm:pt-2">
-                <AudioButton text={word.word} audioUrl={word.audioUrl} accent="US" size="md" showLabel />
-                <AudioButton text={word.word} accent="UK" size="md" showLabel />
+              <div className="flex items-center gap-2 sm:gap-3 pt-1">
+                <AudioButton text={word.word} audioUrl={word.audioUrl} accent="US" size="sm" showLabel />
+                <AudioButton text={word.word} accent="UK" size="sm" showLabel />
               </div>
             </div>
 
             {/* Bottom: Click to reveal indicator */}
-            <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-medium text-slate-400 group-hover:text-blue-500 transition-colors">
-              <RotateCw className="w-3.5 h-3.5 animate-spin-slow" />
-              <span>Chạm thẻ để xem nghĩa & ví dụ (Space)</span>
+            <div className="flex items-center justify-center pt-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100/80 text-slate-500 group-hover:text-blue-600 group-hover:bg-blue-50 text-[10px] sm:text-xs font-medium border border-slate-200/60 transition-all shadow-xs">
+                <RotateCw className="w-3 h-3 animate-spin-slow" />
+                <span>Chạm thẻ để xem nghĩa & ví dụ (Space)</span>
+              </div>
             </div>
           </div>
 
+
           {/* ================= BACK SIDE ================= */}
-          <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-white rounded-3xl p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
+          <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-white rounded-3xl p-5 sm:p-8 flex flex-col justify-between overflow-y-auto">
             {/* Top Bar: Word Summary & Actions */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
-                <span className="font-bold text-lg text-slate-900">{word.word}</span>
-                <span className="text-xs font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-700">
+                <span className="font-extrabold text-lg sm:text-xl text-slate-900">{word.word}</span>
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200/60">
                   {word.partOfSpeech}
                 </span>
-                <span className="text-xs text-slate-400 font-mono">{word.pronunciation}</span>
+                <span className="text-xs text-slate-400 font-mono hidden sm:inline">{word.pronunciation}</span>
               </div>
 
               <div className="flex items-center gap-1.5">
@@ -189,24 +208,24 @@ export function Flashcard({
             </div>
 
             {/* Main Meaning */}
-            <div className="my-auto py-3 space-y-4">
-              <div className="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100">
-                <p className="text-lg sm:text-xl font-bold text-blue-950 leading-snug">
+            <div className="my-auto py-2.5 space-y-3 sm:space-y-4">
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-blue-50/90 via-indigo-50/50 to-white border border-blue-200/80 shadow-xs">
+                <p className="text-lg sm:text-2xl font-black text-slate-900 leading-snug">
                   {word.meaningVi}
                 </p>
                 {word.meaningEn && (
-                  <p className="text-xs sm:text-sm text-blue-700/80 mt-1 font-medium">
+                  <p className="text-xs sm:text-sm text-blue-800/80 mt-1 font-medium italic">
                     {word.meaningEn}
                   </p>
                 )}
               </div>
 
               {/* Realistic Example Sentence */}
-              <div className="space-y-1 text-left bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              <div className="space-y-1 text-left bg-slate-50/90 p-3.5 sm:p-4 rounded-2xl border border-slate-200/70">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                   Ví dụ trong đề thi TOEIC:
                 </p>
-                <p className="text-sm font-medium text-slate-800 italic leading-relaxed">
+                <p className="text-xs sm:text-sm font-semibold text-slate-800 italic leading-relaxed">
                   "{word.exampleSentence}"
                 </p>
                 <p className="text-xs text-slate-600 font-normal">
@@ -217,15 +236,15 @@ export function Flashcard({
               {/* Collocations */}
               {collocationsList.length > 0 && (
                 <div className="text-left space-y-1.5">
-                  <div className="flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-slate-400">
-                    <Tag className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <Tag className="w-3.5 h-3.5 text-emerald-600" />
                     <span>Cụm từ hay gặp (Collocations):</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {collocationsList.map((col, idx) => (
                       <span
                         key={idx}
-                        className="px-2.5 py-1 rounded-lg text-xs font-medium bg-emerald-50 text-emerald-800 border border-emerald-200/60"
+                        className="px-2.5 py-1 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/70 shadow-xs hover:bg-emerald-100/70 transition-colors"
                       >
                         {col}
                       </span>
@@ -236,10 +255,10 @@ export function Flashcard({
 
               {/* Notes / Tips */}
               {word.notes && (
-                <div className="flex items-start gap-2 p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/60 text-xs text-amber-900">
-                  <HelpCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <div className="flex items-start gap-2 p-3 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-xs text-amber-950 font-medium">
+                  <Lightbulb className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                   <p>
-                    <span className="font-semibold">Mẹo thi:</span> {word.notes}
+                    <span className="font-bold">Mẹo thi:</span> {word.notes}
                   </p>
                 </div>
               )}
@@ -253,9 +272,9 @@ export function Flashcard({
                   e.stopPropagation();
                   setIsAIOpen(true);
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200/60 transition-all hover:scale-[1.02]"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 shadow-md shadow-purple-500/25 transition-all hover:scale-[1.02] active:scale-95"
               >
-                <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                <Sparkles className="w-3.5 h-3.5 text-white animate-spin-slow" />
                 <span>Hỏi Gia sư AI</span>
               </button>
 
@@ -265,10 +284,10 @@ export function Flashcard({
                   e.stopPropagation();
                   setIsFlipped(false);
                 }}
-                className="flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-slate-700 transition-colors"
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
               >
                 <RotateCw className="w-3.5 h-3.5" />
-                <span>Lật lại mặt trước</span>
+                <span>Lật mặt trước</span>
               </button>
             </div>
           </div>
@@ -280,48 +299,48 @@ export function Flashcard({
         {mode === "review" ? (
           /* Spaced Repetition SM-2 rating buttons */
           <div className="space-y-2">
-            <p className="text-center text-xs font-medium text-slate-500">
+            <p className="text-center text-xs font-semibold text-slate-500">
               Bạn nhớ từ này ở mức độ nào?
             </p>
-            <div className="grid grid-cols-4 gap-1.5 sm:gap-3">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={() => onRate?.("AGAIN")}
-                className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-2xl bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 font-bold transition-all active:scale-90 shadow-sm"
+                className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-rose-50/90 hover:bg-rose-100 border border-rose-200/90 text-rose-700 font-bold transition-all active:scale-90 hover:shadow-md hover:shadow-rose-500/10"
               >
                 <span className="text-xs sm:text-base">Again</span>
-                <span className="text-[9px] sm:text-[10px] text-red-600/80 font-normal mt-0.5">&lt; 10p</span>
-                <span className="text-[10px] opacity-40 hidden sm:inline">(Phím 1)</span>
+                <span className="text-[9px] sm:text-[10px] text-rose-600/80 font-normal mt-0.5">&lt; 10p</span>
+                <span className="text-[10px] opacity-40 hidden sm:inline font-mono">(1)</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => onRate?.("HARD")}
-                className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-2xl bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-bold transition-all active:scale-90 shadow-sm"
+                className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-amber-50/90 hover:bg-amber-100 border border-amber-200/90 text-amber-800 font-bold transition-all active:scale-90 hover:shadow-md hover:shadow-amber-500/10"
               >
                 <span className="text-xs sm:text-base">Hard</span>
                 <span className="text-[9px] sm:text-[10px] text-amber-700/80 font-normal mt-0.5">1 ngày</span>
-                <span className="text-[10px] opacity-40 hidden sm:inline">(Phím 2)</span>
+                <span className="text-[10px] opacity-40 hidden sm:inline font-mono">(2)</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => onRate?.("GOOD")}
-                className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-bold transition-all active:scale-90 shadow-sm"
+                className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-blue-50/90 hover:bg-blue-100 border border-blue-200/90 text-blue-700 font-bold transition-all active:scale-90 hover:shadow-md hover:shadow-blue-500/10"
               >
                 <span className="text-xs sm:text-base">Good</span>
                 <span className="text-[9px] sm:text-[10px] text-blue-600/80 font-normal mt-0.5">4 ngày</span>
-                <span className="text-[10px] opacity-40 hidden sm:inline">(Phím 3)</span>
+                <span className="text-[10px] opacity-40 hidden sm:inline font-mono">(3)</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => onRate?.("EASY")}
-                className="flex flex-col items-center justify-center p-2 sm:p-3 rounded-2xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-bold transition-all active:scale-90 shadow-sm"
+                className="flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl bg-emerald-50/90 hover:bg-emerald-100 border border-emerald-200/90 text-emerald-800 font-bold transition-all active:scale-90 hover:shadow-md hover:shadow-emerald-500/10"
               >
                 <span className="text-xs sm:text-base">Easy</span>
                 <span className="text-[9px] sm:text-[10px] text-emerald-700/80 font-normal mt-0.5">7 ngày</span>
-                <span className="text-[10px] opacity-40 hidden sm:inline">(Phím 4)</span>
+                <span className="text-[10px] opacity-40 hidden sm:inline font-mono">(4)</span>
               </button>
             </div>
           </div>
@@ -332,7 +351,7 @@ export function Flashcard({
               type="button"
               onClick={onPrev}
               disabled={!onPrev}
-              className="flex-1 py-3 px-3 sm:px-4 rounded-xl border border-slate-200 text-slate-700 font-semibold text-xs sm:text-sm hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-all active:scale-95 text-center"
+              className="flex-1 py-3 px-3 sm:px-4 rounded-xl border border-slate-200/90 text-slate-700 font-semibold text-xs sm:text-sm hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-all active:scale-95 text-center shadow-xs"
             >
               Từ trước
             </button>
@@ -340,7 +359,7 @@ export function Flashcard({
             <button
               type="button"
               onClick={onNext}
-              className="flex-[2] py-3 px-4 sm:px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/20 transition-all active:scale-95"
+              className="flex-[2] py-3 px-4 sm:px-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/25 transition-all active:scale-95"
             >
               <span>Đã hiểu từ này</span>
               <Check className="w-4 h-4" />
@@ -354,3 +373,4 @@ export function Flashcard({
     </div>
   );
 }
+
