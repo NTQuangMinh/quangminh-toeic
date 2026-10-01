@@ -1,0 +1,164 @@
+// Prisma Schema for TOEIC Vocabulary Learning App
+// Designed for PostgreSQL (Supabase, Neon, AWS RDS, Docker)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum VocabStatus {
+  NEW
+  LEARNING
+  REVIEW
+  MASTERED
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+model User {
+  id               String           @id @default(cuid())
+  email            String           @unique
+  passwordHash     String
+  name             String
+  role             Role             @default(USER)
+  dailyGoalTarget  Int              @default(20)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  userVocabularies UserVocabulary[]
+  bookmarks        Bookmark[]
+  quizResults      QuizResult[]
+  dailyGoals       DailyGoal[]
+  studyLogs        StudyLog[]
+}
+
+model Vocabulary {
+  id                 String           @id @default(cuid())
+  word               String           @unique
+  partOfSpeech       String           // noun, verb, adjective, adverb, phrase, etc.
+  meaningVi          String           // Vietnamese meaning
+  meaningEn          String?          // English definition
+  pronunciation      String           // Phonetic IPA e.g. /əˈkɒmədeɪt/
+  audioUrl           String?          // Audio file URL (TTS fallback if null)
+  exampleSentence    String           // Realistic TOEIC context sentence
+  exampleTranslation String           // Vietnamese translation of example
+  difficulty         Difficulty       @default(INTERMEDIATE)
+  topic              String           // e.g. Office, Business, Meetings, etc.
+  toeicParts         String           // Comma-separated: "Part 5,Part 6,Part 7"
+  synonyms           String?          // Comma-separated synonyms
+  antonyms           String?          // Comma-separated antonyms
+  collocations       String?          // Comma-separated business collocations
+  notes              String?          // Common TOEIC test traps or grammar notes
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  userVocabularies   UserVocabulary[]
+  bookmarks          Bookmark[]
+  quizQuestions      QuizQuestion[]
+
+  @@index([topic])
+  @@index([difficulty])
+}
+
+model UserVocabulary {
+  id             String       @id @default(cuid())
+  userId         String
+  wordId         String
+  status         VocabStatus  @default(NEW)
+  easeFactor     Float        @default(2.5)
+  interval       Int          @default(0) // Interval in days for SM-2
+  repetitions    Int          @default(0)
+  nextReviewAt   DateTime?
+  lastReviewedAt DateTime?
+  correctCount   Int          @default(0)
+  wrongCount     Int          @default(0)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vocabulary     Vocabulary   @relation(fields: [wordId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, wordId])
+  @@index([userId, status])
+  @@index([userId, nextReviewAt])
+}
+
+model Bookmark {
+  id             String       @id @default(cuid())
+  userId         String
+  wordId         String
+  createdAt      DateTime     @default(now())
+
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vocabulary     Vocabulary   @relation(fields: [wordId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, wordId])
+}
+
+model QuizResult {
+  id             String         @id @default(cuid())
+  userId         String
+  score          Int            // Percentage: 0 to 100
+  totalQuestions Int
+  correctCount   Int
+  wrongCount     Int
+  topic          String?        // Null if mixed topics
+  completedAt    DateTime       @default(now())
+
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions      QuizQuestion[]
+
+  @@index([userId])
+}
+
+model QuizQuestion {
+  id             String       @id @default(cuid())
+  quizResultId   String
+  wordId         String?
+  questionText   String
+  optionsJson    String       // JSON string of array: ["A", "B", "C", "D"]
+  correctIndex   Int
+  selectedIndex  Int
+  isCorrect      Boolean
+  explanation    String?
+
+  quizResult     QuizResult   @relation(fields: [quizResultId], references: [id], onDelete: Cascade)
+  vocabulary     Vocabulary?  @relation(fields: [wordId], references: [id], onDelete: SetNull)
+}
+
+model DailyGoal {
+  id           String   @id @default(cuid())
+  userId       String
+  date         String   // ISO date string YYYY-MM-DD
+  targetWords  Int      @default(20)
+  learnedWords Int      @default(0)
+  completed    Boolean  @default(false)
+  updatedAt    DateTime @updatedAt
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+}
+
+model StudyLog {
+  id         String   @id @default(cuid())
+  userId     String
+  date       String   // ISO date string YYYY-MM-DD
+  wordsCount Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+}
