@@ -87,17 +87,17 @@ export default function LearnPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-2 sm:py-8 space-y-3 sm:space-y-6 pb-28 sm:pb-12">
       {showGoalCelebration && <Confetti />}
 
       {/* Header & Filter Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 border-b border-slate-100 pb-2.5 sm:pb-4">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-            <BookOpen className="w-6 h-6 text-blue-600" />
+          <h1 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
             <span>Học từ mới (Learn Mode)</span>
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
+          <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 hidden sm:block">
             Lật thẻ flashcard, nghe phát âm và ghi nhớ ngữ cảnh đề thi
           </p>
         </div>
@@ -108,7 +108,7 @@ export default function LearnPage() {
           <select
             value={selectedTopic}
             onChange={(e) => setSelectedTopic(e.target.value)}
-            className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="flex-1 sm:flex-none px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           >
             <option value="all">Tất cả chủ đề (20 Topics)</option>
             {TOEIC_TOPICS.map((t) => (
@@ -122,9 +122,9 @@ export default function LearnPage() {
           <select
             value={selectedPart}
             onChange={(e) => setSelectedPart(e.target.value)}
-            className="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           >
-            <option value="all">Tất cả Part 1-7</option>
+            <option value="all">Tất cả Part</option>
             {TOEIC_PARTS.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.id}

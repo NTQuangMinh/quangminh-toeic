@@ -237,7 +237,7 @@ export default function PracticePage() {
     };
 
     return (
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6">
+      <div className="max-w-2xl mx-auto px-3 sm:px-6 py-3 sm:py-8 space-y-4 sm:space-y-6 pb-28 sm:pb-12">
         {/* Progress & Header */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-600">

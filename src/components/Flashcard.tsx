@@ -105,16 +105,16 @@ export function Flashcard({
     <div className="w-full max-w-xl mx-auto flex flex-col items-center select-none px-2 sm:px-0">
       {/* 3D Flashcard Container */}
       <div
-        className="w-full min-h-[380px] sm:min-h-[460px] cursor-pointer perspective-1000 group"
+        className="w-full min-h-[300px] sm:min-h-[440px] cursor-pointer perspective-1000 group"
         onClick={() => setIsFlipped(!isFlipped)}
       >
         <div
-          className={`relative w-full h-full min-h-[380px] sm:min-h-[460px] duration-500 rounded-3xl transition-transform preserve-3d shadow-xl border border-slate-100 ${
+          className={`relative w-full h-full min-h-[300px] sm:min-h-[440px] duration-500 rounded-3xl transition-transform preserve-3d shadow-xl border border-slate-100 ${
             isFlipped ? "rotate-y-180" : ""
           }`}
         >
           {/* ================= FRONT SIDE ================= */}
-          <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-white to-slate-50/50 rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
+          <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-white to-slate-50/50 rounded-3xl p-4 sm:p-8 flex flex-col justify-between">
             {/* Top Bar: Topic, TOEIC Parts & Bookmark */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 sm:gap-2">
