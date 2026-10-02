@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     const bookmarks = await db.bookmark.findMany({ where: { userId } });
     const bookmarkedIds = new Set(bookmarks.map((b) => b.wordId));
 
-    const items = dueUserVocabs
+    const rawItems = dueUserVocabs
       .filter((uv) => uv.vocabulary !== null)
       .map((uv) => ({
         ...uv.vocabulary!,
@@ -41,10 +41,18 @@ export async function GET(req: NextRequest) {
         isBookmarked: bookmarkedIds.has(uv.wordId),
       }));
 
+    // Shuffle due review words using Fisher-Yates algorithm
+    const items = [...rawItems];
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+
     return NextResponse.json({
       items,
       countDue: items.length,
     });
+
   } catch (error) {
     console.error("Review GET error:", error);
     return NextResponse.json({ error: "Không thể tải danh sách từ cần ôn tập." }, { status: 500 });

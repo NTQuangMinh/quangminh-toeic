@@ -4,6 +4,60 @@ import { getSessionUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
+// Fisher-Yates shuffle
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Select topic-diverse words to avoid alphabetical clustering and ensure variety across topics
+function selectTopicDiverseWords<T extends { id: string; topic: string }>(words: T[], limit: number): T[] {
+  if (words.length <= limit) {
+    return shuffleArray(words);
+  }
+
+  // 1. Group words by topic
+  const topicMap = new Map<string, T[]>();
+  for (const w of words) {
+    const t = w.topic || "General";
+    if (!topicMap.has(t)) {
+      topicMap.set(t, []);
+    }
+    topicMap.get(t)!.push(w);
+  }
+
+  // 2. Shuffle words within each topic
+  for (const [t, list] of topicMap.entries()) {
+    topicMap.set(t, shuffleArray(list));
+  }
+
+  // 3. Shuffle the list of topics
+  const topics = shuffleArray(Array.from(topicMap.keys()));
+
+  // 4. Round-robin pick across topics to ensure maximum diversity of topics & letters
+  const result: T[] = [];
+  let addedInRound = true;
+
+  while (result.length < limit && addedInRound) {
+    addedInRound = false;
+    for (const t of topics) {
+      const list = topicMap.get(t);
+      if (list && list.length > 0) {
+        result.push(list.shift()!);
+        addedInRound = true;
+        if (result.length >= limit) break;
+      }
+    }
+  }
+
+  // Final shuffle so topics are interwoven naturally
+  return shuffleArray(result);
+}
+
 export async function GET(req: NextRequest) {
   try {
     const session = await getSessionUser();
@@ -44,7 +98,35 @@ export async function GET(req: NextRequest) {
       return uw && uw.status === "LEARNING";
     });
 
-    const wordsToLearn = [...unlearnedWords, ...learningWords].slice(0, limit);
+    let wordsToLearn: typeof allMatching = [];
+
+    // If specific topic is chosen: shuffle randomly within that topic
+    if (topic && topic !== "all") {
+      const pool =
+        unlearnedWords.length > 0
+          ? unlearnedWords
+          : learningWords.length > 0
+          ? learningWords
+          : allMatching;
+      wordsToLearn = shuffleArray(pool).slice(0, limit);
+    } else {
+      // "All topics": pick words across diverse topics using round-robin sampling
+      if (unlearnedWords.length >= limit) {
+        wordsToLearn = selectTopicDiverseWords(unlearnedWords, limit);
+      } else {
+        const remainingLimit = limit - unlearnedWords.length;
+        const additionalLearning = selectTopicDiverseWords(learningWords, remainingLimit);
+        wordsToLearn = shuffleArray([...unlearnedWords, ...additionalLearning]);
+
+        // If still fewer than limit, sample from allMatching
+        if (wordsToLearn.length < limit) {
+          const needed = limit - wordsToLearn.length;
+          const selectedIds = new Set(wordsToLearn.map((w) => w.id));
+          const rest = allMatching.filter((w) => !selectedIds.has(w.id));
+          wordsToLearn = shuffleArray([...wordsToLearn, ...selectTopicDiverseWords(rest, needed)]);
+        }
+      }
+    }
 
     const items = wordsToLearn.map((w) => ({
       ...w,
@@ -61,6 +143,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Không thể tải danh sách bài học." }, { status: 500 });
   }
 }
+
 
 export async function POST(req: NextRequest) {
   try {

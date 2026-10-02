@@ -14,6 +14,7 @@ import {
   Filter,
   CheckCircle2,
   RefreshCw,
+  Shuffle,
 } from "lucide-react";
 
 export default function LearnPage() {
@@ -36,6 +37,7 @@ export default function LearnPage() {
       if (selectedTopic !== "all") params.set("topic", selectedTopic);
       if (selectedPart !== "all") params.set("toeicPart", selectedPart);
       params.set("limit", "20");
+      params.set("_t", Date.now().toString());
 
       const res = await fetch(`/api/learn?${params.toString()}`);
       const data = await res.json();
@@ -48,6 +50,7 @@ export default function LearnPage() {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchWords();
@@ -102,8 +105,8 @@ export default function LearnPage() {
           </p>
         </div>
 
-        {/* Filter dropdowns */}
-        <div className="flex items-center gap-2">
+        {/* Filter dropdowns & Shuffle */}
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Topic filter */}
           <select
             value={selectedTopic}
@@ -131,8 +134,20 @@ export default function LearnPage() {
               </option>
             ))}
           </select>
+
+          {/* Shuffle / Đổi lượt từ */}
+          <button
+            type="button"
+            onClick={fetchWords}
+            title="Đổi lượt từ ngẫu nhiên khác"
+            className="px-2.5 py-1.5 rounded-xl border border-slate-200/90 text-slate-600 hover:text-blue-600 hover:bg-blue-50/80 text-xs font-semibold flex items-center gap-1 transition-all active:scale-95 shadow-xs shrink-0"
+          >
+            <Shuffle className="w-3.5 h-3.5 text-blue-600" />
+            <span className="hidden sm:inline">Đổi từ</span>
+          </button>
         </div>
       </div>
+
 
       {loading ? (
         <div className="min-h-[400px] flex flex-col items-center justify-center p-8 space-y-4">
