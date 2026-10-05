@@ -112,12 +112,16 @@ export function Flashcard({
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-indigo-500/15 to-purple-500/10 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity pointer-events-none -z-10" />
 
         <div
-          className={`relative w-full h-full min-h-[300px] sm:min-h-[440px] duration-500 rounded-3xl transition-transform preserve-3d shadow-xl shadow-slate-200/50 border border-slate-200/80 bg-white ${
+          className={`relative w-full h-full min-h-[300px] sm:min-h-[440px] duration-500 rounded-3xl transition-transform preserve-3d ${
             isFlipped ? "rotate-y-180" : ""
           }`}
         >
           {/* ================= FRONT SIDE ================= */}
-          <div className="absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-white via-white to-slate-50/60 rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
+          <div
+            className={`absolute inset-0 w-full h-full backface-hidden bg-gradient-to-b from-white via-white to-slate-50/60 rounded-3xl p-5 sm:p-8 flex flex-col justify-between border border-slate-200/80 shadow-xl shadow-slate-200/50 transition-opacity duration-300 ${
+              isFlipped ? "z-10 pointer-events-none opacity-0" : "z-20 pointer-events-auto opacity-100"
+            }`}
+          >
             {/* Top Bar: Topic, TOEIC Parts & Bookmark */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1.5 sm:gap-2">
@@ -170,10 +174,12 @@ export function Flashcard({
             </div>
           </div>
 
-
-
           {/* ================= BACK SIDE ================= */}
-          <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-white rounded-3xl p-5 sm:p-8 flex flex-col justify-between overflow-y-auto">
+          <div
+            className={`absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-white rounded-3xl p-5 sm:p-8 flex flex-col justify-between border border-slate-200/80 shadow-xl shadow-slate-200/50 transition-opacity duration-300 ${
+              isFlipped ? "z-20 pointer-events-auto opacity-100" : "z-10 pointer-events-none opacity-0"
+            }`}
+          >
             {/* Top Bar: Word Summary & Actions */}
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
@@ -196,12 +202,13 @@ export function Flashcard({
               </div>
             </div>
 
-            {/* Main Meaning */}
-            <div className="my-auto py-2.5 space-y-3 sm:space-y-4">
+            {/* Main Meaning (inner scroll container if needed) */}
+            <div className="my-auto py-2.5 space-y-3 sm:space-y-4 overflow-y-auto max-h-[calc(100%-80px)]">
               <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-blue-50/90 via-indigo-50/50 to-white border border-blue-200/80 shadow-xs">
                 <p className="text-lg sm:text-2xl font-black text-slate-900 leading-snug">
                   {word.meaningVi}
                 </p>
+
                 {word.meaningEn && (
                   <p className="text-xs sm:text-sm text-blue-800/80 mt-1 font-medium italic">
                     {word.meaningEn}
