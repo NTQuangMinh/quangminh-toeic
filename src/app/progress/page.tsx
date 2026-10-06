@@ -82,7 +82,7 @@ export default function ProgressPage() {
   const maxWeeklyCount = Math.max(1, ...weeklyActivity.map((w) => w.count));
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 pb-28 sm:pb-8 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 pb-6 sm:pb-8 space-y-8">
       {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2">

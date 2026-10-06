@@ -91,14 +91,14 @@ export default function LearnPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-2 sm:py-8 space-y-3 sm:space-y-6 pb-28 sm:pb-12">
+    <div className="max-w-4xl mx-auto px-3 sm:px-6 py-2 sm:py-6 space-y-2.5 sm:space-y-5 pb-6 sm:pb-10">
       {showGoalCelebration && <Confetti />}
 
       {/* Header & Filter Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 border-b border-slate-100 pb-2.5 sm:pb-4">
         <div>
-          <h1 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
-            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+          <h1 className="text-base sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 shrink-0" />
             <span>Học từ mới (Learn Mode)</span>
           </h1>
           <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 hidden sm:block">
@@ -107,14 +107,14 @@ export default function LearnPage() {
         </div>
 
         {/* Filter dropdowns & Shuffle */}
-        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 -mx-3 px-3 sm:mx-0 sm:px-0">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 -mx-3 px-3 sm:mx-0 sm:px-0">
           {/* Topic filter */}
           <select
             value={selectedTopic}
             onChange={(e) => setSelectedTopic(e.target.value)}
-            className="shrink-0 max-w-[160px] sm:max-w-none px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="shrink-0 max-w-[145px] sm:max-w-none px-3 py-1.5 rounded-full border border-slate-200/90 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-2xs"
           >
-            <option value="all">Tất cả chủ đề (20 Topics)</option>
+            <option value="all">Tất cả chủ đề</option>
             {TOEIC_TOPICS.map((t) => (
               <option key={t.id} value={t.id}>
                 {t.nameEn} ({t.name})
@@ -126,7 +126,7 @@ export default function LearnPage() {
           <select
             value={selectedBand}
             onChange={(e) => setSelectedBand(e.target.value)}
-            className="shrink-0 px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="shrink-0 px-3 py-1.5 rounded-full border border-slate-200/90 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-2xs"
           >
             <option value="all">🎯 Tất cả Band</option>
             <option value="BEGINNER">🟢 Band 450 - 600</option>
@@ -138,7 +138,7 @@ export default function LearnPage() {
           <select
             value={selectedPart}
             onChange={(e) => setSelectedPart(e.target.value)}
-            className="shrink-0 px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="shrink-0 px-3 py-1.5 rounded-full border border-slate-200/90 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 shadow-2xs"
           >
             <option value="all">Tất cả Part</option>
             {TOEIC_PARTS.map((p) => (
@@ -153,7 +153,7 @@ export default function LearnPage() {
             type="button"
             onClick={fetchWords}
             title="Đổi lượt từ ngẫu nhiên khác"
-            className="shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-xl border border-slate-200/90 text-slate-600 hover:text-blue-600 hover:bg-blue-50/80 text-xs font-semibold flex items-center gap-1 transition-all active:scale-95 shadow-xs"
+            className="shrink-0 whitespace-nowrap px-3 py-1.5 rounded-full border border-slate-200/90 bg-white text-slate-600 hover:text-blue-600 hover:bg-blue-50/80 text-xs font-semibold flex items-center gap-1 transition-all active:scale-95 shadow-2xs"
           >
             <Shuffle className="w-3.5 h-3.5 text-blue-600" />
             <span className="hidden sm:inline">Đổi từ</span>
@@ -163,7 +163,7 @@ export default function LearnPage() {
           <a
             href="/listen"
             title="Chuyển sang Chế độ Nghe Rảnh Tay Tự Động"
-            className="shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold flex items-center gap-1 transition-all active:scale-95"
+            className="shrink-0 whitespace-nowrap px-3 py-1.5 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shadow-2xs"
           >
             <span>🎧 Nghe rảnh tay</span>
           </a>

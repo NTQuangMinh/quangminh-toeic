@@ -105,14 +105,14 @@ export function Flashcard({
     <div className="w-full max-w-xl mx-auto flex flex-col items-center select-none px-2 sm:px-0">
       {/* 3D Flashcard Container with Ambient Glow */}
       <div
-        className="w-full min-h-[300px] sm:min-h-[440px] cursor-pointer perspective-1000 group relative"
+        className="w-full h-[350px] sm:h-[430px] cursor-pointer perspective-1000 group relative"
         onClick={() => setIsFlipped(!isFlipped)}
       >
         {/* Soft Ambient Radial Halo behind card */}
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-indigo-500/15 to-purple-500/10 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity pointer-events-none -z-10" />
 
         <div
-          className={`relative w-full h-full min-h-[300px] sm:min-h-[440px] duration-500 rounded-3xl transition-transform preserve-3d ${
+          className={`relative w-full h-full duration-500 rounded-3xl transition-transform preserve-3d ${
             isFlipped ? "rotate-y-180" : ""
           }`}
         >
@@ -168,8 +168,8 @@ export function Flashcard({
             {/* Bottom: Click to reveal indicator */}
             <div className="flex items-center justify-center pt-1">
               <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-slate-100/80 text-slate-500 group-hover:text-blue-600 group-hover:bg-blue-50 text-[11px] sm:text-xs font-medium border border-slate-200/60 transition-all shadow-xs">
-                <RotateCw className="w-3.5 h-3.5 animate-spin-slow" />
-                <span>Chạm thẻ để xem nghĩa & ví dụ (Space)</span>
+                <RotateCw className="w-3.5 h-3.5 animate-spin-slow shrink-0" />
+                <span>Chạm thẻ để xem nghĩa & ví dụ <span className="hidden sm:inline">(Space)</span></span>
               </div>
             </div>
           </div>
@@ -291,7 +291,7 @@ export function Flashcard({
       </div>
 
       {/* ================= CONTROLS BELOW FLASHCARD ================= */}
-      <div className="w-full mt-6">
+      <div className="w-full mt-4 sm:mt-6 relative z-10">
         {mode === "review" ? (
           /* Spaced Repetition SM-2 rating buttons */
           <div className="space-y-2">
@@ -347,7 +347,7 @@ export function Flashcard({
               type="button"
               onClick={onPrev}
               disabled={!onPrev}
-              className="flex-1 py-3 px-3 sm:px-4 rounded-xl border border-slate-200/90 text-slate-700 font-semibold text-xs sm:text-sm hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-all active:scale-95 text-center shadow-xs"
+              className="flex-1 h-12 px-3 sm:px-4 rounded-2xl border border-slate-200/90 bg-white text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 disabled:opacity-30 disabled:pointer-events-none transition-all active:scale-95 flex items-center justify-center text-center shadow-xs"
             >
               Từ trước
             </button>
@@ -355,10 +355,10 @@ export function Flashcard({
             <button
               type="button"
               onClick={onNext}
-              className="flex-[2] py-3 px-4 sm:px-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/25 transition-all active:scale-95"
+              className="flex-[2] h-12 px-4 sm:px-6 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all active:scale-95"
             >
               <span>Đã hiểu từ này</span>
-              <Check className="w-4 h-4" />
+              <Check className="w-4 h-4 stroke-[2.5]" />
             </button>
           </div>
         )}
