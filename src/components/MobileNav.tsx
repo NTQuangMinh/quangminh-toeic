@@ -39,7 +39,7 @@ export function MobileNav() {
               >
                 <Icon className={`w-5 h-5 ${isActive ? "drop-shadow-sm" : ""}`} />
               </div>
-              <span className={`text-[10px] tracking-tight mt-0.5 ${isActive ? "text-blue-600 font-bold" : "text-slate-500"}`}>
+              <span className={`text-[10px] tracking-tight mt-0.5 whitespace-nowrap ${isActive ? "text-blue-600 font-bold" : "text-slate-500"}`}>
                 {item.label}
               </span>
             </a>

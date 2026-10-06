@@ -317,13 +317,13 @@ export default function MatchGamePage() {
             <button
               key={b.id}
               onClick={() => setSelectedBand(b.id)}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
                 selectedBand === b.id
                   ? "bg-blue-600 text-white shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
               }`}
             >
-              {b.label}
+              <span className="whitespace-nowrap">{b.label}</span>
             </button>
           ))}
         </div>
@@ -351,13 +351,13 @@ export default function MatchGamePage() {
             <button
               key={p.count}
               onClick={() => setPairsCount(p.count)}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
                 pairsCount === p.count
                   ? "bg-slate-900 text-white shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
               }`}
             >
-              {p.label}
+              <span className="whitespace-nowrap">{p.label}</span>
             </button>
           ))}
         </div>

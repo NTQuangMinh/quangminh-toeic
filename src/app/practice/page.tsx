@@ -163,8 +163,8 @@ export default function PracticePage() {
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <GraduationCap className="w-4 h-4 text-emerald-600" />
-                <span>Trắc nghiệm Từ vựng</span>
+                <GraduationCap className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="whitespace-nowrap">Trắc nghiệm Từ vựng</span>
               </button>
               <button
                 type="button"
@@ -175,8 +175,8 @@ export default function PracticePage() {
                     : "text-slate-600 hover:text-slate-900"
                 }`}
               >
-                <Headphones className="w-4 h-4 text-indigo-600" />
-                <span>Luyện Nghe Part 1 & 2</span>
+                <Headphones className="w-4 h-4 text-indigo-600 shrink-0" />
+                <span className="whitespace-nowrap">Luyện Nghe Part 1 & 2</span>
               </button>
             </div>
           </div>
@@ -197,13 +197,13 @@ export default function PracticePage() {
                   key={b.id}
                   type="button"
                   onClick={() => setSelectedBand(b.id)}
-                  className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all text-center ${
+                  className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all text-center whitespace-nowrap ${
                     selectedBand === b.id
                       ? "bg-emerald-50 border-emerald-500 text-emerald-900 ring-1 ring-emerald-500 shadow-xs"
                       : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
                   }`}
                 >
-                  {b.label}
+                  <span className="whitespace-nowrap">{b.label}</span>
                 </button>
               ))}
             </div>
@@ -312,11 +312,11 @@ export default function PracticePage() {
       <div className="max-w-2xl mx-auto px-3 sm:px-6 py-3 sm:py-8 space-y-4 sm:space-y-6 pb-28 sm:pb-12">
         {/* Progress & Header */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-600">
-            <span>
+          <div className="flex items-center justify-between text-xs font-bold text-slate-600 gap-2">
+            <span className="whitespace-nowrap shrink-0">
               Câu {currentQIndex + 1} / {questions.length}
             </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
+            <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 whitespace-nowrap shrink-0">
               {questionTypeLabels[q.type] || q.type}
             </span>
           </div>

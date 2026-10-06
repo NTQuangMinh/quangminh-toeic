@@ -349,13 +349,13 @@ export default function ListenPage() {
             <button
               key={b.id}
               onClick={() => setSelectedBand(b.id)}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
                 selectedBand === b.id
                   ? "bg-indigo-600 text-white shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
               }`}
             >
-              {b.label}
+              <span className="whitespace-nowrap">{b.label}</span>
             </button>
           ))}
         </div>
