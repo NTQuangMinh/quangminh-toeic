@@ -20,6 +20,9 @@ export async function GET(req: NextRequest) {
       include: { vocabulary: true },
     });
 
+    const bookmarks = await db.bookmark.findMany({ where: { userId } });
+    const bookmarkedIds = new Set(bookmarks.map((b) => b.wordId));
+
     const items = userVocabs
       .filter((uv) => uv.vocabulary !== null)
       .map((uv) => {
@@ -33,8 +36,10 @@ export async function GET(req: NextRequest) {
           accuracy,
           interval: uv.interval,
           nextReviewAt: uv.nextReviewAt,
+          isBookmarked: bookmarkedIds.has(uv.wordId),
         };
       });
+
 
     if (sortBy === "lowest_accuracy") {
       items.sort((a, b) => a.accuracy - b.accuracy);

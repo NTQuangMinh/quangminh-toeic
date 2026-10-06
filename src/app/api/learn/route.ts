@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { recordStudyActivity } from "@/lib/study-tracker";
 
 export const dynamic = "force-dynamic";
+
 
 // Fisher-Yates shuffle
 function shuffleArray<T>(array: T[]): T[] {
@@ -184,53 +186,18 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Update Daily Goal
-    const user = await db.user.findUnique({ where: { id: userId } });
-    const target = user?.dailyGoalTarget || 20;
-
-    const currentGoal = await db.dailyGoal.findUnique({
-      where: { userId_date: { userId, date: todayStr } },
-    });
-
-    const newLearned = (currentGoal?.learnedWords || 0) + 1;
-    const isCompleted = newLearned >= target;
-
-    const updatedGoal = await db.dailyGoal.upsert({
-      where: { userId_date: { userId, date: todayStr } },
-      create: {
-        userId,
-        date: todayStr,
-        targetWords: target,
-        learnedWords: 1,
-        completed: 1 >= target,
-      },
-      update: {
-        learnedWords: newLearned,
-        completed: isCompleted,
-      },
-    });
-
-    // Update StudyLog for activity chart
-    await db.studyLog.upsert({
-      where: { userId_date: { userId, date: todayStr } },
-      create: {
-        userId,
-        date: todayStr,
-        wordsCount: 1,
-      },
-      update: {
-        wordsCount: { increment: 1 },
-      },
-    });
+    // Record study activity (DailyGoal + StudyLog with Vietnam timezone)
+    const activityResult = await recordStudyActivity(userId, 1);
 
     return NextResponse.json({
       success: true,
       userVocab,
-      dailyGoal: updatedGoal,
-      justCompletedGoal: isCompleted && !currentGoal?.completed,
+      dailyGoal: activityResult?.dailyGoal,
+      justCompletedGoal: activityResult?.justCompletedGoal || false,
     });
   } catch (error) {
     console.error("Learn POST error:", error);
     return NextResponse.json({ error: "Lỗi khi lưu tiến độ học." }, { status: 500 });
   }
 }
+

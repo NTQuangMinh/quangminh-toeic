@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { getVietnamTodayDate } from "@/lib/study-tracker";
 
 export const dynamic = "force-dynamic";
 
@@ -12,8 +13,9 @@ export async function GET() {
     const user = await db.user.findUnique({ where: { id: userId } });
     const targetWords = user?.dailyGoalTarget || 20;
 
-    const todayStr = new Date().toISOString().split("T")[0];
+    const todayStr = getVietnamTodayDate();
     const now = new Date().toISOString();
+
 
     // 1. Today's Goal
     const dailyGoal = await db.dailyGoal.findUnique({

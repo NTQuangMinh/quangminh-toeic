@@ -20,7 +20,9 @@ export async function GET() {
         ...b.vocabulary!,
         bookmarkId: b.id,
         bookmarkedAt: b.createdAt,
+        isBookmarked: true,
       }));
+
 
     return NextResponse.json({
       items,

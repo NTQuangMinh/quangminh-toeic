@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
+import { recordStudyActivity } from "@/lib/study-tracker";
+
 
 export interface QuizQuestionItem {
   id: string;
@@ -216,6 +218,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Record quiz activity towards daily goal & streak (count correct answers towards mastery)
+    await recordStudyActivity(userId, Math.max(1, correctCount));
+
     return NextResponse.json({
       success: true,
       result: {
@@ -232,3 +237,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Lỗi khi lưu kết quả bài làm." }, { status: 500 });
   }
 }
+

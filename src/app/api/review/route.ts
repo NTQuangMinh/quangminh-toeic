@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getSessionUser } from "@/lib/auth";
 import { calculateSM2, SM2Rating } from "@/lib/sm2";
+import { recordStudyActivity } from "@/lib/study-tracker";
 
 export const dynamic = "force-dynamic";
 
@@ -10,14 +11,21 @@ export async function GET(req: NextRequest) {
     const session = await getSessionUser();
     const userId = session?.id || "usr_demo_vietnam_001";
 
+    const { searchParams } = new URL(req.url);
+    const mode = searchParams.get("mode") || "due"; // 'due' or 'all' (cram mode)
     const now = new Date().toISOString();
 
-    // Fetch user words that are due (nextReviewAt <= now)
-    const dueUserVocabs = await db.userVocabulary.findMany({
-      where: {
-        userId,
-        nextReviewAt: { lte: now },
-      },
+    const whereClause: any = { userId };
+    if (mode === "due") {
+      whereClause.nextReviewAt = { lte: now };
+    } else {
+      // 'all' mode: fetch all words user has interacted with
+      whereClause.status = { not: "NEW" };
+    }
+
+    // Fetch user words
+    const userVocabs = await db.userVocabulary.findMany({
+      where: whereClause,
       include: { vocabulary: true },
       orderBy: { nextReviewAt: "asc" },
       take: 50,
@@ -27,7 +35,7 @@ export async function GET(req: NextRequest) {
     const bookmarks = await db.bookmark.findMany({ where: { userId } });
     const bookmarkedIds = new Set(bookmarks.map((b) => b.wordId));
 
-    const rawItems = dueUserVocabs
+    const rawItems = userVocabs
       .filter((uv) => uv.vocabulary !== null)
       .map((uv) => ({
         ...uv.vocabulary!,
@@ -41,7 +49,7 @@ export async function GET(req: NextRequest) {
         isBookmarked: bookmarkedIds.has(uv.wordId),
       }));
 
-    // Shuffle due review words using Fisher-Yates algorithm
+    // Shuffle review words using Fisher-Yates algorithm
     const items = [...rawItems];
     for (let i = items.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -51,8 +59,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       items,
       countDue: items.length,
+      mode,
     });
-
   } catch (error) {
     console.error("Review GET error:", error);
     return NextResponse.json({ error: "Không thể tải danh sách từ cần ôn tập." }, { status: 500 });
@@ -111,6 +119,9 @@ export async function POST(req: NextRequest) {
         wrongCount: (currentUV?.wrongCount || 0) + (sm2Result.isCorrect ? 0 : 1),
       },
     });
+
+    // Record study activity (DailyGoal + StudyLog) so review sessions count towards streaks
+    await recordStudyActivity(userId, 1);
 
     return NextResponse.json({
       success: true,

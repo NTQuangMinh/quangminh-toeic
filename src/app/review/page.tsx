@@ -41,7 +41,7 @@ export default function ReviewPage() {
     setRatingsCount({ AGAIN: 0, HARD: 0, GOOD: 0, EASY: 0 });
 
     try {
-      const res = await fetch("/api/review");
+      const res = await fetch(`/api/review?_t=${Date.now()}`);
       const data = await res.json();
       if (data.items) {
         setWords(data.items);
@@ -53,9 +53,29 @@ export default function ReviewPage() {
     }
   };
 
+  const fetchCramWords = async () => {
+    setLoading(true);
+    setIsCompleted(false);
+    setCurrentIndex(0);
+    setRatingsCount({ AGAIN: 0, HARD: 0, GOOD: 0, EASY: 0 });
+
+    try {
+      const res = await fetch(`/api/review?mode=all&_t=${Date.now()}`);
+      const data = await res.json();
+      if (data.items) {
+        setWords(data.items);
+      }
+    } catch (err) {
+      console.error("Failed to fetch cram review words:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchDueWords();
   }, []);
+
 
   const handleRate = async (rating: SM2Rating) => {
     const currentWord = words[currentIndex];
@@ -178,6 +198,14 @@ export default function ReviewPage() {
             Bạn đã hoàn thành toàn bộ các từ cần ôn tập theo thuật toán SM-2. Hãy học thêm từ mới hoặc làm bài kiểm tra để củng cố phản xạ!
           </p>
           <div className="pt-2 flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={fetchCramWords}
+              className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold text-xs shadow-md shadow-orange-500/20 hover:from-amber-600 hover:to-orange-600 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Ôn tập củng cố (Tất cả từ đã học)</span>
+            </button>
             <a
               href="/learn"
               className="w-full py-2.5 px-4 rounded-xl bg-blue-600 text-white font-bold text-xs shadow-sm hover:bg-blue-700 transition-colors"
@@ -191,6 +219,7 @@ export default function ReviewPage() {
               Làm bài luyện thi TOEIC
             </a>
           </div>
+
         </div>
       ) : (
         /* Active Review Card */
