@@ -16,6 +16,9 @@ import {
   Gamepad2,
   Headphones,
   ChevronDown,
+  Menu,
+  X,
+  Bookmark,
 } from "lucide-react";
 
 export function Navbar() {
@@ -27,6 +30,7 @@ export function Navbar() {
   } | null>(null);
   const [streak, setStreak] = useState<number>(7);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,12 +49,13 @@ export function Navbar() {
       .catch(() => {});
   }, [pathname]);
 
-  // Close dropdown on route change
+  // Close menus on route change
   useEffect(() => {
     setMoreMenuOpen(false);
+    setMobileDrawerOpen(false);
   }, [pathname]);
 
-  // Close dropdown on click outside
+  // Close desktop dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -96,6 +101,18 @@ export function Navbar() {
       icon: Headphones,
       color: "text-indigo-500 bg-indigo-50",
     },
+  ];
+
+  const mobileNavItems = [
+    { href: "/dashboard", label: "Trang chủ", icon: Sparkles, color: "text-blue-600 bg-blue-50" },
+    { href: "/learn", label: "Học từ mới", icon: BookOpen, color: "text-blue-600 bg-blue-50" },
+    { href: "/review", label: "Ôn tập SM-2", icon: RotateCcw, color: "text-amber-600 bg-amber-50" },
+    { href: "/match", label: "Game Nối từ", icon: Gamepad2, color: "text-orange-600 bg-orange-50" },
+    { href: "/listen", label: "Nghe rảnh tay", icon: Headphones, color: "text-indigo-600 bg-indigo-50" },
+    { href: "/practice", label: "Luyện thi ETS", icon: GraduationCap, color: "text-emerald-600 bg-emerald-50" },
+    { href: "/vocabulary", label: "Từ điển TOEIC", icon: Search, color: "text-slate-600 bg-slate-100" },
+    { href: "/bookmarks", label: "Từ đã lưu", icon: Bookmark, color: "text-amber-600 bg-amber-50" },
+    { href: "/progress", label: "Tiến độ học", icon: BarChart2, color: "text-purple-600 bg-purple-50" },
   ];
 
   const isExtraActive = pathname.startsWith("/match") || pathname.startsWith("/listen");
@@ -222,13 +239,13 @@ export function Navbar() {
           )}
         </nav>
 
-        {/* Right Section: Streak & User profile */}
+        {/* Right Section: Streak, Profile & Mobile Menu Toggle */}
         <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           {/* Flame Streak Badge */}
           <a
             href="/progress"
             title={`${streak} ngày học liên tiếp`}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 text-amber-900 border border-amber-200/80 text-xs sm:text-sm font-bold shadow-xs hover:shadow-md hover:border-amber-300/80 transition-all whitespace-nowrap shrink-0"
+            className="flex items-center gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-50 to-orange-50 text-amber-900 border border-amber-200/80 text-xs sm:text-sm font-bold shadow-xs hover:shadow-md hover:border-amber-300/80 transition-all whitespace-nowrap shrink-0"
           >
             <Flame className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-500 fill-orange-500 animate-bounce shrink-0" />
             <span className="whitespace-nowrap font-bold">
@@ -236,9 +253,9 @@ export function Navbar() {
             </span>
           </a>
 
-          {/* User Profile / Auth State */}
+          {/* User Profile / Auth State (Desktop) */}
           {session?.authenticated && session.user ? (
-            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <div className="hidden sm:flex items-center gap-1 sm:gap-2 shrink-0">
               <div className="hidden lg:flex flex-col text-right whitespace-nowrap shrink-0">
                 <span className="text-xs font-bold text-slate-800 leading-tight whitespace-nowrap">
                   {session.user.name}
@@ -257,7 +274,7 @@ export function Navbar() {
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            <div className="hidden sm:flex items-center gap-1 sm:gap-2 shrink-0">
               <a
                 href="/login"
                 className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-blue-600 px-2 py-1 sm:px-3 sm:py-1.5 rounded-xl hover:bg-slate-50/90 transition-colors whitespace-nowrap shrink-0"
@@ -272,8 +289,89 @@ export function Navbar() {
               </a>
             </div>
           )}
+
+          {/* Mobile Menu Button (md:hidden) */}
+          <button
+            type="button"
+            onClick={() => setMobileDrawerOpen(!mobileDrawerOpen)}
+            className="md:hidden p-1.5 rounded-xl text-slate-700 hover:text-blue-600 hover:bg-slate-100 transition-colors active:scale-95 shrink-0 border border-slate-200/60"
+            aria-label="Menu"
+          >
+            {mobileDrawerOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Drawer Navigation */}
+      {mobileDrawerOpen && (
+        <div className="md:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-xl px-3 py-3.5 space-y-3 animate-in slide-in-from-top-2 duration-200 max-h-[calc(100vh-60px)] overflow-y-auto">
+          <div className="px-1 text-[10px] font-black uppercase tracking-wider text-slate-400">
+            Tất cả tính năng TOEIC
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {mobileNavItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href;
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileDrawerOpen(false)}
+                  className={`flex items-center gap-2.5 p-2.5 rounded-2xl border transition-all ${
+                    isActive
+                      ? "bg-blue-50 border-blue-300 text-blue-900 font-bold shadow-xs"
+                      : "bg-slate-50/70 border-slate-200/70 text-slate-800 hover:bg-slate-100"
+                  }`}
+                >
+                  <div className={`w-7 h-7 rounded-xl flex items-center justify-center shrink-0 ${item.color}`}>
+                    <Icon className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs font-bold whitespace-nowrap truncate">{item.label}</span>
+                </a>
+              );
+            })}
+          </div>
+
+          {/* User profile / Auth in mobile drawer */}
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between px-1">
+            {session?.authenticated && session.user ? (
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black text-xs flex items-center justify-center">
+                    {session.user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-bold text-slate-800 leading-tight">{session.user.name}</p>
+                    <p className="text-[10px] text-slate-400">{session.user.email}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="px-3 py-1.5 rounded-xl text-rose-600 bg-rose-50 text-xs font-bold"
+                >
+                  Đăng xuất
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-2 w-full">
+                <a
+                  href="/login"
+                  className="py-2.5 text-center text-xs font-bold rounded-xl border border-slate-200 text-slate-700"
+                >
+                  Đăng nhập
+                </a>
+                <a
+                  href="/register"
+                  className="py-2.5 text-center text-xs font-bold rounded-xl bg-blue-600 text-white"
+                >
+                  Đăng ký ngay
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </header>
   );
 }

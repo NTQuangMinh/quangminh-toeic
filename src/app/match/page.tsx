@@ -248,31 +248,31 @@ export default function MatchGamePage() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+    <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-6 pb-28 sm:pb-12">
       {stats.isFinished && <Confetti />}
 
       {/* ================= HEADER & STATS BAR ================= */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/70 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200/70 pb-4 sm:pb-5">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/25">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center shadow-md shadow-blue-500/25 shrink-0">
               <Gamepad2 className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+              <h1 className="text-lg sm:text-2xl font-black text-slate-900 tracking-tight">
                 Word Match <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Game</span>
               </h1>
-              <p className="text-xs text-slate-500 font-medium">
-                Ghép từ tiếng Anh với nghĩa tiếng Việt nhanh nhất để phá vỡ kỷ lục thời gian!
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium">
+                Ghép từ tiếng Anh với nghĩa tiếng Việt nhanh nhất để phá vỡ kỷ lục!
               </p>
             </div>
           </div>
         </div>
 
         {/* Real-time stats widgets */}
-        <div className="flex items-center gap-3 self-stretch sm:self-auto justify-between sm:justify-end">
+        <div className="flex items-center gap-2 sm:gap-3 self-stretch sm:self-auto justify-between sm:justify-end">
           {/* Timer Display */}
-          <div className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
+          <div className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-2xl bg-white border border-slate-200/80 shadow-xs">
             <Timer className="w-4 h-4 text-blue-600 animate-pulse" />
             <div className="text-left font-mono font-black text-slate-900 text-sm sm:text-base tracking-tight">
               {formatTimer(stats.timeElapsed)}
@@ -281,16 +281,16 @@ export default function MatchGamePage() {
 
           {/* Combo / Streak */}
           {stats.combo > 1 && (
-            <div className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs font-black text-xs animate-bounce">
-              <Flame className="w-4 h-4 fill-white" />
-              <span>{stats.combo}x Combo</span>
+            <div className="flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs font-black text-xs animate-bounce">
+              <Flame className="w-3.5 h-3.5 fill-white" />
+              <span>{stats.combo}x</span>
             </div>
           )}
 
           {/* Restart button */}
           <button
             onClick={startNewGame}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all active:scale-95"
+            className="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all active:scale-95 shrink-0"
             title="Làm mới ván chơi"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -299,15 +299,15 @@ export default function MatchGamePage() {
         </div>
       </div>
 
-      {/* ================= FILTER & CONTROLS ================= */}
-      <div className="flex flex-wrap items-center gap-2.5 bg-slate-50/80 p-3 rounded-2xl border border-slate-200/60 text-xs">
-        <span className="font-bold text-slate-700 flex items-center gap-1 mr-1">
+      {/* ================= FILTER & CONTROLS (Horizontally scrollable on mobile) ================= */}
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar bg-slate-50/80 p-2 sm:p-3 rounded-2xl border border-slate-200/60 text-xs -mx-1 px-2 sm:mx-0 sm:px-3">
+        <span className="font-bold text-slate-700 flex items-center gap-1 mr-1 shrink-0">
           <SlidersHorizontal className="w-3.5 h-3.5 text-blue-600" />
-          <span>Bộ lọc:</span>
+          <span className="hidden sm:inline">Bộ lọc:</span>
         </span>
 
         {/* Band Target Selector */}
-        <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
+        <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-xs shrink-0">
           {[
             { id: "all", label: "Tất cả Band" },
             { id: "BEGINNER", label: "🟢 450 - 600" },
@@ -317,7 +317,7 @@ export default function MatchGamePage() {
             <button
               key={b.id}
               onClick={() => setSelectedBand(b.id)}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
+              className={`px-2 py-1 sm:px-2.5 rounded-lg font-bold transition-all whitespace-nowrap shrink-0 text-[11px] sm:text-xs ${
                 selectedBand === b.id
                   ? "bg-blue-600 text-white shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
@@ -332,7 +332,7 @@ export default function MatchGamePage() {
         <select
           value={selectedTopic}
           onChange={(e) => setSelectedTopic(e.target.value)}
-          className="bg-white border border-slate-200 font-semibold text-slate-700 rounded-xl px-2.5 py-1.5 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden"
+          className="bg-white border border-slate-200 font-semibold text-slate-700 rounded-xl px-2.5 py-1.5 shadow-xs focus:ring-2 focus:ring-blue-500 focus:outline-hidden shrink-0 text-xs"
         >
           <option value="all">Tất cả chủ đề</option>
           {TOEIC_TOPICS.map((t) => (
@@ -343,15 +343,15 @@ export default function MatchGamePage() {
         </select>
 
         {/* Pairs count */}
-        <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-xs ml-auto">
+        <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-xs ml-auto shrink-0">
           {[
-            { count: 6, label: "6 Cặp (Nhanh)" },
-            { count: 8, label: "8 Cặp (Thử thách)" },
+            { count: 6, label: "6 Cặp" },
+            { count: 8, label: "8 Cặp" },
           ].map((p) => (
             <button
               key={p.count}
               onClick={() => setPairsCount(p.count)}
-              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap ${
+              className={`px-2.5 py-1 rounded-lg font-bold transition-all whitespace-nowrap text-[11px] sm:text-xs ${
                 pairsCount === p.count
                   ? "bg-slate-900 text-white shadow-xs"
                   : "text-slate-600 hover:text-slate-900"
@@ -436,7 +436,7 @@ export default function MatchGamePage() {
         </div>
       ) : (
         /* ================= CARDS GRID ================= */
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-4">
           {cards.map((card) => {
             const isMatched = matchedIds.has(card.id);
             const isSelected = firstSelected?.id === card.id;
@@ -446,7 +446,7 @@ export default function MatchGamePage() {
               <div
                 key={card.id}
                 onClick={() => handleCardClick(card)}
-                className={`relative h-28 sm:h-32 rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between select-none transition-all duration-300 cursor-pointer ${
+                className={`relative min-h-[110px] sm:h-32 rounded-2xl p-3 sm:p-4 flex flex-col justify-between select-none transition-all duration-300 cursor-pointer ${
                   isMatched
                     ? "opacity-0 scale-90 pointer-events-none"
                     : isMismatched

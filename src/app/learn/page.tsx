@@ -107,12 +107,12 @@ export default function LearnPage() {
         </div>
 
         {/* Filter dropdowns & Shuffle */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar pb-1 -mx-3 px-3 sm:mx-0 sm:px-0">
           {/* Topic filter */}
           <select
             value={selectedTopic}
             onChange={(e) => setSelectedTopic(e.target.value)}
-            className="flex-1 sm:flex-none px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="shrink-0 max-w-[160px] sm:max-w-none px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           >
             <option value="all">Tất cả chủ đề (20 Topics)</option>
             {TOEIC_TOPICS.map((t) => (
@@ -126,7 +126,7 @@ export default function LearnPage() {
           <select
             value={selectedBand}
             onChange={(e) => setSelectedBand(e.target.value)}
-            className="px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="shrink-0 px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           >
             <option value="all">🎯 Tất cả Band</option>
             <option value="BEGINNER">🟢 Band 450 - 600</option>
@@ -138,7 +138,7 @@ export default function LearnPage() {
           <select
             value={selectedPart}
             onChange={(e) => setSelectedPart(e.target.value)}
-            className="px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+            className="shrink-0 px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           >
             <option value="all">Tất cả Part</option>
             {TOEIC_PARTS.map((p) => (
@@ -153,7 +153,7 @@ export default function LearnPage() {
             type="button"
             onClick={fetchWords}
             title="Đổi lượt từ ngẫu nhiên khác"
-            className="px-2.5 py-1.5 rounded-xl border border-slate-200/90 text-slate-600 hover:text-blue-600 hover:bg-blue-50/80 text-xs font-semibold flex items-center gap-1 transition-all active:scale-95 shadow-xs shrink-0"
+            className="shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-xl border border-slate-200/90 text-slate-600 hover:text-blue-600 hover:bg-blue-50/80 text-xs font-semibold flex items-center gap-1 transition-all active:scale-95 shadow-xs"
           >
             <Shuffle className="w-3.5 h-3.5 text-blue-600" />
             <span className="hidden sm:inline">Đổi từ</span>
@@ -163,7 +163,7 @@ export default function LearnPage() {
           <a
             href="/listen"
             title="Chuyển sang Chế độ Nghe Rảnh Tay Tự Động"
-            className="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shrink-0"
+            className="shrink-0 whitespace-nowrap px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold flex items-center gap-1 transition-all active:scale-95"
           >
             <span>🎧 Nghe rảnh tay</span>
           </a>

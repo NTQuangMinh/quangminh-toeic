@@ -134,7 +134,7 @@ export default function PracticePage() {
   // ================= 1. SETUP STAGE =================
   if (stage === "setup") {
     return (
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-12 pb-28 sm:pb-12 space-y-8">
         <div className="text-center space-y-2">
           <div className="inline-flex w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 items-center justify-center mx-auto shadow-sm">
             <GraduationCap className="w-6 h-6" />
@@ -386,7 +386,7 @@ export default function PracticePage() {
                     >
                       {optionLabel}
                     </span>
-                    <span className="font-medium truncate sm:whitespace-normal">{opt}</span>
+                    <span className="font-medium text-xs sm:text-base leading-snug break-words whitespace-normal">{opt}</span>
                   </div>
 
                   {/* Individual Audio Button for Part 1 & Part 2 choices */}
@@ -472,7 +472,7 @@ export default function PracticePage() {
     const isAce = finalScore >= 90;
 
     return (
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8 animate-in fade-in duration-300">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12 pb-28 sm:pb-12 space-y-8 animate-in fade-in duration-300">
         {isAce && <Confetti />}
 
         <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-100 text-center space-y-6">
