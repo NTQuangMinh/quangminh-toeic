@@ -23,6 +23,7 @@ export default function LearnPage() {
   const [loading, setLoading] = useState(true);
   const [selectedTopic, setSelectedTopic] = useState("all");
   const [selectedPart, setSelectedPart] = useState("all");
+  const [selectedBand, setSelectedBand] = useState("all");
   const [isCompleted, setIsCompleted] = useState(false);
   const [learnedCount, setLearnedCount] = useState(0);
   const [showGoalCelebration, setShowGoalCelebration] = useState(false);
@@ -36,6 +37,7 @@ export default function LearnPage() {
       const params = new URLSearchParams();
       if (selectedTopic !== "all") params.set("topic", selectedTopic);
       if (selectedPart !== "all") params.set("toeicPart", selectedPart);
+      if (selectedBand !== "all") params.set("difficulty", selectedBand);
       params.set("limit", "20");
       params.set("_t", Date.now().toString());
 
@@ -51,10 +53,9 @@ export default function LearnPage() {
     }
   };
 
-
   useEffect(() => {
     fetchWords();
-  }, [selectedTopic, selectedPart]);
+  }, [selectedTopic, selectedPart, selectedBand]);
 
   const handleNext = async () => {
     const currentWord = words[currentIndex];
@@ -121,6 +122,18 @@ export default function LearnPage() {
             ))}
           </select>
 
+          {/* Target Band filter */}
+          <select
+            value={selectedBand}
+            onChange={(e) => setSelectedBand(e.target.value)}
+            className="px-2.5 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          >
+            <option value="all">🎯 Tất cả Band</option>
+            <option value="BEGINNER">🟢 Band 450 - 600</option>
+            <option value="INTERMEDIATE">🔵 Band 650 - 800</option>
+            <option value="ADVANCED">🟣 Band 850+</option>
+          </select>
+
           {/* TOEIC Part filter */}
           <select
             value={selectedPart}
@@ -145,6 +158,15 @@ export default function LearnPage() {
             <Shuffle className="w-3.5 h-3.5 text-blue-600" />
             <span className="hidden sm:inline">Đổi từ</span>
           </button>
+
+          {/* Hands-Free Audio Quick Access */}
+          <a
+            href="/listen"
+            title="Chuyển sang Chế độ Nghe Rảnh Tay Tự Động"
+            className="px-2.5 py-1.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold flex items-center gap-1 transition-all active:scale-95 shrink-0"
+          >
+            <span>🎧 Nghe rảnh tay</span>
+          </a>
         </div>
       </div>
 

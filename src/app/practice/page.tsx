@@ -20,6 +20,7 @@ import {
   AlertTriangle,
   Clock,
   Award,
+  Headphones,
 } from "lucide-react";
 
 
@@ -27,6 +28,8 @@ import {
 export default function PracticePage() {
   // States: 'setup' | 'quiz' | 'result'
   const [stage, setStage] = useState<"setup" | "quiz" | "result">("setup");
+  const [practiceMode, setPracticeMode] = useState<"standard" | "listening_drill">("standard");
+  const [selectedBand, setSelectedBand] = useState<string>("all");
   const [quizSize, setQuizSize] = useState<number>(10);
   const [selectedTopic, setSelectedTopic] = useState<string>("all");
   const [selectedPart, setSelectedPart] = useState<string>("all");
@@ -49,8 +52,10 @@ export default function PracticePage() {
     try {
       const params = new URLSearchParams();
       params.set("size", quizSize.toString());
+      params.set("mode", practiceMode);
       if (selectedTopic !== "all") params.set("topic", selectedTopic);
       if (selectedPart !== "all") params.set("toeicPart", selectedPart);
+      if (selectedBand !== "all") params.set("difficulty", selectedBand);
 
       const res = await fetch(`/api/quiz?${params.toString()}`);
       const data = await res.json();
@@ -143,6 +148,67 @@ export default function PracticePage() {
         </div>
 
         <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-100 space-y-6">
+          {/* Mode Selector Tabs */}
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Chế độ luyện thi
+            </label>
+            <div className="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-2xl">
+              <button
+                type="button"
+                onClick={() => setPracticeMode("standard")}
+                className={`py-3 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
+                  practiceMode === "standard"
+                    ? "bg-white text-emerald-800 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <GraduationCap className="w-4 h-4 text-emerald-600" />
+                <span>Trắc nghiệm Từ vựng</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPracticeMode("listening_drill")}
+                className={`py-3 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all ${
+                  practiceMode === "listening_drill"
+                    ? "bg-white text-indigo-800 shadow-sm"
+                    : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <Headphones className="w-4 h-4 text-indigo-600" />
+                <span>Luyện Nghe Part 1 & 2</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Target Band Filter */}
+          <div className="space-y-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Mục tiêu Band điểm TOEIC
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {[
+                { id: "all", label: "Tất cả Band" },
+                { id: "BEGINNER", label: "🟢 450 - 600" },
+                { id: "INTERMEDIATE", label: "🔵 650 - 800" },
+                { id: "ADVANCED", label: "🟣 850+" },
+              ].map((b) => (
+                <button
+                  key={b.id}
+                  type="button"
+                  onClick={() => setSelectedBand(b.id)}
+                  className={`py-2 px-2 rounded-xl text-xs font-bold border transition-all text-center ${
+                    selectedBand === b.id
+                      ? "bg-emerald-50 border-emerald-500 text-emerald-900 ring-1 ring-emerald-500 shadow-xs"
+                      : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+                  }`}
+                >
+                  {b.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Question Count Selection */}
           <div className="space-y-2">
             <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
@@ -232,12 +298,14 @@ export default function PracticePage() {
     const q = questions[currentQIndex];
     const isCorrect = selectedOption === q.correctIndex;
 
-    const questionTypeLabels = {
+    const questionTypeLabels: Record<string, string> = {
       fill_blank: "Part 5: Điền từ vào chỗ trống",
       meaning: "Từ vựng: Ý nghĩa tiếng Việt",
       en_to_vi: "Dịch nghĩa: Anh ➜ Việt",
       vi_to_en: "Dịch nghĩa: Việt ➜ Anh",
       listening: "🎧 Luyện nghe phát âm",
+      listening_part1: "🎧 TOEIC Part 1: Photographs",
+      listening_part2: "🎧 TOEIC Part 2: Question & Response",
     };
 
     return (
@@ -249,7 +317,7 @@ export default function PracticePage() {
               Câu {currentQIndex + 1} / {questions.length}
             </span>
             <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
-              {questionTypeLabels[q.type]}
+              {questionTypeLabels[q.type] || q.type}
             </span>
           </div>
 
@@ -264,9 +332,13 @@ export default function PracticePage() {
         {/* Question Card */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-100 space-y-6">
           {/* Audio Prompt for Listening question */}
-          {q.type === "listening" && q.audioPrompt && (
-            <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-200/60 flex items-center justify-between">
-              <span className="text-xs font-bold text-blue-900">Bấm nút để nghe phát âm:</span>
+          {(q.type === "listening" || q.type === "listening_part1" || q.type === "listening_part2") && q.audioPrompt && (
+            <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200/70 flex items-center justify-between gap-3">
+              <span className="text-xs font-bold text-indigo-950">
+                {q.type === "listening_part2"
+                  ? "Bấm nghe câu hỏi/thông báo:"
+                  : "Bấm nút nghe phát âm chuẩn ETS:"}
+              </span>
               <AudioButton text={q.audioPrompt} size="lg" accent="US" showLabel />
             </div>
           )}
@@ -300,20 +372,33 @@ export default function PracticePage() {
                   type="button"
                   onClick={() => handleSelectOption(idx)}
                   disabled={hasAnsweredCurrent}
-                  className={`w-full p-4 rounded-2xl border text-left flex items-center gap-3.5 transition-all text-sm sm:text-base ${btnStyle}`}
+                  className={`w-full p-4 rounded-2xl border text-left flex items-center justify-between gap-3.5 transition-all text-sm sm:text-base ${btnStyle}`}
                 >
-                  <span
-                    className={`w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${
-                      hasAnsweredCurrent && idx === q.correctIndex
-                        ? "bg-emerald-600 text-white"
-                        : hasAnsweredCurrent && idx === selectedOption
-                        ? "bg-red-500 text-white"
-                        : "bg-white border border-slate-200 text-slate-700"
-                    }`}
-                  >
-                    {optionLabel}
-                  </span>
-                  <span className="flex-1 font-medium">{opt}</span>
+                  <div className="flex items-center gap-3.5 flex-1 min-w-0">
+                    <span
+                      className={`w-7 h-7 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${
+                        hasAnsweredCurrent && idx === q.correctIndex
+                          ? "bg-emerald-600 text-white"
+                          : hasAnsweredCurrent && idx === selectedOption
+                          ? "bg-red-500 text-white"
+                          : "bg-white border border-slate-200 text-slate-700"
+                      }`}
+                    >
+                      {optionLabel}
+                    </span>
+                    <span className="font-medium truncate sm:whitespace-normal">{opt}</span>
+                  </div>
+
+                  {/* Individual Audio Button for Part 1 & Part 2 choices */}
+                  {q.audioOptions && q.audioOptions[idx] && (
+                    <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
+                      <AudioButton
+                        text={q.audioOptions[idx]}
+                        size="sm"
+                        accent="US"
+                      />
+                    </div>
+                  )}
                 </button>
               );
             })}

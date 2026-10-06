@@ -68,6 +68,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const topic = searchParams.get("topic") || "";
     const toeicPart = searchParams.get("toeicPart") || "";
+    const difficulty = searchParams.get("difficulty") || "";
     const limit = Math.min(50, Math.max(1, parseInt(searchParams.get("limit") || "20")));
 
     // Find words already in user's review or mastered list
@@ -89,6 +90,9 @@ export async function GET(req: NextRequest) {
     }
     if (toeicPart && toeicPart !== "all") {
       where.toeicParts = { contains: toeicPart };
+    }
+    if (difficulty && difficulty !== "all") {
+      where.difficulty = difficulty;
     }
 
     const allMatching = await db.vocabulary.findMany({ where });

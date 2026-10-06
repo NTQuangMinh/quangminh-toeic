@@ -8,13 +8,15 @@ export interface QuizQuestionItem {
   id: string;
   wordId: string;
   word: string;
-  type: "fill_blank" | "meaning" | "en_to_vi" | "vi_to_en" | "listening";
+  type: "fill_blank" | "meaning" | "en_to_vi" | "vi_to_en" | "listening" | "listening_part1" | "listening_part2";
   questionText: string;
   audioPrompt?: string; // word or sentence to play
+  audioOptions?: string[]; // sentences for options in listening drills
   options: string[];
   correctIndex: number;
   explanation: string;
   collocations?: string;
+  partTag?: string;
 }
 
 export async function GET(req: NextRequest) {
@@ -23,6 +25,8 @@ export async function GET(req: NextRequest) {
     const size = Math.min(30, Math.max(5, parseInt(searchParams.get("size") || "10")));
     const topic = searchParams.get("topic") || "";
     const toeicPart = searchParams.get("toeicPart") || "";
+    const difficulty = searchParams.get("difficulty") || "";
+    const mode = searchParams.get("mode") || "standard"; // 'standard' | 'listening_drill'
 
     const where: any = {};
     if (topic && topic !== "all") {
@@ -30,6 +34,9 @@ export async function GET(req: NextRequest) {
     }
     if (toeicPart && toeicPart !== "all") {
       where.toeicParts = { contains: toeicPart };
+    }
+    if (difficulty && difficulty !== "all") {
+      where.difficulty = difficulty;
     }
 
     let vocabList = await db.vocabulary.findMany({ where });
@@ -42,6 +49,101 @@ export async function GET(req: NextRequest) {
     // Shuffle vocabulary list
     const shuffled = [...vocabList].sort(() => 0.5 - Math.random());
     const selectedVocab = shuffled.slice(0, size);
+
+    if (mode === "listening_drill") {
+      const drillTypes: Array<"listening_part1" | "listening_part2"> = [
+        "listening_part1",
+        "listening_part2",
+      ];
+
+      const questions: QuizQuestionItem[] = selectedVocab.map((vocab, idx) => {
+        const qType = drillTypes[idx % drillTypes.length];
+        const otherVocab = vocabList.filter((v) => v.id !== vocab.id);
+        const distractors = otherVocab.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+        if (qType === "listening_part1") {
+          // Part 1: Photographs - 4 statements (A, B, C, D)
+          const targetSentence = vocab.exampleSentence;
+          const distractorSentences = distractors.map(
+            (d) => d.exampleSentence || `The technician is inspecting the office equipment.`
+          );
+          while (distractorSentences.length < 3) {
+            distractorSentences.push("The conference room is currently unoccupied.");
+          }
+
+          const rawSentences = [targetSentence, ...distractorSentences.slice(0, 3)];
+          const shuffledSentences = [...rawSentences].sort(() => 0.5 - Math.random());
+          const correctIdx = shuffledSentences.indexOf(targetSentence);
+
+          const prefixes = ["(A)", "(B)", "(C)", "(D)"];
+          const options = shuffledSentences.map((s, i) => `${prefixes[i]} ${s}`);
+
+          return {
+            id: `drill_${idx + 1}`,
+            wordId: vocab.id,
+            word: vocab.word,
+            type: "listening_part1",
+            partTag: "Part 1 - Photographs",
+            questionText: "🎧 [TOEIC Part 1] Nghe 4 câu mô tả bên dưới và chọn câu miêu tả chính xác ngữ cảnh có chứa từ khóa:",
+            audioPrompt: targetSentence,
+            audioOptions: shuffledSentences,
+            options,
+            correctIndex: correctIdx,
+            explanation: `Đáp án đúng là ${prefixes[correctIdx]}: "${targetSentence}" (${vocab.exampleTranslation}). Chứa từ khóa "${vocab.word}": ${vocab.meaningVi}.`,
+            collocations: vocab.collocations || undefined,
+          };
+        } else {
+          // Part 2: Question & Response - 3 options (A, B, C)
+          let questionPrompt = "";
+          let correctResponse = "";
+
+          if (vocab.partOfSpeech.includes("verb")) {
+            questionPrompt = `When will they ${vocab.word} the final proposal?`;
+            correctResponse = `Probably by the end of this afternoon.`;
+          } else if (vocab.partOfSpeech.includes("noun")) {
+            questionPrompt = `Who is in charge of reviewing the ${vocab.word}?`;
+            correctResponse = `Ms. Miller from the operations team.`;
+          } else {
+            questionPrompt = `Is the new project ${vocab.word} enough for our budget?`;
+            correctResponse = `Yes, the financial director approved it yesterday.`;
+          }
+
+          const distractorsPart2 = [
+            "No, I took the express train instead.",
+            "About fifteen minutes from the airport.",
+            "Yes, I really enjoyed the dessert.",
+            "In room 302 on the third floor.",
+          ].sort(() => 0.5 - Math.random()).slice(0, 2);
+
+          const rawOptions = [correctResponse, ...distractorsPart2];
+          const shuffledOptions = [...rawOptions].sort(() => 0.5 - Math.random());
+          const correctIdx = shuffledOptions.indexOf(correctResponse);
+          const prefixes = ["(A)", "(B)", "(C)"];
+          const options = shuffledOptions.map((opt, i) => `${prefixes[i]} ${opt}`);
+
+          return {
+            id: `drill_${idx + 1}`,
+            wordId: vocab.id,
+            word: vocab.word,
+            type: "listening_part2",
+            partTag: "Part 2 - Question & Response",
+            questionText: `🎧 [TOEIC Part 2] Nghe câu hỏi và chọn câu phản hồi tự nhiên nhất: "${questionPrompt}"`,
+            audioPrompt: questionPrompt,
+            audioOptions: shuffledOptions,
+            options,
+            correctIndex: correctIdx,
+            explanation: `Câu hỏi: "${questionPrompt}". Phản hồi chuẩn xác: ${prefixes[correctIdx]} "${correctResponse}". Liên quan đến từ khóa "${vocab.word}" (${vocab.partOfSpeech}): ${vocab.meaningVi}.`,
+            collocations: vocab.collocations || undefined,
+          };
+        }
+      });
+
+      return NextResponse.json({
+        total: questions.length,
+        questions,
+        mode: "listening_drill",
+      });
+    }
 
     const questionTypes: Array<"fill_blank" | "meaning" | "en_to_vi" | "vi_to_en" | "listening"> = [
       "fill_blank",
@@ -131,6 +233,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       total: questions.length,
       questions,
+      mode: "standard",
     });
   } catch (error) {
     console.error("Quiz GET error:", error);

@@ -188,21 +188,62 @@ export default function VocabularyPage() {
             </select>
           </div>
 
-          {/* Difficulty */}
+          {/* Difficulty / Band */}
           <div>
             <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">
-              Độ khó (Difficulty)
+              Target Band TOEIC
             </label>
             <select
               value={selectedDifficulty}
               onChange={(e) => setSelectedDifficulty(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             >
-              <option value="all">Tất cả độ khó</option>
-              <option value="BEGINNER">Cơ bản (450 - 600)</option>
-              <option value="INTERMEDIATE">Trung cấp (650 - 800)</option>
-              <option value="ADVANCED">Nâng cao (850 - 990)</option>
+              <option value="all">🎯 Tất cả Band Điểm</option>
+              <option value="BEGINNER">🟢 Cơ bản (Band 450 - 600)</option>
+              <option value="INTERMEDIATE">🔵 Bứt phá (Band 650 - 800)</option>
+              <option value="ADVANCED">🟣 Chinh phục (Band 850+)</option>
             </select>
+          </div>
+        </div>
+
+        {/* Quick Band Filter Pills & Tools */}
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] font-bold text-slate-400 mr-1">Lọc nhanh:</span>
+            {[
+              { id: "all", label: "Tất cả" },
+              { id: "BEGINNER", label: "🟢 450 - 600" },
+              { id: "INTERMEDIATE", label: "🔵 650 - 800" },
+              { id: "ADVANCED", label: "🟣 850+" },
+            ].map((b) => (
+              <button
+                key={b.id}
+                type="button"
+                onClick={() => setSelectedDifficulty(b.id)}
+                className={`px-2.5 py-1 rounded-lg font-bold transition-all ${
+                  selectedDifficulty === b.id
+                    ? "bg-blue-600 text-white shadow-xs"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+              >
+                {b.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <a
+              href="/match"
+              className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 font-bold flex items-center gap-1 transition-all"
+            >
+              🎮 Nối từ
+            </a>
+            <a
+              href="/listen"
+              className="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-800 border border-indigo-200/80 font-bold flex items-center gap-1 transition-all"
+            >
+              🎧 Nghe rảnh tay
+            </a>
           </div>
         </div>
       </div>

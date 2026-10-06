@@ -20,6 +20,9 @@ import {
   Sun,
   Moon,
   TrendingUp,
+  Gamepad2,
+  Headphones,
+  Target,
 } from "lucide-react";
 
 interface ProgressData {
@@ -318,6 +321,165 @@ export default function DashboardPage() {
               </a>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* ================= NEW INTERACTIVE MODES & MINI-GAMES ================= */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
+            <span>Tiện ích & Game luyện phản xạ mới</span>
+            <span className="px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-indigo-700 bg-indigo-50 rounded-full border border-indigo-200">
+              New
+            </span>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Card 1: Word Match Game */}
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-white border border-amber-200/80 hover:border-amber-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold shadow-md shadow-amber-500/25">
+                <Gamepad2 className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-black text-slate-900">
+                    Word Match Game
+                  </h3>
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300/50">
+                    Quizlet Style
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Trò chơi nối từ tiếng Anh & nghĩa tiếng Việt tốc độ cao. Đo phản xạ mili-giây, combo thưởng và phá kỷ lục cá nhân!
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-6">
+              <a
+                href="/match"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-amber-500/20 transition-all active:scale-95"
+              >
+                <span>Chơi Game Nối Từ Ngay</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Card 2: Hands-Free Audio Player */}
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-white border border-indigo-200/80 hover:border-indigo-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-md shadow-indigo-600/25">
+                <Headphones className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-black text-slate-900">
+                    Hands-Free Audio Player
+                  </h3>
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-300/50">
+                    Migii Style
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Nghe từ vựng tự động rảnh tay: Phát âm US/UK, đọc nghĩa và câu ví dụ, hỗ trợ hẹn giờ tắt khi ngủ hoặc đi lại.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-6">
+              <a
+                href="/listen"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20 transition-all active:scale-95"
+              >
+                <span>Bật Nghe Rảnh Tay</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ================= TARGET BAND SCORE ROADMAP ================= */}
+      <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+              <Target className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">
+                Lộ trình Band Điểm Mục Tiêu (Target Bands)
+              </h3>
+              <p className="text-xs text-slate-500">
+                Lọc nội dung học tập và bài thi theo đúng band điểm bạn hướng tới
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <a
+            href="/learn?difficulty=BEGINNER"
+            className="p-4 rounded-2xl bg-emerald-50/60 hover:bg-emerald-50 border border-emerald-200/80 transition-all group flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-200/80 text-emerald-900">
+                  Cơ bản
+                </span>
+                <span className="text-xs font-black text-emerald-700">Band 450 - 600</span>
+              </div>
+              <p className="text-xs text-slate-600 mt-2">
+                ~250 từ nền tảng công sở thường gặp nhất trong các tình huống văn phòng hàng ngày.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-emerald-700 mt-3 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span>Học band này</span> →
+            </span>
+          </a>
+
+          <a
+            href="/learn?difficulty=INTERMEDIATE"
+            className="p-4 rounded-2xl bg-blue-50/60 hover:bg-blue-50 border border-blue-200/80 transition-all group flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-200/80 text-blue-900">
+                  Bứt phá
+                </span>
+                <span className="text-xs font-black text-blue-700">Band 650 - 800</span>
+              </div>
+              <p className="text-xs text-slate-600 mt-2">
+                ~300 từ ngữ cảnh hợp đồng, tài chính, sản xuất, logistics và marketing.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-blue-700 mt-3 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span>Học band này</span> →
+            </span>
+          </a>
+
+          <a
+            href="/learn?difficulty=ADVANCED"
+            className="p-4 rounded-2xl bg-purple-50/60 hover:bg-purple-50 border border-purple-200/80 transition-all group flex flex-col justify-between"
+          >
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-200/80 text-purple-900">
+                  Chinh phục
+                </span>
+                <span className="text-xs font-black text-purple-700">Band 850 - 990+</span>
+              </div>
+              <p className="text-xs text-slate-600 mt-2">
+                ~140 từ vựng nâng cao, bẫy từ đồng nghĩa trong Part 7 và các bài đọc dài.
+              </p>
+            </div>
+            <span className="text-xs font-bold text-purple-700 mt-3 inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span>Học band này</span> →
+            </span>
+          </a>
         </div>
       </div>
 

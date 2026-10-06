@@ -14,6 +14,8 @@ import {
   LogOut,
   Shield,
   Sparkles,
+  Gamepad2,
+  Headphones,
 } from "lucide-react";
 
 export function Navbar() {
@@ -56,8 +58,10 @@ export function Navbar() {
     { href: "/dashboard", label: "Dashboard", icon: Sparkles },
     { href: "/learn", label: "Học từ", icon: BookOpen },
     { href: "/review", label: "Ôn tập", icon: RotateCcw },
+    { href: "/match", label: "Nối từ", icon: Gamepad2 },
+    { href: "/listen", label: "Nghe", icon: Headphones },
     { href: "/practice", label: "Luyện thi", icon: GraduationCap },
-    { href: "/vocabulary", label: "Từ điển TOEIC", icon: Search },
+    { href: "/vocabulary", label: "Từ điển", icon: Search },
     { href: "/progress", label: "Tiến độ", icon: BarChart2 },
   ];
 
