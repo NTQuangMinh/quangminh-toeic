@@ -56,10 +56,16 @@ export async function GET(req: NextRequest) {
       [items[i], items[j]] = [items[j], items[i]];
     }
 
+    // Fetch vocabulary pool for generating realistic distractors
+    const pool = await db.vocabulary.findMany({
+      take: 80,
+    });
+
     return NextResponse.json({
       items,
       countDue: items.length,
       mode,
+      pool,
     });
   } catch (error) {
     console.error("Review GET error:", error);
