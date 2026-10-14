@@ -9411,18 +9411,18 @@ export const INITIAL_VOCABULARY: VocabSeedItem[] = [
     "notes": "Vừa là động từ vừa là danh từ (danh sách rút gọn)."
   },
   {
-    "word": "vacancy",
+    "word": "opening",
     "partOfSpeech": "noun",
-    "meaningVi": "Vị trí tuyển dụng đang trống",
-    "meaningEn": "An available unoccupied position or post",
-    "pronunciation": "/ˈveɪkənsi/",
-    "exampleSentence": "Due to rapid international expansion, our firm has several job vacancies in our marketing team.",
+    "meaningVi": "Vị trí tuyển dụng đang trống; buổi khai mạc",
+    "meaningEn": "An available job position or the beginning of an event",
+    "pronunciation": "/ˈəʊpənɪŋ/",
+    "exampleSentence": "Due to rapid international expansion, our firm has several job openings in our marketing team.",
     "exampleTranslation": "Do sự mở rộng nhanh chóng ra quốc tế, công ty chúng tôi có một số vị trí tuyển dụng còn trống trong đội ngũ tiếp thị.",
     "difficulty": "BEGINNER",
     "topic": "Recruitment",
     "toeicParts": "Part 5,Part 7",
-    "collocations": "fill a vacancy, job vacancy, advertise a vacancy",
-    "notes": "Collocation vàng: 'fill a vacancy' (tuyển người lấp vào chỗ trống)."
+    "collocations": "job opening, current opening, grand opening",
+    "notes": "Xuất hiện liên tục trong đề thi TOEIC Part 5 & 7 với nghĩa vị trí tuyển dụng."
   },
   {
     "word": "assembly",
@@ -9691,18 +9691,18 @@ export const INITIAL_VOCABULARY: VocabSeedItem[] = [
     "notes": "Cụm 'wellness program' (chương trình nâng cao sức khỏe nhân viên) rất phổ biến."
   },
   {
-    "word": "dietary",
-    "partOfSpeech": "adjective",
-    "meaningVi": "Thuộc về chế độ dinh dưỡng",
-    "meaningEn": "Relating to or provided by the diet",
-    "pronunciation": "/ˈdaɪətəri/",
-    "exampleSentence": "A certified nutritionist helped the clinic staff establish sound dietary guidelines for patients.",
-    "exampleTranslation": "Một chuyên gia dinh dưỡng có chứng chỉ đã giúp nhân viên phòng khám thiết lập các hướng dẫn ăn uống hợp lý cho bệnh nhân.",
+    "word": "nutrition",
+    "partOfSpeech": "noun",
+    "meaningVi": "Dinh dưỡng, chế độ dinh dưỡng",
+    "meaningEn": "The process of providing or obtaining the food necessary for health and growth",
+    "pronunciation": "/njuːˈtrɪʃn/",
+    "exampleSentence": "A certified expert helped the clinic staff establish sound nutrition guidelines for patients.",
+    "exampleTranslation": "Một chuyên gia đã giúp nhân viên phòng khám thiết lập các hướng dẫn dinh dưỡng hợp lý cho bệnh nhân.",
     "difficulty": "INTERMEDIATE",
     "topic": "Health",
     "toeicParts": "Part 5,Part 7",
-    "collocations": "dietary supplement, dietary guidelines, dietary intake",
-    "notes": "Thường đi kèm với từ 'supplement': dietary supplement (thực phẩm chức năng)."
+    "collocations": "good nutrition, clinical nutrition, nutrition guide",
+    "notes": "Gặp trong các thông báo y tế hoặc chuyên mục sức khỏe đời sống Part 7."
   },
   {
     "word": "sustainable",

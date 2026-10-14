@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { predictToeicScore } from "@/lib/toeic-score-predictor";
 import { ExamCountdownWidget } from "@/components/ExamCountdownWidget";
+import { ShareAchievementCard } from "@/components/ShareAchievementCard";
 
 interface ProgressData {
   user: {
@@ -185,13 +186,20 @@ export default function DashboardPage() {
                 : "Mỗi ngày tích lũy một ít là bí quyết đạt điểm cao trong TOEIC. Nhấn nút bên dưới để tiếp tục."}
             </p>
 
-            <div className="pt-2">
+            <div className="pt-2 flex flex-wrap items-center gap-3">
               <a
-                href={counts.dueForReview > 0 ? "/review" : "/learn"}
+                href="/daily-plan"
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-white text-blue-700 hover:bg-blue-50 font-bold text-sm shadow-lg shadow-blue-900/20 transition-all hover:scale-105 active:scale-95"
               >
-                <span>Continue Learning (Tiếp tục học)</span>
+                <Target className="w-4 h-4 text-blue-600" />
+                <span>Hôm nay học gì? (Daily Plan)</span>
                 <ArrowRight className="w-4 h-4" />
+              </a>
+              <a
+                href={counts.dueForReview > 0 ? "/review" : "/learn"}
+                className="inline-flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-semibold text-sm border border-white/20 transition-all active:scale-95"
+              >
+                <span>{counts.dueForReview > 0 ? `Ôn tập ngay (${counts.dueForReview})` : "Tiếp tục học từ mới"}</span>
               </a>
             </div>
           </div>
@@ -306,6 +314,14 @@ export default function DashboardPage() {
 
       {/* ================= TOEIC EXAM COUNTDOWN & STUDY PACE PLANNER ================= */}
       <ExamCountdownWidget masteredWords={counts.mastered} learningWords={counts.learning} />
+
+      {/* ================= 7-DAY STREAK CHALLENGE & SHARE ACHIEVEMENT ================= */}
+      <ShareAchievementCard
+        userName={user.name}
+        streak={streak}
+        totalLearned={counts.totalLearned}
+        mastered={counts.mastered}
+      />
 
       {/* ================= 3 CORE LEARNING MODES ================= */}
       <div className="space-y-4">

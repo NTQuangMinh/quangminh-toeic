@@ -32,11 +32,21 @@
 - **AI Score Predictor**: Dự đoán điểm TOEIC (10 - 990) dựa trên số từ thành thạo, độ chính xác làm bài và chuỗi học tập kiên trì (*Streak*).
 - **Exam Countdown & Study Pace Planner**: Đếm ngược số ngày thi thực tế, tự động tính toán số từ cần học mỗi ngày (ví dụ: `15 từ/ngày`) để cán mốc mục tiêu (`500+`, `650+`, `750+`, `850+`, `900+`).
 
-### 6. ⚠️ Chẩn Đoán Lỗ Hổng Kiến Thức (Weakness Diagnostics)
-- Phân tích và thống kê lỗi sai theo Chủ đề (*Weakest Topic*) và Loại từ (*Part of Speech*).
-- Bộ lọc chủ đề linh hoạt cùng nút **Ôn tập cấp tốc 1-click** toàn bộ các từ hay làm sai.
+### 6. 📅 Kế Hoạch Học Tập Hôm Nay (Daily Study Plan — `/daily-plan`)
+- **Workflow 3 bước tinh gọn**: Ôn tập từ đến hạn (SM-2) ➜ Nạp từ vựng mới theo mục tiêu ➜ Luyện đề trắc nghiệm củng cố.
+- **Tùy chỉnh chỉ tiêu hàng ngày**: Tùy chọn 10, 20, 30 hoặc 50 từ/ngày, tự động lưu vào hồ sơ học viên (`POST /api/user/progress`).
 
-### 7. 🔒 Bảo Mật & Phòng Thủ Toàn Diện (Security Hardened)
+### 7. ⚠️ Chẩn Đoán Lỗ Hổng & Xu Hướng Lỗi Sai (Mistake Trends)
+- **Theo dõi xu hướng 7 ngày & 30 ngày**: Thống kê số lần sai thực tế từ Quiz và Flashcard, so sánh tỷ lệ tăng/giảm lỗi so với tuần trước.
+- **Minh bạch hóa chỉ số**: Tỷ lệ chính xác = `Đúng / (Đúng + Sai)`. Từ thuần thục (*Mastered*) yêu cầu `interval >= 21 ngày` và tối thiểu 3 chu kỳ lặp lại SM-2.
+- **Huy hiệu Chuỗi 7 Ngày & Thẻ chia sẻ thành tích**: Mở khóa danh hiệu 7-Day Streak Master và tải ảnh chứng nhận thành tích HTML5 Canvas bảo mật tuyệt đối (không tiết lộ email hay lịch sử riêng tư).
+
+### 8. 📝 Trải Nghiệm Thi Trắc Nghiệm Tối Ưu (Hardened Quiz)
+- **Chống nộp bài trùng lặp**: Khóa tức thì nút nộp bài khi đang xử lý, ngăn chặn double-click gửi request song song.
+- **Bảng chuyển câu hỏi nhanh & Modal xác nhận**: Dễ dàng nhảy giữa các câu hỏi, hiển thị cảnh báo rõ ràng khi nộp bài mà còn câu chưa trả lời.
+- **Xem lại câu sai chính xác**: Phân biệt rõ câu trả lời đúng, câu trả lời sai và câu bỏ qua (*Chưa chọn đáp án*).
+
+### 9. 🔒 Bảo Mật & Phòng Thủ Toàn Diện (Security Hardened)
 - **Sliding-window Rate Limiting**: Ngăn chặn tấn công brute-force dò mật khẩu và spam API.
 - **HMAC Signed Quiz Tokens**: Đề thi được ký số mật mã; ngăn chặn hoàn toàn gian lận chỉnh sửa đáp án từ client.
 - **Guest Session Isolation**: Cấp phát cookie bảo mật `toeic_guest_id` độc lập cho từng khách vãng lai, không bị ghi đè dữ liệu chéo.
@@ -87,6 +97,9 @@ Mở trình duyệt tại [http://localhost:3000](http://localhost:3000) để t
 Dự án trang bị bộ kiểm thử tích hợp toàn diện gồm 48 kịch bản kiểm tra:
 
 ```bash
+# Kiểm tra chất lượng và tính toàn vẹn 692 từ vựng (0 errors, 100% integrity)
+node scripts/validate_vocab_data.mjs
+
 # Chạy toàn bộ test suites (48/48 tests PASS)
 npm test
 

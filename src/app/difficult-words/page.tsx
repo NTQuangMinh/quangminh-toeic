@@ -40,8 +40,17 @@ interface DifficultWordItem {
   nextReviewAt?: string | null;
 }
 
+interface MistakeTrends {
+  mistakes7d: number;
+  mistakesPrev7d: number;
+  mistakes30d: number;
+  trendPercent: number;
+  trendDirection: "improving" | "worsening" | "stable";
+}
+
 export default function DifficultWordsPage() {
   const [items, setItems] = useState<DifficultWordItem[]>([]);
+  const [trends, setTrends] = useState<MistakeTrends | null>(null);
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState<"most_wrong" | "lowest_accuracy" | "most_overdue">("most_wrong");
   const [selectedTopic, setSelectedTopic] = useState<string>("all");
@@ -54,6 +63,9 @@ export default function DifficultWordsPage() {
       const data = await res.json();
       if (data.items) {
         setItems(data.items);
+      }
+      if (data.trends) {
+        setTrends(data.trends);
       }
     } catch (err) {
       console.error("Failed to fetch difficult words:", err);
@@ -144,6 +156,65 @@ export default function DifficultWordsPage() {
           </select>
         </div>
       </div>
+
+      {/* 7-Day & 30-Day Mistake Trend Summary */}
+      {trends && (
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-center justify-between">
+            <div>
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                Lỗi sai 7 ngày qua
+              </span>
+              <span className="text-2xl font-black text-rose-600 mt-0.5 block">
+                {trends.mistakes7d} <span className="text-xs font-semibold text-slate-500">lỗi</span>
+              </span>
+            </div>
+            <div className="text-right">
+              {trends.trendDirection === "improving" && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                  ↓ {trends.trendPercent}% (Tiến bộ)
+                </span>
+              )}
+              {trends.trendDirection === "worsening" && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200">
+                  ↑ {trends.trendPercent}% (Tăng lỗi)
+                </span>
+              )}
+              {trends.trendDirection === "stable" && (
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">
+                  ~ Ổn định
+                </span>
+              )}
+              <span className="text-[10px] text-slate-400 block mt-0.5">So với 7 ngày trước</span>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white border border-slate-200/80 shadow-xs flex items-center justify-between">
+            <div>
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                Lỗi sai 30 ngày qua
+              </span>
+              <span className="text-2xl font-black text-slate-900 mt-0.5 block">
+                {trends.mistakes30d} <span className="text-xs font-semibold text-slate-500">lỗi</span>
+              </span>
+            </div>
+            <span className="text-[11px] font-semibold text-slate-500 text-right">
+              Gồm Quiz & Flashcard
+            </span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-200/80 shadow-xs flex flex-col justify-center text-xs">
+            <span className="font-bold text-blue-900 flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Chuẩn hóa tiêu chí
+            </span>
+            <p className="text-[11px] text-blue-800/80 mt-1 leading-snug">
+              Tỷ lệ chính xác = Đúng / (Đúng + Sai).
+              <br />
+              Mastered = Interval ≥ 21 ngày & ≥ 3 lần lặp lại SM-2.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Weakness Diagnostics Widget */}
       {!loading && diagnostics && items.length > 0 && (

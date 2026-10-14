@@ -13254,21 +13254,21 @@
     },
     {
       "id": "voc_0661",
-      "word": "vacancy",
+      "word": "opening",
       "partOfSpeech": "noun",
-      "meaningVi": "Vị trí tuyển dụng đang trống",
-      "meaningEn": "An available unoccupied position or post",
-      "pronunciation": "/ˈveɪkənsi/",
+      "meaningVi": "Vị trí tuyển dụng đang trống; buổi khai mạc",
+      "meaningEn": "An available job position or the beginning of an event",
+      "pronunciation": "/ˈəʊpənɪŋ/",
       "audioUrl": null,
-      "exampleSentence": "Due to rapid international expansion, our firm has several job vacancies in our marketing team.",
+      "exampleSentence": "Due to rapid international expansion, our firm has several job openings in our marketing team.",
       "exampleTranslation": "Do sự mở rộng nhanh chóng ra quốc tế, công ty chúng tôi có một số vị trí tuyển dụng còn trống trong đội ngũ tiếp thị.",
       "difficulty": "BEGINNER",
       "topic": "Recruitment",
       "toeicParts": "Part 5,Part 7",
-      "synonyms": "job opening, position, opportunity",
+      "synonyms": "job opening, position, vacancy",
       "antonyms": null,
-      "collocations": "fill a vacancy, job vacancy, advertise a vacancy",
-      "notes": "Collocation vàng: 'fill a vacancy' (tuyển người lấp vào chỗ trống).",
+      "collocations": "job opening, current opening, grand opening",
+      "notes": "Xuất hiện liên tục trong đề thi TOEIC Part 5 & 7 với nghĩa vị trí tuyển dụng.",
       "createdAt": "2026-10-01T02:47:55.719Z",
       "updatedAt": "2026-10-01T02:47:55.719Z"
     },
@@ -13654,21 +13654,21 @@
     },
     {
       "id": "voc_0681",
-      "word": "dietary",
-      "partOfSpeech": "adjective",
-      "meaningVi": "Thuộc về chế độ dinh dưỡng",
-      "meaningEn": "Relating to or provided by the diet",
-      "pronunciation": "/ˈdaɪətəri/",
+      "word": "nutrition",
+      "partOfSpeech": "noun",
+      "meaningVi": "Dinh dưỡng, chế độ dinh dưỡng",
+      "meaningEn": "The process of providing or obtaining the food necessary for health and growth",
+      "pronunciation": "/njuːˈtrɪʃn/",
       "audioUrl": null,
-      "exampleSentence": "A certified nutritionist helped the clinic staff establish sound dietary guidelines for patients.",
-      "exampleTranslation": "Một chuyên gia dinh dưỡng có chứng chỉ đã giúp nhân viên phòng khám thiết lập các hướng dẫn ăn uống hợp lý cho bệnh nhân.",
+      "exampleSentence": "A certified expert helped the clinic staff establish sound nutrition guidelines for patients.",
+      "exampleTranslation": "Một chuyên gia đã giúp nhân viên phòng khám thiết lập các hướng dẫn dinh dưỡng hợp lý cho bệnh nhân.",
       "difficulty": "INTERMEDIATE",
       "topic": "Health",
       "toeicParts": "Part 5,Part 7",
-      "synonyms": "nutritional, food-related",
+      "synonyms": "nourishment, dietary health",
       "antonyms": null,
-      "collocations": "dietary supplement, dietary guidelines, dietary intake",
-      "notes": "Thường đi kèm với từ 'supplement': dietary supplement (thực phẩm chức năng).",
+      "collocations": "good nutrition, clinical nutrition, nutrition guide",
+      "notes": "Gặp trong các thông báo y tế hoặc chuyên mục sức khỏe đời sống Part 7.",
       "createdAt": "2026-10-01T02:47:55.719Z",
       "updatedAt": "2026-10-01T02:47:55.719Z"
     },
@@ -13922,7 +13922,7 @@
       "correctCount": 2,
       "wrongCount": 3,
       "createdAt": "2026-10-01T02:47:55.719Z",
-      "updatedAt": "2026-10-14T07:18:41.757Z"
+      "updatedAt": "2026-10-14T07:51:44.913Z"
     },
     {
       "id": "uv_3",
@@ -14703,6 +14703,366 @@
       "wrongCount": 1,
       "createdAt": "2026-10-14T07:18:41.972Z",
       "updatedAt": "2026-10-14T07:18:41.972Z"
+    },
+    {
+      "id": "uv_1791963288220_4n7j",
+      "userId": "usr_1791963288196_d1ixs",
+      "wordId": "voc_0001",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:34:48.220Z",
+      "lastReviewedAt": "2026-10-14T07:34:48.220Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:34:48.220Z",
+      "updatedAt": "2026-10-14T07:34:48.220Z"
+    },
+    {
+      "id": "uv_1791963288222_oxj8",
+      "userId": "usr_1791963288196_d1ixs",
+      "wordId": "voc_0002",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:34:48.220Z",
+      "lastReviewedAt": "2026-10-14T07:34:48.220Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:34:48.222Z",
+      "updatedAt": "2026-10-14T07:34:48.222Z"
+    },
+    {
+      "id": "uv_1791963288224_9s6r",
+      "userId": "usr_1791963288196_d1ixs",
+      "wordId": "voc_0003",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:34:48.220Z",
+      "lastReviewedAt": "2026-10-14T07:34:48.220Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:34:48.224Z",
+      "updatedAt": "2026-10-14T07:34:48.224Z"
+    },
+    {
+      "id": "uv_1791963288230_egr1",
+      "userId": "usr_1791963288196_d1ixs",
+      "wordId": "voc_0004",
+      "status": "LEARNING",
+      "easeFactor": 2.3,
+      "interval": 1,
+      "repetitions": 0,
+      "nextReviewAt": "2026-10-15T07:34:48.230Z",
+      "lastReviewedAt": "2026-10-14T07:34:48.220Z",
+      "correctCount": 0,
+      "wrongCount": 1,
+      "createdAt": "2026-10-14T07:34:48.230Z",
+      "updatedAt": "2026-10-14T07:34:48.230Z"
+    },
+    {
+      "id": "uv_1791963493321_stdm",
+      "userId": "usr_1791963493299_ay8u4",
+      "wordId": "voc_0001",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:38:13.321Z",
+      "lastReviewedAt": "2026-10-14T07:38:13.321Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:38:13.321Z",
+      "updatedAt": "2026-10-14T07:38:13.321Z"
+    },
+    {
+      "id": "uv_1791963493323_666f",
+      "userId": "usr_1791963493299_ay8u4",
+      "wordId": "voc_0002",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:38:13.321Z",
+      "lastReviewedAt": "2026-10-14T07:38:13.321Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:38:13.323Z",
+      "updatedAt": "2026-10-14T07:38:13.323Z"
+    },
+    {
+      "id": "uv_1791963493325_0222",
+      "userId": "usr_1791963493299_ay8u4",
+      "wordId": "voc_0003",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:38:13.321Z",
+      "lastReviewedAt": "2026-10-14T07:38:13.321Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:38:13.325Z",
+      "updatedAt": "2026-10-14T07:38:13.325Z"
+    },
+    {
+      "id": "uv_1791963493330_jonf",
+      "userId": "usr_1791963493299_ay8u4",
+      "wordId": "voc_0004",
+      "status": "LEARNING",
+      "easeFactor": 2.3,
+      "interval": 1,
+      "repetitions": 0,
+      "nextReviewAt": "2026-10-15T07:38:13.330Z",
+      "lastReviewedAt": "2026-10-14T07:38:13.321Z",
+      "correctCount": 0,
+      "wrongCount": 1,
+      "createdAt": "2026-10-14T07:38:13.330Z",
+      "updatedAt": "2026-10-14T07:38:13.330Z"
+    },
+    {
+      "id": "uv_1791963875335_zelm",
+      "userId": "usr_1791963875313_s0ef9",
+      "wordId": "voc_0001",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:44:35.335Z",
+      "lastReviewedAt": "2026-10-14T07:44:35.335Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:44:35.335Z",
+      "updatedAt": "2026-10-14T07:44:35.335Z"
+    },
+    {
+      "id": "uv_1791963875337_digw",
+      "userId": "usr_1791963875313_s0ef9",
+      "wordId": "voc_0002",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:44:35.335Z",
+      "lastReviewedAt": "2026-10-14T07:44:35.335Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:44:35.337Z",
+      "updatedAt": "2026-10-14T07:44:35.337Z"
+    },
+    {
+      "id": "uv_1791963875339_p8ia",
+      "userId": "usr_1791963875313_s0ef9",
+      "wordId": "voc_0003",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:44:35.335Z",
+      "lastReviewedAt": "2026-10-14T07:44:35.335Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:44:35.339Z",
+      "updatedAt": "2026-10-14T07:44:35.339Z"
+    },
+    {
+      "id": "uv_1791963875346_m8vv",
+      "userId": "usr_1791963875313_s0ef9",
+      "wordId": "voc_0004",
+      "status": "LEARNING",
+      "easeFactor": 2.3,
+      "interval": 1,
+      "repetitions": 0,
+      "nextReviewAt": "2026-10-15T07:44:35.346Z",
+      "lastReviewedAt": "2026-10-14T07:44:35.335Z",
+      "correctCount": 0,
+      "wrongCount": 1,
+      "createdAt": "2026-10-14T07:44:35.346Z",
+      "updatedAt": "2026-10-14T07:44:35.346Z"
+    },
+    {
+      "id": "uv_1791964031528_xnin",
+      "userId": "usr_1791964031507_ghrow",
+      "wordId": "voc_0001",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:47:11.528Z",
+      "lastReviewedAt": "2026-10-14T07:47:11.528Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:47:11.528Z",
+      "updatedAt": "2026-10-14T07:47:11.528Z"
+    },
+    {
+      "id": "uv_1791964031531_axbh",
+      "userId": "usr_1791964031507_ghrow",
+      "wordId": "voc_0002",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:47:11.528Z",
+      "lastReviewedAt": "2026-10-14T07:47:11.528Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:47:11.531Z",
+      "updatedAt": "2026-10-14T07:47:11.531Z"
+    },
+    {
+      "id": "uv_1791964031533_cgwx",
+      "userId": "usr_1791964031507_ghrow",
+      "wordId": "voc_0003",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:47:11.528Z",
+      "lastReviewedAt": "2026-10-14T07:47:11.528Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:47:11.533Z",
+      "updatedAt": "2026-10-14T07:47:11.533Z"
+    },
+    {
+      "id": "uv_1791964031539_3dm7",
+      "userId": "usr_1791964031507_ghrow",
+      "wordId": "voc_0004",
+      "status": "LEARNING",
+      "easeFactor": 2.3,
+      "interval": 1,
+      "repetitions": 0,
+      "nextReviewAt": "2026-10-15T07:47:11.539Z",
+      "lastReviewedAt": "2026-10-14T07:47:11.528Z",
+      "correctCount": 0,
+      "wrongCount": 1,
+      "createdAt": "2026-10-14T07:47:11.539Z",
+      "updatedAt": "2026-10-14T07:47:11.539Z"
+    },
+    {
+      "id": "uv_1791964194736_rps1",
+      "userId": "usr_1791964194714_686zl",
+      "wordId": "voc_0001",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:49:54.736Z",
+      "lastReviewedAt": "2026-10-14T07:49:54.736Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:49:54.736Z",
+      "updatedAt": "2026-10-14T07:49:54.736Z"
+    },
+    {
+      "id": "uv_1791964194738_60cq",
+      "userId": "usr_1791964194714_686zl",
+      "wordId": "voc_0002",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:49:54.736Z",
+      "lastReviewedAt": "2026-10-14T07:49:54.736Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:49:54.738Z",
+      "updatedAt": "2026-10-14T07:49:54.738Z"
+    },
+    {
+      "id": "uv_1791964194740_c56b",
+      "userId": "usr_1791964194714_686zl",
+      "wordId": "voc_0003",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:49:54.736Z",
+      "lastReviewedAt": "2026-10-14T07:49:54.736Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:49:54.740Z",
+      "updatedAt": "2026-10-14T07:49:54.740Z"
+    },
+    {
+      "id": "uv_1791964194747_pr6i",
+      "userId": "usr_1791964194714_686zl",
+      "wordId": "voc_0004",
+      "status": "LEARNING",
+      "easeFactor": 2.3,
+      "interval": 1,
+      "repetitions": 0,
+      "nextReviewAt": "2026-10-15T07:49:54.747Z",
+      "lastReviewedAt": "2026-10-14T07:49:54.736Z",
+      "correctCount": 0,
+      "wrongCount": 1,
+      "createdAt": "2026-10-14T07:49:54.747Z",
+      "updatedAt": "2026-10-14T07:49:54.747Z"
+    },
+    {
+      "id": "uv_1791964305121_mdc0",
+      "userId": "usr_1791964305063_lii1u",
+      "wordId": "voc_0001",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:51:45.121Z",
+      "lastReviewedAt": "2026-10-14T07:51:45.121Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:51:45.121Z",
+      "updatedAt": "2026-10-14T07:51:45.121Z"
+    },
+    {
+      "id": "uv_1791964305123_whxr",
+      "userId": "usr_1791964305063_lii1u",
+      "wordId": "voc_0002",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:51:45.121Z",
+      "lastReviewedAt": "2026-10-14T07:51:45.121Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:51:45.123Z",
+      "updatedAt": "2026-10-14T07:51:45.123Z"
+    },
+    {
+      "id": "uv_1791964305125_p6ho",
+      "userId": "usr_1791964305063_lii1u",
+      "wordId": "voc_0003",
+      "status": "LEARNING",
+      "easeFactor": 2.5,
+      "interval": 1,
+      "repetitions": 1,
+      "nextReviewAt": "2026-10-15T07:51:45.121Z",
+      "lastReviewedAt": "2026-10-14T07:51:45.121Z",
+      "correctCount": 1,
+      "wrongCount": 0,
+      "createdAt": "2026-10-14T07:51:45.125Z",
+      "updatedAt": "2026-10-14T07:51:45.125Z"
+    },
+    {
+      "id": "uv_1791964305131_0d0p",
+      "userId": "usr_1791964305063_lii1u",
+      "wordId": "voc_0004",
+      "status": "LEARNING",
+      "easeFactor": 2.3,
+      "interval": 1,
+      "repetitions": 0,
+      "nextReviewAt": "2026-10-15T07:51:45.131Z",
+      "lastReviewedAt": "2026-10-14T07:51:45.121Z",
+      "correctCount": 0,
+      "wrongCount": 1,
+      "createdAt": "2026-10-14T07:51:45.131Z",
+      "updatedAt": "2026-10-14T07:51:45.131Z"
     }
   ],
   "bookmarks": [
@@ -14747,6 +15107,78 @@
       "userId": "usr_1791962321997_w0skz",
       "wordId": "voc_0002",
       "createdAt": "2026-10-14T07:18:42.001Z"
+    },
+    {
+      "id": "bm_1791963288234_ke95",
+      "userId": "usr_1791963288196_d1ixs",
+      "wordId": "voc_0001",
+      "createdAt": "2026-10-14T07:34:48.234Z"
+    },
+    {
+      "id": "bm_1791963288259_k4ts",
+      "userId": "usr_1791963288256_50614",
+      "wordId": "voc_0002",
+      "createdAt": "2026-10-14T07:34:48.259Z"
+    },
+    {
+      "id": "bm_1791963493335_h1p5",
+      "userId": "usr_1791963493299_ay8u4",
+      "wordId": "voc_0001",
+      "createdAt": "2026-10-14T07:38:13.335Z"
+    },
+    {
+      "id": "bm_1791963493361_rog7",
+      "userId": "usr_1791963493358_rkyky",
+      "wordId": "voc_0002",
+      "createdAt": "2026-10-14T07:38:13.361Z"
+    },
+    {
+      "id": "bm_1791963875351_qnf4",
+      "userId": "usr_1791963875313_s0ef9",
+      "wordId": "voc_0001",
+      "createdAt": "2026-10-14T07:44:35.351Z"
+    },
+    {
+      "id": "bm_1791963875376_mh95",
+      "userId": "usr_1791963875373_t8hp5",
+      "wordId": "voc_0002",
+      "createdAt": "2026-10-14T07:44:35.376Z"
+    },
+    {
+      "id": "bm_1791964031544_a5m8",
+      "userId": "usr_1791964031507_ghrow",
+      "wordId": "voc_0001",
+      "createdAt": "2026-10-14T07:47:11.544Z"
+    },
+    {
+      "id": "bm_1791964031604_r5dc",
+      "userId": "usr_1791964031596_dwnjc",
+      "wordId": "voc_0002",
+      "createdAt": "2026-10-14T07:47:11.604Z"
+    },
+    {
+      "id": "bm_1791964194751_p6tu",
+      "userId": "usr_1791964194714_686zl",
+      "wordId": "voc_0001",
+      "createdAt": "2026-10-14T07:49:54.751Z"
+    },
+    {
+      "id": "bm_1791964194776_rbsc",
+      "userId": "usr_1791964194773_30ipr",
+      "wordId": "voc_0002",
+      "createdAt": "2026-10-14T07:49:54.776Z"
+    },
+    {
+      "id": "bm_1791964305136_falx",
+      "userId": "usr_1791964305063_lii1u",
+      "wordId": "voc_0001",
+      "createdAt": "2026-10-14T07:51:45.136Z"
+    },
+    {
+      "id": "bm_1791964305160_vurc",
+      "userId": "usr_1791964305157_z634y",
+      "wordId": "voc_0002",
+      "createdAt": "2026-10-14T07:51:45.160Z"
     }
   ],
   "quizResults": [
@@ -14909,6 +15341,126 @@
       "wrongCount": 1,
       "topic": "Business",
       "completedAt": "2026-10-14T07:18:41.973Z"
+    },
+    {
+      "id": "qz_1791963288039_js1t",
+      "userId": "usr_demo_vietnam_001",
+      "score": 90,
+      "totalQuestions": 10,
+      "correctCount": 9,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:34:48.039Z"
+    },
+    {
+      "id": "qz_1791963288232_4xvn",
+      "userId": "usr_1791963288196_d1ixs",
+      "score": 80,
+      "totalQuestions": 5,
+      "correctCount": 4,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:34:48.232Z"
+    },
+    {
+      "id": "qz_1791963493141_m3gt",
+      "userId": "usr_demo_vietnam_001",
+      "score": 90,
+      "totalQuestions": 10,
+      "correctCount": 9,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:38:13.141Z"
+    },
+    {
+      "id": "qz_1791963493333_s1b9",
+      "userId": "usr_1791963493299_ay8u4",
+      "score": 80,
+      "totalQuestions": 5,
+      "correctCount": 4,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:38:13.333Z"
+    },
+    {
+      "id": "qz_1791963875156_9vvg",
+      "userId": "usr_demo_vietnam_001",
+      "score": 90,
+      "totalQuestions": 10,
+      "correctCount": 9,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:44:35.156Z"
+    },
+    {
+      "id": "qz_1791963875348_zuur",
+      "userId": "usr_1791963875313_s0ef9",
+      "score": 80,
+      "totalQuestions": 5,
+      "correctCount": 4,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:44:35.348Z"
+    },
+    {
+      "id": "qz_1791964031352_uw64",
+      "userId": "usr_demo_vietnam_001",
+      "score": 90,
+      "totalQuestions": 10,
+      "correctCount": 9,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:47:11.352Z"
+    },
+    {
+      "id": "qz_1791964031541_4vd4",
+      "userId": "usr_1791964031507_ghrow",
+      "score": 80,
+      "totalQuestions": 5,
+      "correctCount": 4,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:47:11.541Z"
+    },
+    {
+      "id": "qz_1791964194564_fjbs",
+      "userId": "usr_demo_vietnam_001",
+      "score": 90,
+      "totalQuestions": 10,
+      "correctCount": 9,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:49:54.564Z"
+    },
+    {
+      "id": "qz_1791964194749_102k",
+      "userId": "usr_1791964194714_686zl",
+      "score": 80,
+      "totalQuestions": 5,
+      "correctCount": 4,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:49:54.749Z"
+    },
+    {
+      "id": "qz_1791964304911_3isb",
+      "userId": "usr_demo_vietnam_001",
+      "score": 90,
+      "totalQuestions": 10,
+      "correctCount": 9,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:51:44.911Z"
+    },
+    {
+      "id": "qz_1791964305133_xg35",
+      "userId": "usr_1791964305063_lii1u",
+      "score": 80,
+      "totalQuestions": 5,
+      "correctCount": 4,
+      "wrongCount": 1,
+      "topic": "Business",
+      "completedAt": "2026-10-14T07:51:45.133Z"
     }
   ],
   "quizQuestions": [
@@ -15329,6 +15881,204 @@
       "selectedIndex": 1,
       "isCorrect": true,
       "explanation": "Correct answer is accept"
+    },
+    {
+      "id": "qq_1791963288039_tn8mk",
+      "quizResultId": "qz_1791963288039_js1t",
+      "wordId": "voc_0006",
+      "questionText": "The hotel can ______ up to 300 guests.",
+      "optionsJson": "[\"accommodate\",\"postpone\",\"purchase\",\"manufacture\"]",
+      "correctIndex": 0,
+      "selectedIndex": 0,
+      "isCorrect": true,
+      "explanation": "accommodate = cung cấp chỗ ở cho"
+    },
+    {
+      "id": "qq_1791963288039_wtauh",
+      "quizResultId": "qz_1791963288039_js1t",
+      "wordId": "voc_0002",
+      "questionText": "The manager had to ______ the meeting until Friday.",
+      "optionsJson": "[\"maintain\",\"postpone\",\"calculate\",\"deliver\"]",
+      "correctIndex": 1,
+      "selectedIndex": 0,
+      "isCorrect": false,
+      "explanation": "postpone = hoãn lại"
+    },
+    {
+      "id": "qq_1791963288232_a577x",
+      "quizResultId": "qz_1791963288232_4xvn",
+      "wordId": "voc_0004",
+      "questionText": "The company will ______ the merger.",
+      "optionsJson": "[\"refuse\",\"accept\",\"cancel\",\"deny\"]",
+      "correctIndex": 1,
+      "selectedIndex": 1,
+      "isCorrect": true,
+      "explanation": "Correct answer is accept"
+    },
+    {
+      "id": "qq_1791963493141_ipxik",
+      "quizResultId": "qz_1791963493141_m3gt",
+      "wordId": "voc_0006",
+      "questionText": "The hotel can ______ up to 300 guests.",
+      "optionsJson": "[\"accommodate\",\"postpone\",\"purchase\",\"manufacture\"]",
+      "correctIndex": 0,
+      "selectedIndex": 0,
+      "isCorrect": true,
+      "explanation": "accommodate = cung cấp chỗ ở cho"
+    },
+    {
+      "id": "qq_1791963493141_bkpts",
+      "quizResultId": "qz_1791963493141_m3gt",
+      "wordId": "voc_0002",
+      "questionText": "The manager had to ______ the meeting until Friday.",
+      "optionsJson": "[\"maintain\",\"postpone\",\"calculate\",\"deliver\"]",
+      "correctIndex": 1,
+      "selectedIndex": 0,
+      "isCorrect": false,
+      "explanation": "postpone = hoãn lại"
+    },
+    {
+      "id": "qq_1791963493333_i5k6o",
+      "quizResultId": "qz_1791963493333_s1b9",
+      "wordId": "voc_0004",
+      "questionText": "The company will ______ the merger.",
+      "optionsJson": "[\"refuse\",\"accept\",\"cancel\",\"deny\"]",
+      "correctIndex": 1,
+      "selectedIndex": 1,
+      "isCorrect": true,
+      "explanation": "Correct answer is accept"
+    },
+    {
+      "id": "qq_1791963875156_s10ce",
+      "quizResultId": "qz_1791963875156_9vvg",
+      "wordId": "voc_0006",
+      "questionText": "The hotel can ______ up to 300 guests.",
+      "optionsJson": "[\"accommodate\",\"postpone\",\"purchase\",\"manufacture\"]",
+      "correctIndex": 0,
+      "selectedIndex": 0,
+      "isCorrect": true,
+      "explanation": "accommodate = cung cấp chỗ ở cho"
+    },
+    {
+      "id": "qq_1791963875156_e9oqn",
+      "quizResultId": "qz_1791963875156_9vvg",
+      "wordId": "voc_0002",
+      "questionText": "The manager had to ______ the meeting until Friday.",
+      "optionsJson": "[\"maintain\",\"postpone\",\"calculate\",\"deliver\"]",
+      "correctIndex": 1,
+      "selectedIndex": 0,
+      "isCorrect": false,
+      "explanation": "postpone = hoãn lại"
+    },
+    {
+      "id": "qq_1791963875348_eg4tl",
+      "quizResultId": "qz_1791963875348_zuur",
+      "wordId": "voc_0004",
+      "questionText": "The company will ______ the merger.",
+      "optionsJson": "[\"refuse\",\"accept\",\"cancel\",\"deny\"]",
+      "correctIndex": 1,
+      "selectedIndex": 1,
+      "isCorrect": true,
+      "explanation": "Correct answer is accept"
+    },
+    {
+      "id": "qq_1791964031352_buqpr",
+      "quizResultId": "qz_1791964031352_uw64",
+      "wordId": "voc_0006",
+      "questionText": "The hotel can ______ up to 300 guests.",
+      "optionsJson": "[\"accommodate\",\"postpone\",\"purchase\",\"manufacture\"]",
+      "correctIndex": 0,
+      "selectedIndex": 0,
+      "isCorrect": true,
+      "explanation": "accommodate = cung cấp chỗ ở cho"
+    },
+    {
+      "id": "qq_1791964031352_zn14b",
+      "quizResultId": "qz_1791964031352_uw64",
+      "wordId": "voc_0002",
+      "questionText": "The manager had to ______ the meeting until Friday.",
+      "optionsJson": "[\"maintain\",\"postpone\",\"calculate\",\"deliver\"]",
+      "correctIndex": 1,
+      "selectedIndex": 0,
+      "isCorrect": false,
+      "explanation": "postpone = hoãn lại"
+    },
+    {
+      "id": "qq_1791964031541_ou31x",
+      "quizResultId": "qz_1791964031541_4vd4",
+      "wordId": "voc_0004",
+      "questionText": "The company will ______ the merger.",
+      "optionsJson": "[\"refuse\",\"accept\",\"cancel\",\"deny\"]",
+      "correctIndex": 1,
+      "selectedIndex": 1,
+      "isCorrect": true,
+      "explanation": "Correct answer is accept"
+    },
+    {
+      "id": "qq_1791964194564_iuqmq",
+      "quizResultId": "qz_1791964194564_fjbs",
+      "wordId": "voc_0006",
+      "questionText": "The hotel can ______ up to 300 guests.",
+      "optionsJson": "[\"accommodate\",\"postpone\",\"purchase\",\"manufacture\"]",
+      "correctIndex": 0,
+      "selectedIndex": 0,
+      "isCorrect": true,
+      "explanation": "accommodate = cung cấp chỗ ở cho"
+    },
+    {
+      "id": "qq_1791964194564_losym",
+      "quizResultId": "qz_1791964194564_fjbs",
+      "wordId": "voc_0002",
+      "questionText": "The manager had to ______ the meeting until Friday.",
+      "optionsJson": "[\"maintain\",\"postpone\",\"calculate\",\"deliver\"]",
+      "correctIndex": 1,
+      "selectedIndex": 0,
+      "isCorrect": false,
+      "explanation": "postpone = hoãn lại"
+    },
+    {
+      "id": "qq_1791964194749_vc59q",
+      "quizResultId": "qz_1791964194749_102k",
+      "wordId": "voc_0004",
+      "questionText": "The company will ______ the merger.",
+      "optionsJson": "[\"refuse\",\"accept\",\"cancel\",\"deny\"]",
+      "correctIndex": 1,
+      "selectedIndex": 1,
+      "isCorrect": true,
+      "explanation": "Correct answer is accept"
+    },
+    {
+      "id": "qq_1791964304911_fkcj6",
+      "quizResultId": "qz_1791964304911_3isb",
+      "wordId": "voc_0006",
+      "questionText": "The hotel can ______ up to 300 guests.",
+      "optionsJson": "[\"accommodate\",\"postpone\",\"purchase\",\"manufacture\"]",
+      "correctIndex": 0,
+      "selectedIndex": 0,
+      "isCorrect": true,
+      "explanation": "accommodate = cung cấp chỗ ở cho"
+    },
+    {
+      "id": "qq_1791964304911_8wz1f",
+      "quizResultId": "qz_1791964304911_3isb",
+      "wordId": "voc_0002",
+      "questionText": "The manager had to ______ the meeting until Friday.",
+      "optionsJson": "[\"maintain\",\"postpone\",\"calculate\",\"deliver\"]",
+      "correctIndex": 1,
+      "selectedIndex": 0,
+      "isCorrect": false,
+      "explanation": "postpone = hoãn lại"
+    },
+    {
+      "id": "qq_1791964305133_rmwbi",
+      "quizResultId": "qz_1791964305133_xg35",
+      "wordId": "voc_0004",
+      "questionText": "The company will ______ the merger.",
+      "optionsJson": "[\"refuse\",\"accept\",\"cancel\",\"deny\"]",
+      "correctIndex": 1,
+      "selectedIndex": 1,
+      "isCorrect": true,
+      "explanation": "Correct answer is accept"
     }
   ],
   "dailyGoals": [
@@ -15357,7 +16107,7 @@
       "targetWords": 20,
       "learnedWords": 18,
       "completed": false,
-      "updatedAt": "2026-10-14T07:18:41.747Z"
+      "updatedAt": "2026-10-14T07:51:44.903Z"
     },
     {
       "id": "dg_1791962288782_g80w",
@@ -15376,6 +16126,60 @@
       "learnedWords": 3,
       "completed": false,
       "updatedAt": "2026-10-14T07:18:41.968Z"
+    },
+    {
+      "id": "dg_1791963288226_do2j",
+      "userId": "usr_1791963288196_d1ixs",
+      "date": "2026-10-14",
+      "targetWords": 20,
+      "learnedWords": 3,
+      "completed": false,
+      "updatedAt": "2026-10-14T07:34:48.226Z"
+    },
+    {
+      "id": "dg_1791963493327_iv34",
+      "userId": "usr_1791963493299_ay8u4",
+      "date": "2026-10-14",
+      "targetWords": 20,
+      "learnedWords": 3,
+      "completed": false,
+      "updatedAt": "2026-10-14T07:38:13.327Z"
+    },
+    {
+      "id": "dg_1791963875342_xa0g",
+      "userId": "usr_1791963875313_s0ef9",
+      "date": "2026-10-14",
+      "targetWords": 20,
+      "learnedWords": 3,
+      "completed": false,
+      "updatedAt": "2026-10-14T07:44:35.342Z"
+    },
+    {
+      "id": "dg_1791964031535_gbdu",
+      "userId": "usr_1791964031507_ghrow",
+      "date": "2026-10-14",
+      "targetWords": 20,
+      "learnedWords": 3,
+      "completed": false,
+      "updatedAt": "2026-10-14T07:47:11.535Z"
+    },
+    {
+      "id": "dg_1791964194743_bc1z",
+      "userId": "usr_1791964194714_686zl",
+      "date": "2026-10-14",
+      "targetWords": 20,
+      "learnedWords": 3,
+      "completed": false,
+      "updatedAt": "2026-10-14T07:49:54.743Z"
+    },
+    {
+      "id": "dg_1791964305127_ry6g",
+      "userId": "usr_1791964305063_lii1u",
+      "date": "2026-10-14",
+      "targetWords": 20,
+      "learnedWords": 3,
+      "completed": false,
+      "updatedAt": "2026-10-14T07:51:45.127Z"
     }
   ],
   "studyLogs": [
@@ -15448,6 +16252,48 @@
       "date": "2026-10-14",
       "wordsCount": 3,
       "createdAt": "2026-10-14T07:18:41.970Z"
+    },
+    {
+      "id": "sl_1791963288228_1ply",
+      "userId": "usr_1791963288196_d1ixs",
+      "date": "2026-10-14",
+      "wordsCount": 3,
+      "createdAt": "2026-10-14T07:34:48.228Z"
+    },
+    {
+      "id": "sl_1791963493328_ccu2",
+      "userId": "usr_1791963493299_ay8u4",
+      "date": "2026-10-14",
+      "wordsCount": 3,
+      "createdAt": "2026-10-14T07:38:13.328Z"
+    },
+    {
+      "id": "sl_1791963875343_44pb",
+      "userId": "usr_1791963875313_s0ef9",
+      "date": "2026-10-14",
+      "wordsCount": 3,
+      "createdAt": "2026-10-14T07:44:35.343Z"
+    },
+    {
+      "id": "sl_1791964031537_wjxa",
+      "userId": "usr_1791964031507_ghrow",
+      "date": "2026-10-14",
+      "wordsCount": 3,
+      "createdAt": "2026-10-14T07:47:11.537Z"
+    },
+    {
+      "id": "sl_1791964194745_xvzp",
+      "userId": "usr_1791964194714_686zl",
+      "date": "2026-10-14",
+      "wordsCount": 3,
+      "createdAt": "2026-10-14T07:49:54.745Z"
+    },
+    {
+      "id": "sl_1791964305129_9ovu",
+      "userId": "usr_1791964305063_lii1u",
+      "date": "2026-10-14",
+      "wordsCount": 3,
+      "createdAt": "2026-10-14T07:51:45.129Z"
     }
   ]
 }

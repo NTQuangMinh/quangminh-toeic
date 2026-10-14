@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getEffectiveUserId } from "@/lib/auth";
 import { getVietnamTodayDate } from "@/lib/study-tracker";
@@ -55,9 +55,47 @@ export async function GET() {
       totalCorrectAnswers += q.correctCount;
     }
     const quizAccuracy =
-      totalQuestionsAnswered > 0 ? Math.round((totalCorrectAnswers / totalQuestionsAnswered) * 100) : 85;
+      totalQuestionsAnswered > 0 ? Math.round((totalCorrectAnswers / totalQuestionsAnswered) * 100) : 0;
 
-    // 6. Streak calculation (strict consecutive active days)
+    // 6. Real 7-day & 30-day Mistake Trends
+    const nowMs = Date.now();
+    const sevenDaysAgo = nowMs - 7 * 86400 * 1000;
+    const fourteenDaysAgo = nowMs - 14 * 86400 * 1000;
+    const thirtyDaysAgo = nowMs - 30 * 86400 * 1000;
+
+    let mistakes7d = 0;
+    let mistakesPrev7d = 0;
+    let mistakes30d = 0;
+
+    for (const qr of quizResults) {
+      const qTime = new Date(qr.completedAt).getTime();
+      if (qTime >= sevenDaysAgo) {
+        mistakes7d += qr.wrongCount;
+      } else if (qTime >= fourteenDaysAgo) {
+        mistakesPrev7d += qr.wrongCount;
+      }
+      if (qTime >= thirtyDaysAgo) {
+        mistakes30d += qr.wrongCount;
+      }
+    }
+
+    userVocabs.forEach((uv) => {
+      const revTime = uv.lastReviewedAt ? new Date(uv.lastReviewedAt).getTime() : new Date(uv.updatedAt).getTime();
+      if (revTime >= sevenDaysAgo) {
+        mistakes7d += uv.wrongCount;
+      } else if (revTime >= fourteenDaysAgo) {
+        mistakesPrev7d += uv.wrongCount;
+      }
+      if (revTime >= thirtyDaysAgo) {
+        mistakes30d += uv.wrongCount;
+      }
+    });
+
+    const diffMistakes = mistakes7d - mistakesPrev7d;
+    const trendPercent = mistakesPrev7d > 0 ? Math.round((Math.abs(diffMistakes) / mistakesPrev7d) * 100) : 0;
+    const trendDirection = diffMistakes < 0 ? "improving" : diffMistakes > 0 ? "worsening" : "stable";
+
+    // 7. Streak calculation (strict consecutive active days)
     const studyLogs = await db.studyLog.findMany({
       where: { userId },
       orderBy: { date: "desc" },
@@ -83,7 +121,7 @@ export async function GET() {
       }
     }
 
-    // 7. Weekly Activity Chart (Last 7 days)
+    // 8. Weekly Activity Chart (Last 7 days)
     const weeklyActivity: Array<{ date: string; dayLabel: string; count: number }> = [];
     const dayNames = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
 
@@ -132,13 +170,50 @@ export async function GET() {
       },
       stats: {
         quizAccuracy,
+        totalQuestionsAnswered,
+        totalCorrectAnswers,
         totalReviewSessions: userVocabs.filter((uv) => uv.repetitions > 0).length + quizResults.length,
         wordsLearnedThisWeek,
+        masteredDefinition: "repetitions >= 3 && interval >= 21",
+        mistakeTrends: {
+          mistakes7d,
+          mistakesPrev7d,
+          mistakes30d,
+          trendPercent,
+          trendDirection,
+        },
       },
       weeklyActivity,
     });
   } catch (error) {
     console.error("Progress GET error:", error);
     return NextResponse.json({ error: "Không thể tải số liệu tiến độ học tập." }, { status: 500 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const { userId } = await getEffectiveUserId();
+    const body = await req.json();
+    const { dailyGoalTarget } = body;
+
+    if (!dailyGoalTarget || typeof dailyGoalTarget !== "number") {
+      return NextResponse.json({ error: "Mục tiêu số từ không hợp lệ." }, { status: 400 });
+    }
+
+    const clampedTarget = Math.min(100, Math.max(5, Math.round(dailyGoalTarget)));
+
+    const updated = await db.user.update({
+      where: { id: userId },
+      data: { dailyGoalTarget: clampedTarget },
+    });
+
+    return NextResponse.json({
+      success: true,
+      dailyGoalTarget: updated.dailyGoalTarget,
+    });
+  } catch (error) {
+    console.error("Progress POST error:", error);
+    return NextResponse.json({ error: "Lỗi khi cập nhật mục tiêu học tập." }, { status: 500 });
   }
 }

@@ -41,6 +41,9 @@ export default function PracticePage() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [hasAnsweredCurrent, setHasAnsweredCurrent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const isSubmittingRef = React.useRef(false);
+  const [showUnansweredConfirm, setShowUnansweredConfirm] = useState(false);
 
   // Result data
   const [finalScore, setFinalScore] = useState<number>(0);
@@ -76,6 +79,19 @@ export default function PracticePage() {
     }
   };
 
+  const jumpToQuestion = (targetIdx: number) => {
+    if (targetIdx < 0 || targetIdx >= questions.length) return;
+    setCurrentQIndex(targetIdx);
+    const prevAnswer = userAnswers[targetIdx];
+    if (prevAnswer !== -1 && prevAnswer !== undefined) {
+      setSelectedOption(prevAnswer);
+      setHasAnsweredCurrent(true);
+    } else {
+      setSelectedOption(null);
+      setHasAnsweredCurrent(false);
+    }
+  };
+
   const handleSelectOption = (idx: number) => {
     if (hasAnsweredCurrent) return; // Prevent re-answering
     setSelectedOption(idx);
@@ -97,17 +113,31 @@ export default function PracticePage() {
 
   const handleNextQuestion = async () => {
     if (currentQIndex < questions.length - 1) {
-      setCurrentQIndex((prev) => prev + 1);
-      setSelectedOption(null);
-      setHasAnsweredCurrent(false);
+      jumpToQuestion(currentQIndex + 1);
     } else {
-      // Complete quiz and post results to DB
-      await submitQuiz();
+      // Check for unanswered questions before submitting
+      const unansweredCount = userAnswers.filter((a) => a === -1).length;
+      if (unansweredCount > 0) {
+        setShowUnansweredConfirm(true);
+      } else {
+        await submitQuiz(true);
+      }
     }
   };
 
-  const submitQuiz = async () => {
+  const submitQuiz = async (force: boolean = false) => {
+    const unansweredCount = userAnswers.filter((a) => a === -1).length;
+    if (unansweredCount > 0 && !force) {
+      setShowUnansweredConfirm(true);
+      return;
+    }
+
+    // Guard against duplicate double-click submissions
+    if (isSubmittingRef.current || loading) return;
+    isSubmittingRef.current = true;
+    setIsSubmitting(true);
     setLoading(true);
+
     try {
       const res = await fetch("/api/quiz", {
         method: "POST",
@@ -139,6 +169,8 @@ export default function PracticePage() {
       console.error("Failed to submit quiz results:", err);
     } finally {
       setLoading(false);
+      setIsSubmitting(false);
+      isSubmittingRef.current = false;
     }
   };
 
@@ -327,9 +359,18 @@ export default function PracticePage() {
             <span className="whitespace-nowrap shrink-0">
               Câu {currentQIndex + 1} / {questions.length}
             </span>
-            <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 whitespace-nowrap shrink-0">
-              {questionTypeLabels[q.type] || q.type}
-            </span>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => submitQuiz(false)}
+                className="px-2.5 py-1 rounded-lg text-[11px] font-bold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+              >
+                Nộp bài sớm
+              </button>
+              <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 whitespace-nowrap shrink-0">
+                {questionTypeLabels[q.type] || q.type}
+              </span>
+            </div>
           </div>
 
           <ProgressBar
@@ -338,6 +379,31 @@ export default function PracticePage() {
             color="green"
             size="sm"
           />
+
+          {/* Quick Question Switcher Palette */}
+          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            {questions.map((_, idx) => {
+              const isAnswered = userAnswers[idx] !== -1 && userAnswers[idx] !== undefined;
+              const isCurrent = idx === currentQIndex;
+              return (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => jumpToQuestion(idx)}
+                  className={`w-7 h-7 rounded-lg text-xs font-bold transition-all ${
+                    isCurrent
+                      ? "bg-slate-900 text-white ring-2 ring-blue-500 shadow-xs"
+                      : isAnswered
+                      ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                      : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                  }`}
+                  title={`Câu ${idx + 1}: ${isAnswered ? "Đã trả lời" : "Chưa trả lời"}`}
+                >
+                  {idx + 1}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Question Card */}
@@ -458,22 +524,108 @@ export default function PracticePage() {
           )}
 
 
-          {/* Next / Submit Button */}
-          {hasAnsweredCurrent && (
-            <div className="pt-2">
+          {/* Navigation & Submit Buttons */}
+          <div className="pt-2 flex items-center gap-3">
+            {currentQIndex > 0 && (
               <button
                 type="button"
-                onClick={handleNextQuestion}
-                className="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-95"
+                onClick={() => jumpToQuestion(currentQIndex - 1)}
+                className="py-3.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition-colors shrink-0"
               >
-                <span>
-                  {currentQIndex < questions.length - 1 ? "Câu tiếp theo" : "Xem kết quả bài test"}
-                </span>
-                <ArrowRight className="w-4 h-4" />
+                ← Câu trước
               </button>
-            </div>
-          )}
+            )}
+
+            {hasAnsweredCurrent ? (
+              <button
+                type="button"
+                disabled={isSubmitting || loading}
+                onClick={handleNextQuestion}
+                className="flex-1 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Đang nộp bài...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>
+                      {currentQIndex < questions.length - 1 ? "Câu tiếp theo" : "Xem kết quả bài test"}
+                    </span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  if (currentQIndex < questions.length - 1) {
+                    jumpToQuestion(currentQIndex + 1);
+                  } else {
+                    submitQuiz(false);
+                  }
+                }}
+                className="flex-1 py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-sm transition-colors text-center"
+              >
+                {currentQIndex < questions.length - 1 ? "Bỏ qua & Xem câu sau →" : "Nộp bài (Còn câu chưa làm)"}
+              </button>
+            )}
+          </div>
         </div>
+
+        {/* Unanswered Questions Confirmation Modal */}
+        {showUnansweredConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                  <AlertTriangle className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900">
+                    Còn câu hỏi chưa trả lời!
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Bạn còn {userAnswers.filter((a) => a === -1).length} / {questions.length} câu chưa chọn đáp án.
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed bg-amber-50/80 p-3.5 rounded-2xl border border-amber-200/80">
+                Các câu chưa trả lời sẽ được tính là <strong>trả lời sai</strong> và đưa vào danh sách từ vựng cần ôn tập thêm. Bạn có chắc chắn muốn hoàn thành bài test?
+              </p>
+
+              <div className="grid grid-cols-2 gap-3 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowUnansweredConfirm(false);
+                    const firstUnanswered = userAnswers.findIndex((a) => a === -1);
+                    if (firstUnanswered !== -1) {
+                      jumpToQuestion(firstUnanswered);
+                    }
+                  }}
+                  className="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors"
+                >
+                  Quay lại làm tiếp
+                </button>
+                <button
+                  type="button"
+                  disabled={isSubmitting}
+                  onClick={() => {
+                    setShowUnansweredConfirm(false);
+                    submitQuiz(true);
+                  }}
+                  className="py-3 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-md shadow-red-500/20 transition-all disabled:opacity-50"
+                >
+                  {isSubmitting ? "Đang lưu..." : "Xác nhận nộp bài"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -619,8 +771,18 @@ export default function PracticePage() {
                   <div className="text-xs space-y-1">
                     <p className="text-slate-600">
                       Bạn đã chọn:{" "}
-                      <span className={`font-bold ${isQCorrect ? "text-emerald-700" : "text-red-600"}`}>
-                        {q.options[selected]}
+                      <span
+                        className={`font-bold ${
+                          selected === -1 || selected === undefined
+                            ? "text-amber-600 italic"
+                            : isQCorrect
+                            ? "text-emerald-700"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {selected !== undefined && selected >= 0 && q.options[selected]
+                          ? q.options[selected]
+                          : "(Chưa chọn đáp án - Bỏ qua)"}
                       </span>
                     </p>
                     {!isQCorrect && (

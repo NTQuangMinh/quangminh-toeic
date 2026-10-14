@@ -15,6 +15,7 @@ import {
   Award as AwardIcon,
 } from "lucide-react";
 import { predictToeicScore, getMilestones } from "@/lib/toeic-score-predictor";
+import { ShareAchievementCard } from "@/components/ShareAchievementCard";
 
 interface ProgressData {
   user: {
@@ -36,8 +37,18 @@ interface ProgressData {
   };
   stats: {
     quizAccuracy: number;
+    totalQuestionsAnswered?: number;
+    totalCorrectAnswers?: number;
     totalReviewSessions: number;
     wordsLearnedThisWeek: number;
+    masteredDefinition?: string;
+    mistakeTrends?: {
+      mistakes7d: number;
+      mistakesPrev7d: number;
+      mistakes30d: number;
+      trendPercent: number;
+      trendDirection: "improving" | "worsening" | "stable";
+    };
   };
   weeklyActivity: Array<{ date: string; dayLabel: string; count: number }>;
 }
@@ -140,7 +151,9 @@ export default function ProgressPage() {
               {counts.mastered}
             </span>
             <span className="text-xs font-bold text-emerald-900 mt-1 block">Mastered</span>
-            <span className="text-[11px] text-emerald-700/70 block">Đã nhớ vĩnh viễn</span>
+            <span className="text-[11px] text-emerald-700/70 block">
+              Đã nhớ vĩnh viễn (interval ≥ 21 ngày & ≥ 3 lần lặp lại SM-2)
+            </span>
           </div>
 
           <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-100 text-center">
@@ -193,9 +206,16 @@ export default function ProgressPage() {
               <Award className="w-4 h-4 text-blue-600" />
               <span>Quiz Accuracy</span>
             </div>
-            <p className="text-3xl font-black text-blue-900 tracking-tight">
-              {stats.quizAccuracy}%
-            </p>
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-black text-blue-900 tracking-tight">
+                {stats.quizAccuracy}%
+              </span>
+              {stats.totalQuestionsAnswered !== undefined && stats.totalQuestionsAnswered > 0 && (
+                <span className="text-xs font-semibold text-blue-700">
+                  ({stats.totalCorrectAnswers}/{stats.totalQuestionsAnswered} câu đúng)
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="space-y-1">
@@ -238,6 +258,14 @@ export default function ProgressPage() {
           </a>
         </div>
       </div>
+
+      {/* ================= 7-DAY STREAK CHALLENGE & SHARE ACHIEVEMENT ================= */}
+      <ShareAchievementCard
+        userName={user.name}
+        streak={streak}
+        totalLearned={counts.totalLearned}
+        mastered={counts.mastered}
+      />
 
       {/* ================= 3. TOEIC SCORE PREDICTOR & MILESTONES ================= */}
       {(() => {
@@ -381,6 +409,87 @@ export default function ProgressPage() {
           })}
         </div>
       </div>
+
+      {/* ================= 5. MISTAKE TREND SUMMARY ================= */}
+      {stats.mistakeTrends && (
+        <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-base font-extrabold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <span>Xu hướng lỗi sai & Điểm yếu (Mistake Trend Analysis)</span>
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Dữ liệu thực tế tổng hợp từ bài Quiz và chu trình Flashcard SM-2
+              </p>
+            </div>
+            <a
+              href="/difficult-words"
+              className="px-4 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs border border-rose-200 transition-all self-start sm:self-auto"
+            >
+              Xem danh sách từ hay sai →
+            </a>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-4 rounded-2xl bg-rose-50/60 border border-rose-100">
+              <span className="text-xs font-bold text-rose-700 uppercase tracking-wider block">
+                Lỗi sai 7 ngày qua
+              </span>
+              <div className="flex items-baseline gap-2 mt-1">
+                <span className="text-3xl font-black text-rose-700">
+                  {stats.mistakeTrends.mistakes7d}
+                </span>
+                <span className="text-xs text-rose-600 font-semibold">lần sai</span>
+              </div>
+              <div className="mt-2 text-[11px] font-semibold">
+                {stats.mistakeTrends.trendDirection === "improving" && (
+                  <span className="text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-md">
+                    ↓ Giảm {stats.mistakeTrends.trendPercent}% so với 7 ngày trước (Tốt)
+                  </span>
+                )}
+                {stats.mistakeTrends.trendDirection === "worsening" && (
+                  <span className="text-rose-700 bg-rose-100/80 px-2 py-0.5 rounded-md">
+                    ↑ Tăng {stats.mistakeTrends.trendPercent}% so với 7 ngày trước
+                  </span>
+                )}
+                {stats.mistakeTrends.trendDirection === "stable" && (
+                  <span className="text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
+                    ~ Ổn định so với tuần trước
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                Tổng lỗi sai 30 ngày
+              </span>
+              <div className="flex items-baseline gap-2 mt-1">
+                <span className="text-3xl font-black text-slate-900">
+                  {stats.mistakeTrends.mistakes30d}
+                </span>
+                <span className="text-xs text-slate-500 font-semibold">lần sai</span>
+              </div>
+              <p className="mt-2 text-[11px] text-slate-500">
+                Lỗi sai là cơ hội ôn tập để biến từ yếu thành từ thuần thục.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-200 text-xs flex flex-col justify-between">
+              <div>
+                <span className="font-bold text-blue-900 block uppercase tracking-wider text-[11px]">
+                  📌 Minh bạch công thức
+                </span>
+                <p className="text-blue-800/80 text-[11px] mt-1.5 leading-relaxed">
+                  • <strong>Độ chính xác Quiz:</strong> Tổng câu đúng / Tổng câu đã trả lời.
+                  <br />
+                  • <strong>Từ thuần thục:</strong> Interval ≥ 21 ngày và ≥ 3 chu kỳ SM-2 thành công.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

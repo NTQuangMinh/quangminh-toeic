@@ -22,6 +22,7 @@ import {
   Volume2,
   VolumeX,
   FileText,
+  Calendar,
 } from "lucide-react";
 import { isSfxMuted, toggleSfxMute, playSuccessSound } from "@/lib/sound-effects";
 
@@ -105,6 +106,13 @@ export function Navbar() {
 
   const extraLinks = [
     {
+      href: "/daily-plan",
+      label: "Kế hoạch hôm nay",
+      desc: "Lộ trình 3 bước khoa học",
+      icon: Calendar,
+      color: "text-blue-500 bg-blue-50",
+    },
+    {
       href: "/reading",
       label: "Luyện đọc Part 7",
       desc: "Đoạn văn thực tế ETS",
@@ -129,6 +137,7 @@ export function Navbar() {
 
   const mobileNavItems = [
     { href: "/dashboard", label: "Trang chủ", icon: Sparkles, color: "text-blue-600 bg-blue-50" },
+    { href: "/daily-plan", label: "Hôm nay học gì?", icon: Calendar, color: "text-blue-600 bg-blue-50" },
     { href: "/learn", label: "Học từ mới", icon: BookOpen, color: "text-blue-600 bg-blue-50" },
     { href: "/review", label: "Ôn tập SM-2", icon: RotateCcw, color: "text-amber-600 bg-amber-50" },
     { href: "/reading", label: "Đọc Part 7", icon: FileText, color: "text-emerald-600 bg-emerald-50" },

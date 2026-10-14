@@ -35,18 +35,24 @@ Every visible feature now works against persistent storage, automated testing ha
 ### Files Created
 - `docs/CODEBASE_AUDIT.md`: Complete architectural and technical discovery report.
 - `docs/IMPLEMENTATION_PLAN.md`: Prioritized task matrix and acceptance criteria.
+- `docs/PROJECT_ARCHITECTURE.md`: Topology diagram, SM-2 lifecycle, HMAC quiz verification sequence, and persistence boundary documentation.
 - `docs/FINAL_IMPLEMENTATION_REPORT.md`: Comprehensive final report.
+- `scripts/validate_vocab_data.mjs`: Complete dataset quality validation suite (692 unique words, 0 errors, referential integrity).
+- `scripts/verify_journeys.ts`: Automated test suite for the 8 Critical User Journeys.
+- `src/app/daily-plan/page.tsx`: Personalized "What should I study today?" 3-step guided study plan with target customization.
+- `src/components/ExamCountdownWidget.tsx`: Interactive countdown and daily study pace planner widget.
+- `src/components/ShareAchievementCard.tsx`: 7-Day Streak Master badge and HTML5 Canvas privacy-preserving share achievement card.
 - `src/lib/rate-limiter.ts`: In-memory sliding-window rate limiter with periodic garbage collection.
 - `src/middleware.ts`: Edge router security headers, `/admin` route guard, and guest session tracking.
-- `src/components/ExamCountdownWidget.tsx`: Interactive countdown and daily study pace planner widget.
-- `scripts/verify_journeys.ts`: Automated test suite for the 8 Critical User Journeys.
 
 ### Files Modified
+- `data/db.json` & `src/data/toeic-vocab-seed.ts`: Replaced 2 duplicate vocabulary entries (`opening` and `nutrition`) to ensure 692 strictly unique words with 100% referential integrity.
 - `src/lib/ai.ts`: Randomized distractors with Fisher-Yates shuffle and dynamic answer index determination.
 - `src/lib/auth.ts`: Timing-attack safe comparisons (`safeCompare`), cryptographic HMAC question token signing/verification, and guest session resolution.
 - `src/lib/db.ts`: Atomic disk writing via `fs.renameSync`, guest auto-provisioning, and `userVocabulary.create` implementation.
 - `src/lib/study-tracker.ts`: Relative import fix for CLI/test interoperability.
 - `src/components/AudioButton.tsx`: Audio playback speed selector (`0.75x`, `1.0x`, `1.25x`, `1.5x`) with cross-view persistence.
+- `src/components/Navbar.tsx`: Integrated Daily Plan (`/daily-plan`) desktop & mobile navigation links.
 - `src/app/api/auth/login/route.ts`: Rate limiting (5 req/min) and case-insensitive email normalization.
 - `src/app/api/auth/register/route.ts`: Rate limiting (3 req/min) and case-insensitive email normalization.
 - `src/app/api/ai/tutor/route.ts`: Rate limiting (20 req/min).
@@ -55,14 +61,16 @@ Every visible feature now works against persistent storage, automated testing ha
 - `src/app/api/learn/route.ts`: Integrated `getEffectiveUserId()` for guest session isolation.
 - `src/app/api/review/route.ts`: Integrated `getEffectiveUserId()` for guest session isolation.
 - `src/app/api/bookmarks/route.ts`: Integrated `getEffectiveUserId()` for guest session isolation.
-- `src/app/api/difficult-words/route.ts`: Integrated `getEffectiveUserId()` for guest session isolation.
+- `src/app/api/difficult-words/route.ts`: Integrated `getEffectiveUserId()` and 7-day & 30-day mistake trend calculations.
 - `src/app/api/match/route.ts`: Integrated `getEffectiveUserId()` for guest session isolation.
-- `src/app/api/user/progress/route.ts`: Integrated `getEffectiveUserId()`, eliminated false streak fallbacks, and calculated true consecutive days.
-- `src/app/dashboard/page.tsx`: Embedded Exam Countdown & Study Pace Planner.
-- `src/app/difficult-words/page.tsx`: Added Weakness Diagnostics Dashboard (Topic breakdown, Part of Speech analysis, and 1-click drill).
+- `src/app/api/user/progress/route.ts`: Daily goal target customization (`POST`), strict streak tracking, mistake trends, and transparent accuracy metrics.
+- `src/app/dashboard/page.tsx`: Embedded Exam Countdown, 7-Day Streak Challenge badge, and Daily Plan quick action.
+- `src/app/difficult-words/page.tsx`: Added 7-day and 30-day mistake trend summaries, standardized metric definitions, and Weakness Diagnostics.
+- `src/app/practice/page.tsx`: Hardened against double-click submissions, added question switcher palette, unanswered questions confirmation modal, and review accuracy fix.
+- `src/app/progress/page.tsx`: Added 7-day & 30-day mistake trend analysis section, exact quiz accuracy denominator display, and Mastered definition tooltips.
 - `next.config.mjs`: Configured OWASP HTTP security headers.
 - `package.json`: Updated testing scripts to run all suites sequentially.
-- `README.md`: Comprehensive documentation update.
+- `README.md`: Comprehensive documentation update with new features and verification instructions.
 - `scripts/verify_all.ts`: Deterministic daily goal assertions and dynamic answer verification.
 
 ---
@@ -182,7 +190,7 @@ Executes both `scripts/verify_all.ts` and `scripts/verify_journeys.ts`:
 ### Command: `npm run build`
 ```
 ✓ Compiled successfully
-✓ Generating static pages (25/25)
+✓ Generating static pages (26/26)
 ✓ Finalizing page optimization
 Exit Code: 0
 ```
