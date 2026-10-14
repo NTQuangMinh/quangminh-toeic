@@ -1,8 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { askAITutor, AITutorRequest } from "@/lib/ai";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const rateCheck = checkRateLimit(`ai:${ip}`, 20, 60000);
+    if (!rateCheck.success) {
+      return NextResponse.json(
+        { error: "Bạn đã gửi quá nhiều câu hỏi trong thời gian ngắn. Vui lòng đợi 1 phút trước khi hỏi tiếp." },
+        { status: 429 }
+      );
+    }
+
     const body = (await req.json()) as AITutorRequest;
 
     if (!body.word || !body.meaningVi) {

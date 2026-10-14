@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getSessionUser } from "@/lib/auth";
+import { getEffectiveUserId } from "@/lib/auth";
 import { getVietnamTodayDate } from "@/lib/study-tracker";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001";
+    const { userId } = await getEffectiveUserId();
 
     const user = await db.user.findUnique({ where: { id: userId } });
     const targetWords = user?.dailyGoalTarget || 20;
@@ -58,18 +57,18 @@ export async function GET() {
     const quizAccuracy =
       totalQuestionsAnswered > 0 ? Math.round((totalCorrectAnswers / totalQuestionsAnswered) * 100) : 85;
 
-    // 6. Streak calculation
+    // 6. Streak calculation (strict consecutive active days)
     const studyLogs = await db.studyLog.findMany({
       where: { userId },
       orderBy: { date: "desc" },
     });
 
     let currentStreak = 0;
-    const todayLog = studyLogs.find((l) => l.date === todayStr);
+    const todayLog = studyLogs.find((l) => l.date === todayStr && l.wordsCount > 0);
     let checkDate = new Date();
 
-    // If studied today, count starts from today. If not, check if studied yesterday.
-    if (!todayLog || todayLog.wordsCount === 0) {
+    // If studied today, count starts from today. If not yet today, check starting from yesterday.
+    if (!todayLog) {
       checkDate.setDate(checkDate.getDate() - 1);
     }
 
@@ -82,14 +81,6 @@ export async function GET() {
       } else {
         break;
       }
-    }
-
-    if (currentStreak === 0 && (todayLog?.wordsCount || 0) > 0) {
-      currentStreak = 1;
-    }
-    // Ensure demo user has baseline streak if logs exist
-    if (currentStreak === 0 && studyLogs.length > 0) {
-      currentStreak = Math.min(7, studyLogs.length);
     }
 
     // 7. Weekly Activity Chart (Last 7 days)
@@ -121,7 +112,7 @@ export async function GET() {
         email: user?.email || "demo@toeic.vn",
         dailyGoalTarget: targetWords,
       },
-      streak: Math.max(1, currentStreak),
+      streak: currentStreak,
       todayGoal: {
         targetWords,
         learnedWords: learnedWordsToday,

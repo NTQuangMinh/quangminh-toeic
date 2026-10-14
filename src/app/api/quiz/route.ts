@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getSessionUser } from "@/lib/auth";
+import {
+  getEffectiveUserId,
+  signQuizQuestionToken,
+  verifyQuizQuestionToken,
+} from "@/lib/auth";
 import { recordStudyActivity } from "@/lib/study-tracker";
-
+import { calculateSM2 } from "@/lib/sm2";
 
 export interface QuizQuestionItem {
   id: string;
@@ -15,6 +19,7 @@ export interface QuizQuestionItem {
   options: string[];
   correctIndex: number;
   explanation: string;
+  questionToken?: string;
   collocations?: string;
   partTag?: string;
 }
@@ -78,6 +83,13 @@ export async function GET(req: NextRequest) {
           const prefixes = ["(A)", "(B)", "(C)", "(D)"];
           const options = shuffledSentences.map((s, i) => `${prefixes[i]} ${s}`);
 
+          const explanation = `Đáp án đúng là ${prefixes[correctIdx]}: "${targetSentence}" (${vocab.exampleTranslation}). Chứa từ khóa "${vocab.word}": ${vocab.meaningVi}.`;
+          const questionToken = signQuizQuestionToken({
+            wordId: vocab.id,
+            correctIndex: correctIdx,
+            explanation,
+          });
+
           return {
             id: `drill_${idx + 1}`,
             wordId: vocab.id,
@@ -89,7 +101,8 @@ export async function GET(req: NextRequest) {
             audioOptions: shuffledSentences,
             options,
             correctIndex: correctIdx,
-            explanation: `Đáp án đúng là ${prefixes[correctIdx]}: "${targetSentence}" (${vocab.exampleTranslation}). Chứa từ khóa "${vocab.word}": ${vocab.meaningVi}.`,
+            explanation,
+            questionToken,
             collocations: vocab.collocations || undefined,
           };
         } else {
@@ -121,6 +134,13 @@ export async function GET(req: NextRequest) {
           const prefixes = ["(A)", "(B)", "(C)"];
           const options = shuffledOptions.map((opt, i) => `${prefixes[i]} ${opt}`);
 
+          const explanation = `Câu hỏi: "${questionPrompt}". Phản hồi chuẩn xác: ${prefixes[correctIdx]} "${correctResponse}". Liên quan đến từ khóa "${vocab.word}" (${vocab.partOfSpeech}): ${vocab.meaningVi}.`;
+          const questionToken = signQuizQuestionToken({
+            wordId: vocab.id,
+            correctIndex: correctIdx,
+            explanation,
+          });
+
           return {
             id: `drill_${idx + 1}`,
             wordId: vocab.id,
@@ -132,7 +152,8 @@ export async function GET(req: NextRequest) {
             audioOptions: shuffledOptions,
             options,
             correctIndex: correctIdx,
-            explanation: `Câu hỏi: "${questionPrompt}". Phản hồi chuẩn xác: ${prefixes[correctIdx]} "${correctResponse}". Liên quan đến từ khóa "${vocab.word}" (${vocab.partOfSpeech}): ${vocab.meaningVi}.`,
+            explanation,
+            questionToken,
             collocations: vocab.collocations || undefined,
           };
         }
@@ -216,6 +237,13 @@ export async function GET(req: NextRequest) {
         }
       }
 
+      const explanation = `Từ "${vocab.word}" (${vocab.partOfSpeech}, phát âm ${vocab.pronunciation}) mang nghĩa: "${vocab.meaningVi}". Ví dụ: "${vocab.exampleSentence}"`;
+      const questionToken = signQuizQuestionToken({
+        wordId: vocab.id,
+        correctIndex,
+        explanation,
+      });
+
       return {
         id: `q_${idx + 1}`,
         wordId: vocab.id,
@@ -225,7 +253,8 @@ export async function GET(req: NextRequest) {
         audioPrompt,
         options,
         correctIndex,
-        explanation: `Từ "${vocab.word}" (${vocab.partOfSpeech}, phát âm ${vocab.pronunciation}) mang nghĩa: "${vocab.meaningVi}". Ví dụ: "${vocab.exampleSentence}"`,
+        explanation,
+        questionToken,
         collocations: vocab.collocations || undefined,
       };
     });
@@ -243,8 +272,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001";
+    const { userId } = await getEffectiveUserId();
 
     const body = await req.json();
     const { questions, userAnswers, topic } = body as {
@@ -260,16 +288,27 @@ export async function POST(req: NextRequest) {
     let correctCount = 0;
     const evaluatedQuestions = questions.map((q, idx) => {
       const selected = userAnswers[idx];
-      const isCorrect = selected === q.correctIndex;
+      let verifiedCorrectIndex = q.correctIndex;
+      let verifiedExplanation = q.explanation;
+
+      if (q.questionToken) {
+        const payload = verifyQuizQuestionToken(q.questionToken);
+        if (payload && payload.wordId === q.wordId) {
+          verifiedCorrectIndex = payload.correctIndex;
+          verifiedExplanation = payload.explanation;
+        }
+      }
+
+      const isCorrect = selected === verifiedCorrectIndex;
       if (isCorrect) correctCount++;
       return {
         wordId: q.wordId,
         questionText: q.questionText,
         optionsJson: JSON.stringify(q.options),
-        correctIndex: q.correctIndex,
+        correctIndex: verifiedCorrectIndex,
         selectedIndex: selected,
         isCorrect,
-        explanation: q.explanation,
+        explanation: verifiedExplanation,
       };
     });
 
@@ -292,7 +331,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    // Update user vocabulary stats (increment correctCount / wrongCount)
+    // Update user vocabulary stats with SM-2 spaced repetition
     const now = new Date().toISOString();
     for (const eq of evaluatedQuestions) {
       if (eq.wordId) {
@@ -300,24 +339,47 @@ export async function POST(req: NextRequest) {
           where: { userId_wordId: { userId, wordId: eq.wordId } },
         });
 
-        if (existingUV) {
-          await db.userVocabulary.upsert({
-            where: { userId_wordId: { userId, wordId: eq.wordId } },
-            create: {
-              userId,
-              wordId: eq.wordId,
-              correctCount: eq.isCorrect ? 1 : 0,
-              wrongCount: eq.isCorrect ? 0 : 1,
-              status: eq.isCorrect ? "LEARNING" : "LEARNING",
-              lastReviewedAt: now,
-            },
-            update: {
-              correctCount: existingUV.correctCount + (eq.isCorrect ? 1 : 0),
-              wrongCount: existingUV.wrongCount + (eq.isCorrect ? 0 : 1),
-              lastReviewedAt: now,
-            },
-          });
-        }
+        const quality = eq.isCorrect ? "GOOD" : "AGAIN";
+        const sm2Result = calculateSM2(
+          existingUV
+            ? {
+                interval: existingUV.interval,
+                repetitions: existingUV.repetitions,
+                easeFactor: existingUV.easeFactor,
+              }
+            : { interval: 0, repetitions: 0, easeFactor: 2.5 },
+          quality
+        );
+
+        const currentWrong = (existingUV?.wrongCount || 0) + (eq.isCorrect ? 0 : 1);
+        const currentCorrect = (existingUV?.correctCount || 0) + (eq.isCorrect ? 1 : 0);
+        const newStatus = sm2Result.status;
+
+        await db.userVocabulary.upsert({
+          where: { userId_wordId: { userId, wordId: eq.wordId } },
+          create: {
+            userId,
+            wordId: eq.wordId,
+            correctCount: eq.isCorrect ? 1 : 0,
+            wrongCount: eq.isCorrect ? 0 : 1,
+            status: newStatus,
+            easeFactor: sm2Result.easeFactor,
+            interval: sm2Result.interval,
+            repetitions: sm2Result.repetitions,
+            nextReviewAt: sm2Result.nextReviewAt.toISOString(),
+            lastReviewedAt: now,
+          },
+          update: {
+            correctCount: currentCorrect,
+            wrongCount: currentWrong,
+            status: newStatus,
+            easeFactor: sm2Result.easeFactor,
+            interval: sm2Result.interval,
+            repetitions: sm2Result.repetitions,
+            nextReviewAt: sm2Result.nextReviewAt.toISOString(),
+            lastReviewedAt: now,
+          },
+        });
       }
     }
 

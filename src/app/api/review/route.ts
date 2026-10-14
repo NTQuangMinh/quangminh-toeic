@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getSessionUser } from "@/lib/auth";
+import { getEffectiveUserId } from "@/lib/auth";
 import { calculateSM2, SM2Rating } from "@/lib/sm2";
 import { recordStudyActivity } from "@/lib/study-tracker";
 
@@ -8,8 +8,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001";
+    const { userId } = await getEffectiveUserId();
 
     const { searchParams } = new URL(req.url);
     const mode = searchParams.get("mode") || "due"; // 'due' or 'all' (cram mode)
@@ -75,8 +74,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001";
+    const { userId } = await getEffectiveUserId();
 
     const body = await req.json();
     const { wordId, rating } = body as { wordId: string; rating: SM2Rating };

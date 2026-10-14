@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getSessionUser } from "@/lib/auth";
+import { getEffectiveUserId } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001";
+    const { userId } = await getEffectiveUserId();
 
     const bookmarks = await db.bookmark.findMany({
       where: { userId },
@@ -36,8 +35,7 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001";
+    const { userId } = await getEffectiveUserId();
 
     const body = await req.json();
     const { wordId } = body;

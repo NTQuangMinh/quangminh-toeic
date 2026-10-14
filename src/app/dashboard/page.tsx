@@ -26,6 +26,7 @@ import {
   FileText,
 } from "lucide-react";
 import { predictToeicScore } from "@/lib/toeic-score-predictor";
+import { ExamCountdownWidget } from "@/components/ExamCountdownWidget";
 
 interface ProgressData {
   user: {
@@ -302,6 +303,9 @@ export default function DashboardPage() {
           </div>
         );
       })()}
+
+      {/* ================= TOEIC EXAM COUNTDOWN & STUDY PACE PLANNER ================= */}
+      <ExamCountdownWidget masteredWords={counts.mastered} learningWords={counts.learning} />
 
       {/* ================= 3 CORE LEARNING MODES ================= */}
       <div className="space-y-4">

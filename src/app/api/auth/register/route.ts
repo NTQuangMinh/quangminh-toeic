@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { hashPassword, signToken, AUTH_COOKIE_NAME } from "@/lib/auth";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const rateCheck = checkRateLimit(`register:${ip}`, 3, 60000);
+    if (!rateCheck.success) {
+      return NextResponse.json(
+        { error: "Bạn đã tạo tài khoản quá nhanh. Vui lòng đợi 1 phút trước khi tiếp tục." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { name, email, password, dailyGoalTarget } = body;
 

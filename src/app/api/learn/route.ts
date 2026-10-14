@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getSessionUser } from "@/lib/auth";
+import { getEffectiveUserId } from "@/lib/auth";
 import { recordStudyActivity } from "@/lib/study-tracker";
 
 export const dynamic = "force-dynamic";
@@ -62,8 +62,7 @@ function selectTopicDiverseWords<T extends { id: string; topic: string }>(words:
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001"; // Fallback to demo user if unauthenticated preview
+    const { userId } = await getEffectiveUserId();
 
     const { searchParams } = new URL(req.url);
     const topic = searchParams.get("topic") || "";
@@ -153,8 +152,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001";
+    const { userId } = await getEffectiveUserId();
 
     const body = await req.json();
     const { wordId } = body;

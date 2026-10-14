@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getSessionUser } from "@/lib/auth";
+import { getEffectiveUserId } from "@/lib/auth";
 import { recordStudyActivity } from "@/lib/study-tracker";
 
 export const dynamic = "force-dynamic";
@@ -95,8 +95,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSessionUser();
-    const userId = session?.id || "usr_demo_vietnam_001";
+    const { userId } = await getEffectiveUserId();
 
     const body = await req.json();
     const { matchedPairs = 6, timeSpent = 0 } = body;

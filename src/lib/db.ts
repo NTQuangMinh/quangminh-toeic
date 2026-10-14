@@ -317,9 +317,11 @@ function saveState() {
   if (!cachedState) return;
   try {
     ensureDirectoryExistence(DB_FILE);
-    fs.writeFileSync(DB_FILE, JSON.stringify(cachedState, null, 2), "utf-8");
+    const tmpFile = `${DB_FILE}.${Date.now()}.${Math.random().toString(36).slice(2, 6)}.tmp`;
+    fs.writeFileSync(tmpFile, JSON.stringify(cachedState, null, 2), "utf-8");
+    fs.renameSync(tmpFile, DB_FILE);
   } catch (err) {
-    console.error("Could not write db.json:", err);
+    console.error("Could not write db.json atomically:", err);
   }
 }
 
@@ -331,10 +333,28 @@ const jsonDb = {
   user: {
     findUnique: async ({ where }: { where: { id?: string; email?: string } }) => {
       const state = loadState();
-      return (
-        state.users.find((u) => (where.id && u.id === where.id) || (where.email && u.email.toLowerCase() === where.email.toLowerCase())) ||
-        null
+      let found = state.users.find(
+        (u) =>
+          (where.id && u.id === where.id) ||
+          (where.email && u.email.toLowerCase() === where.email.toLowerCase())
       );
+      if (!found && where.id && where.id.startsWith("guest_")) {
+        const now = new Date().toISOString();
+        const guestUser: DBUser = {
+          id: where.id,
+          email: `${where.id}@guest.toeic.local`,
+          passwordHash: "",
+          name: "Học viên Khách",
+          role: "USER",
+          dailyGoalTarget: 20,
+          createdAt: now,
+          updatedAt: now,
+        };
+        state.users.push(guestUser);
+        saveState();
+        return guestUser;
+      }
+      return found || null;
     },
     findFirst: async ({ where }: { where?: Partial<DBUser> }) => {
       const state = loadState();
