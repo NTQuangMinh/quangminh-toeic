@@ -22,6 +22,7 @@ import {
   Award,
   Headphones,
 } from "lucide-react";
+import { playSuccessSound, playErrorSound, playFanfareSound } from "@/lib/sound-effects";
 
 
 
@@ -80,6 +81,15 @@ export default function PracticePage() {
     setSelectedOption(idx);
     setHasAnsweredCurrent(true);
 
+    const currentQ = questions[currentQIndex];
+    if (currentQ) {
+      if (idx === currentQ.correctIndex) {
+        playSuccessSound();
+      } else {
+        playErrorSound();
+      }
+    }
+
     const updatedAnswers = [...userAnswers];
     updatedAnswers[currentQIndex] = idx;
     setUserAnswers(updatedAnswers);
@@ -123,6 +133,7 @@ export default function PracticePage() {
         setWrongCount(questions.length - correct);
         setFinalScore(Math.round((correct / questions.length) * 100));
       }
+      playFanfareSound();
       setStage("result");
     } catch (err) {
       console.error("Failed to submit quiz results:", err);

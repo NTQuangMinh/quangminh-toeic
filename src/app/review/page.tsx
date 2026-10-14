@@ -12,6 +12,7 @@ import {
   generateReviewQuizList,
   createQuizQuestionForWord,
 } from "@/lib/review-quiz";
+import { playSuccessSound, playErrorSound, playFanfareSound } from "@/lib/sound-effects";
 import {
   RotateCcw,
   CheckCircle2,
@@ -150,6 +151,7 @@ export default function ReviewPage() {
     setIsCorrect(correct);
 
     if (correct) {
+      playSuccessSound();
       // First try correct: mark as GOOD in SM-2
       if (!currentQ.hasFailedOnce) {
         setFirstTryCorrectIds((prev) => new Set(prev).add(currentQ.wordId));
@@ -167,6 +169,7 @@ export default function ReviewPage() {
         }
       }
     } else {
+      playErrorSound();
       // Failed: mark as AGAIN in SM-2 (adds to difficult words, resets repetition)
       setRequeuedWordIds((prev) => new Set(prev).add(currentQ.wordId));
       try {
@@ -194,6 +197,7 @@ export default function ReviewPage() {
       setQuizQueue(nextQueue);
 
       if (nextQueue.length === 0) {
+        playFanfareSound();
         setIsCompleted(true);
       }
     } else {
@@ -221,6 +225,12 @@ export default function ReviewPage() {
     const currentWord = words[cardIndex];
     if (!currentWord) return;
 
+    if (rating === "AGAIN") {
+      playErrorSound();
+    } else {
+      playSuccessSound();
+    }
+
     setRatingsCount((prev) => ({
       ...prev,
       [rating]: prev[rating] + 1,
@@ -242,6 +252,7 @@ export default function ReviewPage() {
     if (cardIndex < words.length - 1) {
       setCardIndex((prev) => prev + 1);
     } else {
+      playFanfareSound();
       setIsCompleted(true);
     }
   };

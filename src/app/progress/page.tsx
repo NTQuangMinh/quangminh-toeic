@@ -12,7 +12,9 @@ import {
   TrendingUp,
   Target,
   Sparkles,
+  Award as AwardIcon,
 } from "lucide-react";
+import { predictToeicScore, getMilestones } from "@/lib/toeic-score-predictor";
 
 interface ProgressData {
   user: {
@@ -237,7 +239,99 @@ export default function ProgressPage() {
         </div>
       </div>
 
-      {/* ================= 3. WEEKLY ACTIVITY CHART ================= */}
+      {/* ================= 3. TOEIC SCORE PREDICTOR & MILESTONES ================= */}
+      {(() => {
+        const prediction = predictToeicScore({
+          masteredWords: counts.mastered,
+          learningWords: counts.learning,
+          totalLearned: counts.totalLearned,
+          quizAccuracy: stats.quizAccuracy,
+          streak: streak,
+          targetGoal: 750,
+        });
+
+        const milestones = getMilestones(prediction.avgScore);
+
+        return (
+          <div className="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-indigo-500/30 space-y-6 relative overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="p-1.5 rounded-xl bg-indigo-500/20 text-indigo-300">
+                    <TrendingUp className="w-4 h-4" />
+                  </span>
+                  <h3 className="text-base font-black uppercase tracking-wider text-white">
+                    Dự đoán điểm năng lực TOEIC (AI ETS Model)
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-300 mt-1">
+                  Mô hình ước tính điểm dựa trên độ ghi nhớ từ vựng, tính bền bỉ và độ chính xác quiz
+                </p>
+              </div>
+
+              <span className={`self-start sm:self-auto px-3 py-1 rounded-full text-xs font-black ${prediction.badgeBg} ${prediction.color}`}>
+                {prediction.bandLabel}
+              </span>
+            </div>
+
+            {/* Score Display & Advice */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <div className="md:col-span-5 space-y-2">
+                <span className="text-xs uppercase font-bold text-slate-400 tracking-wider">
+                  Điểm ước lượng hiện tại
+                </span>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-cyan-300">
+                    {prediction.avgScore}
+                  </span>
+                  <span className="text-sm font-semibold text-slate-400">/ 990</span>
+                </div>
+                <p className="text-xs text-slate-400">
+                  Biên độ dao động dự kiến: <strong>{prediction.minScore} - {prediction.maxScore}</strong> điểm
+                </p>
+              </div>
+
+              <div className="md:col-span-7 bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2">
+                <span className="text-xs font-bold text-indigo-300 uppercase tracking-wider block">
+                  Nhận xét & Chiến lược bứt phá
+                </span>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                  {prediction.advice}
+                </p>
+              </div>
+            </div>
+
+            {/* Milestones Breakdown */}
+            <div className="space-y-3 pt-2">
+              <span className="text-xs uppercase font-bold text-slate-400 tracking-wider block">
+                Cột mốc mục tiêu (Target Milestones)
+              </span>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                {milestones.map((m) => (
+                  <div
+                    key={m.target}
+                    className={`p-3 rounded-2xl border text-center transition-all ${
+                      m.reached
+                        ? "bg-emerald-500/20 border-emerald-400/40 text-emerald-200"
+                        : "bg-white/5 border-white/10 text-slate-400"
+                    }`}
+                  >
+                    <div className="text-sm font-black text-white">{m.target}+</div>
+                    <div className="text-[10px] uppercase font-bold tracking-wider mt-0.5">
+                      {m.label}
+                    </div>
+                    <div className="text-[10px] mt-1.5 font-semibold">
+                      {m.reached ? "✅ Đã chạm mốc" : "⏳ Cần tích lũy"}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ================= 4. WEEKLY ACTIVITY CHART ================= */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-6">
         <div className="flex items-center justify-between">
           <div>

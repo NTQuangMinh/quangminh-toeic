@@ -19,6 +19,12 @@ import {
   HelpCircle,
   SlidersHorizontal,
 } from "lucide-react";
+import {
+  playSuccessSound,
+  playErrorSound,
+  playComboSound,
+  playFanfareSound,
+} from "@/lib/sound-effects";
 
 interface GameStats {
   matchedCount: number;
@@ -177,6 +183,14 @@ export default function MatchGamePage() {
       const nextMaxCombo = Math.max(stats.maxCombo, nextCombo);
       const isComplete = nextMatchedCount === pairsCount;
 
+      if (isComplete) {
+        playFanfareSound();
+      } else if (nextCombo > 1) {
+        playComboSound(nextCombo);
+      } else {
+        playSuccessSound();
+      }
+
       setStats((prev) => ({
         ...prev,
         matchedCount: nextMatchedCount,
@@ -194,6 +208,7 @@ export default function MatchGamePage() {
       }
     } else {
       // MISMATCH
+      playErrorSound();
       setMismatchedIds([firstSelected.id, card.id]);
       setStats((prev) => ({
         ...prev,

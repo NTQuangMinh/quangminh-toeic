@@ -19,7 +19,11 @@ import {
   Menu,
   X,
   Bookmark,
+  Volume2,
+  VolumeX,
+  FileText,
 } from "lucide-react";
+import { isSfxMuted, toggleSfxMute, playSuccessSound } from "@/lib/sound-effects";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -29,9 +33,22 @@ export function Navbar() {
     user: { id: string; name: string; email: string; role: string } | null;
   } | null>(null);
   const [streak, setStreak] = useState<number>(7);
+  const [sfxMuted, setSfxMuted] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setSfxMuted(isSfxMuted());
+  }, []);
+
+  const handleToggleSfx = () => {
+    const nextState = toggleSfxMute();
+    setSfxMuted(nextState);
+    if (!nextState) {
+      playSuccessSound();
+    }
+  };
 
   useEffect(() => {
     // Check auth status
@@ -88,6 +105,13 @@ export function Navbar() {
 
   const extraLinks = [
     {
+      href: "/reading",
+      label: "Luyện đọc Part 7",
+      desc: "Đoạn văn thực tế ETS",
+      icon: FileText,
+      color: "text-emerald-500 bg-emerald-50",
+    },
+    {
       href: "/match",
       label: "Game Nối từ",
       desc: "Luyện phản xạ tốc độ cao",
@@ -107,6 +131,7 @@ export function Navbar() {
     { href: "/dashboard", label: "Trang chủ", icon: Sparkles, color: "text-blue-600 bg-blue-50" },
     { href: "/learn", label: "Học từ mới", icon: BookOpen, color: "text-blue-600 bg-blue-50" },
     { href: "/review", label: "Ôn tập SM-2", icon: RotateCcw, color: "text-amber-600 bg-amber-50" },
+    { href: "/reading", label: "Đọc Part 7", icon: FileText, color: "text-emerald-600 bg-emerald-50" },
     { href: "/match", label: "Game Nối từ", icon: Gamepad2, color: "text-orange-600 bg-orange-50" },
     { href: "/listen", label: "Nghe rảnh tay", icon: Headphones, color: "text-indigo-600 bg-indigo-50" },
     { href: "/practice", label: "Luyện thi ETS", icon: GraduationCap, color: "text-emerald-600 bg-emerald-50" },
@@ -115,7 +140,7 @@ export function Navbar() {
     { href: "/progress", label: "Tiến độ học", icon: BarChart2, color: "text-purple-600 bg-purple-50" },
   ];
 
-  const isExtraActive = pathname.startsWith("/match") || pathname.startsWith("/listen");
+  const isExtraActive = pathname.startsWith("/match") || pathname.startsWith("/listen") || pathname.startsWith("/reading");
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/80 backdrop-blur-xl border-b border-slate-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all">
@@ -252,6 +277,20 @@ export function Navbar() {
               {streak} <span className="hidden sm:inline">ngày</span>
             </span>
           </a>
+
+          {/* Sound SFX Toggle */}
+          <button
+            type="button"
+            onClick={handleToggleSfx}
+            title={sfxMuted ? "Bật âm thanh hiệu ứng" : "Tắt âm thanh hiệu ứng"}
+            className={`p-1.5 sm:p-2 rounded-xl transition-all active:scale-95 shrink-0 border ${
+              sfxMuted
+                ? "text-slate-400 bg-slate-100/80 border-slate-200 hover:text-slate-700"
+                : "text-indigo-600 bg-indigo-50/80 border-indigo-200/80 hover:bg-indigo-100 shadow-xs"
+            }`}
+          >
+            {sfxMuted ? <VolumeX className="w-4 h-4 shrink-0" /> : <Volume2 className="w-4 h-4 shrink-0" />}
+          </button>
 
           {/* User Profile / Auth State (Desktop) */}
           {session?.authenticated && session.user ? (

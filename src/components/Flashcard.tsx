@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { AudioButton } from "./AudioButton";
+import { VoiceSpeechButton } from "./VoiceSpeechButton";
 import { AITutorModal } from "./AITutorModal";
 import { Bookmark, Sparkles, RotateCw, Check, ArrowRight, Tag, HelpCircle, Lightbulb } from "lucide-react";
 import { SM2Rating } from "@/lib/sm2";
+import { playCardFlipSound } from "@/lib/sound-effects";
 
 export interface FlashcardWord {
   id: string;
@@ -63,6 +65,7 @@ export function Flashcard({
 
       if (e.code === "Space" || e.key === "Enter") {
         e.preventDefault();
+        playCardFlipSound();
         setIsFlipped((prev) => !prev);
       } else if (mode === "review" && isFlipped) {
         if (e.key === "1") onRate?.("AGAIN");
@@ -106,7 +109,10 @@ export function Flashcard({
       {/* 3D Flashcard Container with Ambient Glow */}
       <div
         className="w-full h-[350px] sm:h-[430px] cursor-pointer perspective-1000 group relative"
-        onClick={() => setIsFlipped(!isFlipped)}
+        onClick={() => {
+          playCardFlipSound();
+          setIsFlipped(!isFlipped);
+        }}
       >
         {/* Soft Ambient Radial Halo behind card */}
         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 via-indigo-500/15 to-purple-500/10 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition-opacity pointer-events-none -z-10" />
@@ -158,10 +164,11 @@ export function Flashcard({
                 {word.pronunciation}
               </p>
 
-              {/* Audio US & UK buttons */}
-              <div className="flex items-center gap-2 sm:gap-3 pt-1 sm:pt-2">
+              {/* Audio US & UK buttons + Voice AI Pronunciation */}
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-1 sm:pt-2">
                 <AudioButton text={word.word} audioUrl={word.audioUrl} accent="US" size="md" showLabel />
                 <AudioButton text={word.word} accent="UK" size="md" showLabel />
+                <VoiceSpeechButton targetWord={word.word} size="md" />
               </div>
             </div>
 
@@ -191,6 +198,7 @@ export function Flashcard({
               </div>
 
               <div className="flex items-center gap-1.5">
+                <VoiceSpeechButton targetWord={word.word} size="sm" />
                 <AudioButton text={word.word} audioUrl={word.audioUrl} accent="US" size="sm" />
                 <button
                   type="button"
@@ -278,6 +286,7 @@ export function Flashcard({
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
+                  playCardFlipSound();
                   setIsFlipped(false);
                 }}
                 className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"

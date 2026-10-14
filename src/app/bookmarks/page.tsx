@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { AudioButton } from "@/components/AudioButton";
 import { Flashcard, FlashcardWord } from "@/components/Flashcard";
-import { Bookmark, BookOpen, Trash2, ArrowRight } from "lucide-react";
+import { Bookmark, BookOpen, Trash2, ArrowRight, Download, Printer } from "lucide-react";
+import { exportVocabToCSV, printVocabularySheet } from "@/lib/export-utils";
 
 
 
@@ -65,17 +66,39 @@ export default function BookmarksPage() {
         </div>
 
         {items.length > 0 && (
-          <button
-            type="button"
-            onClick={() => {
-              setDrillMode(!drillMode);
-              setCurrentIndex(0);
-            }}
-            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-colors self-start sm:self-auto"
-          >
-            <BookOpen className="w-4 h-4" />
-            <span>{drillMode ? "Xem dạng danh sách" : "Học qua Flashcard"}</span>
-          </button>
+          <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+            <button
+              type="button"
+              onClick={() => exportVocabToCSV(items, "tu-vung-da-luu.csv")}
+              className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs shadow-xs flex items-center gap-1.5 transition-colors"
+              title="Xuất bảng Excel CSV"
+            >
+              <Download className="w-3.5 h-3.5 text-slate-500" />
+              <span>Xuất CSV</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => printVocabularySheet(items, "Từ Vựng Đã Lưu - Quang Minh TOEIC")}
+              className="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs shadow-xs flex items-center gap-1.5 transition-colors"
+              title="In phiếu từ vựng A4"
+            >
+              <Printer className="w-3.5 h-3.5 text-slate-500" />
+              <span>In bảng từ</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setDrillMode(!drillMode);
+                setCurrentIndex(0);
+              }}
+              className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-colors"
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>{drillMode ? "Xem dạng danh sách" : "Học qua Flashcard"}</span>
+            </button>
+          </div>
         )}
       </div>
 

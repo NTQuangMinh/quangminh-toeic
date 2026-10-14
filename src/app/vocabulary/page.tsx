@@ -14,7 +14,10 @@ import {
   BookOpen,
   ArrowRight,
   HelpCircle,
+  Download,
+  Printer,
 } from "lucide-react";
+import { exportVocabToCSV, printVocabularySheet } from "@/lib/export-utils";
 
 
 
@@ -231,7 +234,31 @@ export default function VocabularyPage() {
             ))}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => exportVocabToCSV(items, `tu-dien-toeic-${selectedDifficulty}.csv`)}
+              className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-bold flex items-center gap-1 transition-all shadow-xs"
+              title="Xuất bảng Excel CSV danh sách đang hiển thị"
+            >
+              <Download className="w-3.5 h-3.5 text-slate-500" />
+              <span>Xuất CSV</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => printVocabularySheet(items, `Từ Điển TOEIC (${items.length} từ)`)}
+              className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 font-bold flex items-center gap-1 transition-all shadow-xs"
+              title="In phiếu bài học A4"
+            >
+              <Printer className="w-3.5 h-3.5 text-slate-500" />
+              <span>In A4</span>
+            </button>
+            <a
+              href="/reading"
+              className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 font-bold flex items-center gap-1 transition-all"
+            >
+              📄 Đọc Part 7
+            </a>
             <a
               href="/match"
               className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 font-bold flex items-center gap-1 transition-all"

@@ -23,7 +23,9 @@ import {
   Gamepad2,
   Headphones,
   Target,
+  FileText,
 } from "lucide-react";
+import { predictToeicScore } from "@/lib/toeic-score-predictor";
 
 interface ProgressData {
   user: {
@@ -223,6 +225,84 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {/* ================= TOEIC SCORE PREDICTOR HERO WIDGET ================= */}
+      {(() => {
+        const prediction = predictToeicScore({
+          masteredWords: counts.mastered,
+          learningWords: counts.learning,
+          totalLearned: counts.totalLearned,
+          quizAccuracy: stats.quizAccuracy,
+          streak: streak,
+          targetGoal: 750,
+        });
+
+        return (
+          <div className="p-6 sm:p-7 rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-white border border-indigo-500/30 shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="space-y-3 max-w-xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+                    <TrendingUp className="w-3.5 h-3.5 text-indigo-300" />
+                    Dự đoán điểm năng lực TOEIC (AI Predictor)
+                  </span>
+                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-black ${prediction.badgeBg} ${prediction.color}`}>
+                    {prediction.bandLabel}
+                  </span>
+                </div>
+
+                <div className="flex items-baseline gap-3">
+                  <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-cyan-300 tracking-tight">
+                    {prediction.avgScore}
+                  </span>
+                  <span className="text-sm font-semibold text-slate-300">
+                    / 990 TOEIC (Ước tính: {prediction.minScore} - {prediction.maxScore})
+                  </span>
+                </div>
+
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  💡 {prediction.advice}
+                </p>
+
+                <div className="space-y-1.5 pt-1">
+                  <div className="flex justify-between text-xs font-medium text-slate-300">
+                    <span>Mục tiêu mốc {prediction.nextMilestone}+ TOEIC</span>
+                    <span className="font-bold text-cyan-300">{prediction.readinessPercentage}%</span>
+                  </div>
+                  <div className="w-full bg-white/10 rounded-full h-2.5 overflow-hidden">
+                    <div
+                      className="bg-gradient-to-r from-indigo-400 to-cyan-400 h-full rounded-full transition-all duration-700"
+                      style={{ width: `${prediction.readinessPercentage}%` }}
+                    />
+                  </div>
+                  {prediction.wordsNeededForNextMilestone > 0 && (
+                    <p className="text-[11px] text-slate-400">
+                      Cần thành thạo thêm khoảng {prediction.wordsNeededForNextMilestone} từ vựng nữa để sẵn sàng cho mốc {prediction.nextMilestone}+.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 sm:self-center shrink-0 w-full sm:w-auto">
+                <a
+                  href="/progress"
+                  className="px-5 py-3 rounded-2xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm border border-white/20 transition-all text-center backdrop-blur-md"
+                >
+                  Xem biểu đồ tiến độ →
+                </a>
+                <a
+                  href="/reading"
+                  className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white font-black text-xs sm:text-sm shadow-lg shadow-emerald-500/25 transition-all text-center"
+                >
+                  Luyện đọc đề ETS Part 7
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ================= 3 CORE LEARNING MODES ================= */}
       <div className="space-y-4">
         <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
@@ -335,7 +415,7 @@ export default function DashboardPage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* Card 1: Word Match Game */}
           <div className="p-6 rounded-3xl bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-white border border-amber-200/80 hover:border-amber-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
             <div className="space-y-3">
@@ -395,6 +475,38 @@ export default function DashboardPage() {
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-indigo-600/20 transition-all active:scale-95"
               >
                 <span>Bật Nghe Rảnh Tay</span>
+                <ArrowRight className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          {/* Card 3: Reading ETS Part 7 */}
+          <div className="p-6 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/5 to-white border border-emerald-200/80 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold shadow-md shadow-emerald-600/25">
+                <FileText className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-black text-slate-900">
+                    Luyện Đọc Part 7 ETS
+                  </h3>
+                  <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300/50">
+                    Contextual Reading
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+                  Học từ trong đoạn văn kinh doanh thực tế (Memo, Email, Press Release). Chạm từ vựng tra nghĩa và làm câu hỏi Part 7!
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-6">
+              <a
+                href="/reading"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all active:scale-95"
+              >
+                <span>Đọc Đoạn Văn Part 7 Ngay</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>
