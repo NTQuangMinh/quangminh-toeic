@@ -96,6 +96,12 @@ async function run() {
     console.log("\n📊 4. Daily Goal, Streak & Progress Metrics:");
     const todayStr = new Date().toISOString().split("T")[0];
 
+    await db.dailyGoal.upsert({
+      where: { userId_date: { userId: demoUser!.id, date: todayStr } },
+      create: { userId: demoUser!.id, date: todayStr, targetWords: 20, learnedWords: 15, completed: false },
+      update: { learnedWords: 15 },
+    });
+
     const updatedGoal = await db.dailyGoal.upsert({
       where: { userId_date: { userId: demoUser!.id, date: todayStr } },
       create: { userId: demoUser!.id, date: todayStr, targetWords: 20, learnedWords: 15, completed: false },
@@ -204,7 +210,7 @@ async function run() {
     assert(
       aiQuestion.options.length === 4 &&
       aiQuestion.options.includes("negotiate") &&
-      aiQuestion.answer === 0 &&
+      aiQuestion.options[aiQuestion.answer] === "negotiate" &&
       aiQuestion.explanation.length > 10,
       "AI Question Generator outputs strict validated 4-option TOEIC question"
     );

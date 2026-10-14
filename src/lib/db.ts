@@ -624,6 +624,44 @@ const jsonDb = {
       return list;
     },
 
+    create: async ({
+      data,
+    }: {
+      data: {
+        userId: string;
+        wordId: string;
+        status?: VocabStatus;
+        easeFactor?: number;
+        interval?: number;
+        repetitions?: number;
+        nextReviewAt?: string | null;
+        lastReviewedAt?: string | null;
+        correctCount?: number;
+        wrongCount?: number;
+      };
+    }): Promise<DBUserVocabulary> => {
+      const state = loadState();
+      const now = new Date().toISOString();
+      const newUV: DBUserVocabulary = {
+        id: `uv_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        userId: data.userId,
+        wordId: data.wordId,
+        status: data.status || "NEW",
+        easeFactor: data.easeFactor ?? 2.5,
+        interval: data.interval ?? 0,
+        repetitions: data.repetitions ?? 0,
+        nextReviewAt: data.nextReviewAt || null,
+        lastReviewedAt: data.lastReviewedAt || null,
+        correctCount: data.correctCount ?? 0,
+        wrongCount: data.wrongCount ?? 0,
+        createdAt: now,
+        updatedAt: now,
+      };
+      state.userVocabularies.push(newUV);
+      saveState();
+      return newUV;
+    },
+
     upsert: async ({
       where,
       create,

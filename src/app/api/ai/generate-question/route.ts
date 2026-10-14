@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateAIQuestion } from "@/lib/ai";
 import { db } from "@/lib/db";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limiter";
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const rateCheck = checkRateLimit(`gen_q:${ip}`, 20, 60000);
+    if (!rateCheck.success) {
+      return NextResponse.json(
+        { error: "Bạn đã tạo câu hỏi quá nhanh. Vui lòng thử lại sau 1 phút." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { wordId } = body;
 

@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "./db";
 
 /**
  * Returns today's ISO date string in Vietnam timezone (UTC+7).

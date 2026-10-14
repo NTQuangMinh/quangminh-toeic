@@ -215,15 +215,24 @@ Yêu cầu bắt buộc: Trả về ĐÚNG ĐỊNH DẠNG JSON sau, không kèm 
     }
   }
 
-  // Built-in verified question generator
-  const distractors = ["postpone", "purchase", "recruit", "manufacture", "accommodate", "revenue", "budget"].filter(
+  // Built-in verified question generator with randomized options
+  const distractors = ["postpone", "purchase", "recruit", "manufacture", "accommodate", "revenue", "budget", "maintain", "evaluate", "implement", "negotiate"].filter(
     (w) => w.toLowerCase() !== vocab.word.toLowerCase()
   );
 
-  const optA = vocab.word;
-  const optB = distractors[0] || "maintain";
-  const optC = distractors[1] || "evaluate";
-  const optD = distractors[2] || "implement";
+  const pickedDistractors = [...distractors].sort(() => 0.5 - Math.random()).slice(0, 3);
+  while (pickedDistractors.length < 3) {
+    pickedDistractors.push("evaluate");
+  }
+
+  const rawOptions = [vocab.word, ...pickedDistractors];
+  // Shuffle all 4 options with Fisher-Yates
+  for (let i = rawOptions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rawOptions[i], rawOptions[j]] = [rawOptions[j], rawOptions[i]];
+  }
+
+  const answerIndex = rawOptions.indexOf(vocab.word);
 
   // Create sentence with blank
   const original = vocab.exampleSentence;
@@ -235,8 +244,8 @@ Yêu cầu bắt buộc: Trả về ĐÚNG ĐỊNH DẠNG JSON sau, không kèm 
 
   return {
     question: blankSentence,
-    options: [optA, optB, optC, optD],
-    answer: 0,
+    options: rawOptions as [string, string, string, string],
+    answer: answerIndex,
     explanation: `Đáp án đúng là "${vocab.word}" (= ${vocab.meaningVi}). Trong ngữ cảnh câu, từ này hoàn toàn phù hợp về ngữ nghĩa và ngữ pháp doanh nghiệp.`,
     commonExpressions: `${vocab.word} a project • ${vocab.word} efficiently`,
   };
